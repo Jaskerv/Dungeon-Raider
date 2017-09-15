@@ -1,9 +1,8 @@
 package dungeonraider.character;
 
-import java.util.List;
+import java.awt.Image;
 
 import dungeonraider.item.Armour;
-import dungeonraider.item.Item;
 import dungeonraider.item.Weapon;
 import dungeonraider.util.Position;
 
@@ -23,7 +22,7 @@ public class Player implements Character{
 	private Weapon secondaryWeapon;
 	private Armour armour;
 	private Inventory inventory;
-	//private Sprite
+	private Image spriteImage;
 
 	private static final int MAX_CAPACITY = 20;
 

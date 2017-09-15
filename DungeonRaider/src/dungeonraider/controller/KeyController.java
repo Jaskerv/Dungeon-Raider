@@ -1,4 +1,4 @@
-package dungronraider.controller;
+package dungeonraider.controller;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -16,15 +16,19 @@ public class KeyController implements KeyListener{
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-		int direction = e.getKeyCode();
-		switch (direction) {
+		int key = e.getKeyCode();
+		switch (key) {
 			case KeyEvent.VK_W:
+				//myModel.moveUp()...
 				break;
 			case KeyEvent.VK_A:
 				break;
 			case KeyEvent.VK_S:
 				break;
 			case KeyEvent.VK_D:
+				break;
+			case KeyEvent.VK_I:
+				//myModel.displayInventory()...
 				break;
 		}
 

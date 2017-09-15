@@ -19,4 +19,4 @@ Upon entering dungeon rooms (the enviroment inbetween safe rooms)  monsters, ite
 
 
 
-<h1>Don't forget to <code>git pull</code> first before making any changes.</h1>
+<h1>Don't forget to <code>git pull</code> first before making any changes and before doing any work</h1>

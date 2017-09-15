@@ -1,6 +1,13 @@
 package dungeonraider.main;
 
+import dungeonraider.character.Player;
+
+/**
+ * Is this the model?
+ */
 public class DungeonRaider {
+	
+	private Player player;
 	
 	public DungeonRaider() {}
 
