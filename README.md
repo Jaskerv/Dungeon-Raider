@@ -17,3 +17,6 @@ The player's end score will be based on their performance; how far they managed 
 
 Upon entering dungeon rooms (the enviroment inbetween safe rooms)  monsters, items, and other interactable objects potentially spawn. Players can pick up items and interact with objects. The combat of the game is real time and consists of the player utilising their attacks well aiminig them with the direction last travelled. 
 
+
+
+<h1>Don't forget to <code>git pull</code> first before making any changes.</h1>
