@@ -22,7 +22,7 @@ public class NPC implements Character {
 	
 	/**
 	 * This method is for when a user interacts with this NPC. A JDialog will
-	 * pop up.
+	 * pop up and an action will occur.
 	 */
 	public void interact() {
 		
