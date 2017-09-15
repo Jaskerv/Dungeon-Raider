@@ -1,4 +1,4 @@
-package swen222.dungeonraider.main;
+package dungeonraider.main;
 
 public class DungeonRaider {
 	
