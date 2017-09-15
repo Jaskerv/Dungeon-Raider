@@ -37,7 +37,7 @@ public class Map {
 				row++;
 				continue;
 			}
-			Tile tile = getTileObject(c);
+			Tile tile = getTileObject(c, i, row);
 			map[i][row] = tile;
 		} 
 	}
@@ -46,13 +46,15 @@ public class Map {
 	 * Grabs the appropriate tile object for the character that is parsed
 	 * in.
 	 * @param c - the character being parsed in
+	 * @param x - the x co-ordinate of the tile being made
+	 * @param y - the y co-ordinate of the tile being made
 	 * @return the new tile object, or null if none was found
 	 */
-	public Tile getTileObject(char c) {
+	public Tile getTileObject(char c, int x, int y) {
 		switch (c) {
 			case 'W':
-				//return new Wall();
-				break;
+				//return new Tile(Images.Wall, x*SIZE, y*SIZE);
+				return new Tile(null, x*SIZE, y*SIZE);
 		}
 		return null;
 	}

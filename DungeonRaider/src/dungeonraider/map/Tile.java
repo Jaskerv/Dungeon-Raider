@@ -12,6 +12,10 @@ public class Tile {
 	private Image spriteImage;
 	private int x, y;
 	
-	public Tile() {}
+	public Tile(Image spriteImage, int x, int y) {
+		this.spriteImage = spriteImage;
+		this.x = x;
+		this.y = y;
+	}
 	
 }
