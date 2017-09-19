@@ -2,7 +2,7 @@ package dungeonraider.item;
 
 public abstract class Consumables extends Item {
 	/** Item consume time */
-	private int consumeTime;
+	protected int consumeTime;
 
 	public Consumables(int cost, int consumeTime) {
 		super(cost);

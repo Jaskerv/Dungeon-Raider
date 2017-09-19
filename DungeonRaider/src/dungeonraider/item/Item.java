@@ -1,7 +1,7 @@
 package dungeonraider.item;
 
 public abstract class Item {
-	private int buyCost;
+	protected int buyCost;
 
 	public Item(int cost) {
 		this.buyCost = cost;

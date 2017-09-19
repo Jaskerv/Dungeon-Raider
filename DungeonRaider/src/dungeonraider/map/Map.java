@@ -1,7 +1,7 @@
 package dungeonraider.map;
 
 public class Map {
-	
+
 	private static final int SIZE = 50; //placeholder value
 	/** Fixed size dungeon 2D array containing each individual tile */
 	private Tile[][] map = new Tile[SIZE][SIZE];
@@ -11,7 +11,7 @@ public class Map {
 	private int numMonsters;
 	/** Time limit for being in this map (if this will be implemented). */
 	private int timeLimit;
-	
+
 	/**
 	 * Map Constructor
 	 * @param mapType
@@ -23,7 +23,7 @@ public class Map {
 		this.numMonsters = numMonsters;
 		this.timeLimit = timeLimit;
 	}
-	
+
 	/**
 	 * Assuming you get parsed in the map as a string, e.g.
 	 * "WWWW\nWWPW" - Where each W is a wall, and P is the player, then:
@@ -39,9 +39,9 @@ public class Map {
 			}
 			Tile tile = getTileObject(c, i, row);
 			map[i][row] = tile;
-		} 
+		}
 	}
-	
+
 	/**
 	 * Grabs the appropriate tile object for the character that is parsed
 	 * in.
