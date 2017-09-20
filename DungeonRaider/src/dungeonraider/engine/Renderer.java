@@ -13,6 +13,7 @@ import java.awt.image.DataBufferInt;
 public class Renderer {
 	private BufferedImage view;
 	private int[] pixels;
+	private boolean black;
 
 	public Renderer(int width, int height) {
 		/** Creates view */
@@ -26,6 +27,7 @@ public class Renderer {
 				pixels[row * width + col] = color;
 			}
 		}
+		this.black = true;
 
 	}
 
@@ -34,21 +36,34 @@ public class Renderer {
 	 */
 	public void render(Graphics g) {
 		/** Draws image to JFrame */
-		g.drawImage(view, 0, 0, view.getWidth(), view.getHeight(), null);
+		if (black) {
+			g.drawImage(view, 0, 0, view.getWidth(), view.getHeight(), null);
+		} else {
+			random();
+			g.drawImage(view, 0, 0, view.getWidth(), view.getHeight(), null);
+		}
+	}
+
+	private void random() {
+		for (int i = 0; i < pixels.length; i++) {
+			int color = (int) (Math.random() * 0xFFFFFF);
+			pixels[i] = color;
+		}
 	}
 
 	/**
 	 * When JFrame is resized, updates view and pixel
 	 */
-	public void updateSize(int width,int height) {
+	public void updateSize(int width, int height) {
 		/** Creates view */
 		this.view = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		/** Creates array for pixels */
 		pixels = ((DataBufferInt) view.getRaster().getDataBuffer()).getData();
-		for(int i = 0 ; i<pixels.length;i++) {
-		int color = (int) (Math.random() * 0xFFFFFF);
-		pixels[i] = color;
+		for (int i = 0; i < pixels.length; i++) {
+			int color = (int) (Math.random() * 0xFFFFFF);
+			pixels[i] = color;
 		}
-		
+		this.black = false;
+
 	}
 }

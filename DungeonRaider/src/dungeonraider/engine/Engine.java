@@ -5,14 +5,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Toolkit;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
+import javax.swing.Timer;
 
 /**
- * The main exe
+ * The main engine class which implements runnable and also contains the main method.
  * 
  * @author Jono Yan
  *
@@ -40,6 +42,8 @@ public class Engine extends JFrame implements Runnable {
 		setLocationRelativeTo(null);
 		/** Adds canvas to JFrame */
 		add(canvas);
+		/** Disable Resizeable*/
+		setResizable(false);
 		/** Sets JFrame to visible */
 		setVisible(true);
 		/** Component listener to see if JFrame is resized */
@@ -48,11 +52,7 @@ public class Engine extends JFrame implements Runnable {
 
 		this.renderer = new Renderer(getWidth(), getHeight());
 		addComponentListener(new ResizeListener(this));
-		//addKeyListener();
 	}
-
-	private int x = 0;
-
 	/**
 	 * This method will render everything onto the screen
 	 */
@@ -73,7 +73,6 @@ public class Engine extends JFrame implements Runnable {
 	 * This method will run at a specified speed.
 	 */
 	public void update() {
-		x += 1;
 	}
 
 	/**
@@ -114,6 +113,7 @@ public class Engine extends JFrame implements Runnable {
 
 	private class ResizeListener implements ComponentListener {
 		private Engine window;
+		private final int DELAY = 1000;
 
 		public ResizeListener(Engine window) {
 			this.window = window;
@@ -121,18 +121,29 @@ public class Engine extends JFrame implements Runnable {
 
 		@Override
 		public void componentResized(ComponentEvent e) {
-			 if (window.initialized) {
-			 this.window.updateFrame();
-			 }
+			if (window.initialized) {
+//				System.out.println("Updated");
+				this.window.updateFrame();
+			}
 		}
+
 		@Override
 		public void componentMoved(ComponentEvent e) {
+			// TODO Auto-generated method stub
+
 		}
+
 		@Override
 		public void componentShown(ComponentEvent e) {
+			// TODO Auto-generated method stub
+
 		}
+
 		@Override
 		public void componentHidden(ComponentEvent e) {
+			// TODO Auto-generated method stub
+
 		}
+
 	}
 }
