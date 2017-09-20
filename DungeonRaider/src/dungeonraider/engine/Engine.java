@@ -122,7 +122,7 @@ public class Engine extends JFrame implements Runnable {
 		@Override
 		public void componentResized(ComponentEvent e) {
 			if (window.initialized) {
-//				System.out.println("Updated");
+				System.out.println("Updated");
 				this.window.updateFrame();
 			}
 		}
