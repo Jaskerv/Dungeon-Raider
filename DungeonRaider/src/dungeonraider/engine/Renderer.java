@@ -28,6 +28,7 @@ public class Renderer {
 		for (int i = 0; i < pixels.length; i++) {
 			pixels[i] = (int) (Math.random() * 0xFFFFFF);
 		}
+		/** Draws image to JFrame */
 		g.drawImage(view, 0, 0, view.getWidth(), view.getHeight(), null);
 	}
 }
