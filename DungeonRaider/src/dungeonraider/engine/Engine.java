@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Toolkit;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
@@ -20,12 +22,14 @@ public class Engine extends JFrame implements Runnable {
 	private Canvas canvas;
 	private Toolkit tk;
 	private Renderer renderer;
+	private boolean initialized;
 	private int width = 1000;
 	private int height = 800;
 
 	public Engine() {
 		this.canvas = new Canvas();
 		this.tk = this.getToolkit();
+		this.initialized = false;
 		/** Sets name of JFrame window */
 		setTitle("Dungeon Raider");
 		/** Close program on exit */
@@ -38,10 +42,13 @@ public class Engine extends JFrame implements Runnable {
 		add(canvas);
 		/** Sets JFrame to visible */
 		setVisible(true);
+		/** Component listener to see if JFrame is resized */
 		/** Creates 2 buffer renderer */
 		canvas.createBufferStrategy(3);
 
 		this.renderer = new Renderer(getWidth(), getHeight());
+		addComponentListener(new ResizeListener(this));
+		//addKeyListener();
 	}
 
 	private int x = 0;
@@ -78,6 +85,7 @@ public class Engine extends JFrame implements Runnable {
 		/** 60 FPS */
 		double nanoSecondConversion = 1000000000.0 / 60;
 		double changeInSeconds = 0;
+		this.initialized = true;
 		while (true) {
 			long now = System.nanoTime();
 			changeInSeconds += (now - lastTime) / nanoSecondConversion;
@@ -91,10 +99,40 @@ public class Engine extends JFrame implements Runnable {
 		}
 	}
 
+	/**
+	 * Updates Renderer if JFrame is resized
+	 */
+	public void updateFrame() {
+		this.renderer.updateSize(this.getWidth(), this.getHeight());
+	}
+
 	public static void main(String[] args) {
 		Engine game = new Engine();
 		Thread thread = new Thread(game);
 		thread.start();
 	}
 
+	private class ResizeListener implements ComponentListener {
+		private Engine window;
+
+		public ResizeListener(Engine window) {
+			this.window = window;
+		}
+
+		@Override
+		public void componentResized(ComponentEvent e) {
+			 if (window.initialized) {
+			 this.window.updateFrame();
+			 }
+		}
+		@Override
+		public void componentMoved(ComponentEvent e) {
+		}
+		@Override
+		public void componentShown(ComponentEvent e) {
+		}
+		@Override
+		public void componentHidden(ComponentEvent e) {
+		}
+	}
 }
