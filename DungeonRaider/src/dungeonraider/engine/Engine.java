@@ -19,6 +19,7 @@ public class Engine extends JFrame implements Runnable {
 
 	private Canvas canvas;
 	private Toolkit tk;
+	private Renderer renderer;
 	private int width = 1000;
 	private int height = 800;
 
@@ -37,32 +38,26 @@ public class Engine extends JFrame implements Runnable {
 		add(canvas);
 		/** Sets JFrame to visible */
 		setVisible(true);
-		/** Creates 3 buffer renderer */
+		/** Creates 2 buffer renderer */
 		canvas.createBufferStrategy(3);
-		// BufferStrategy b = canvas.getBufferStrategy();
-		// int i = 0;
-		// int x = 0;
-		// while (true) {
-		// i++;
-		// if (i == 10) {
-		// i = 0;
-		// x++;
-		// }
-		// b = canvas.getBufferStrategy();
-		// Graphics gr = b.getDrawGraphics();
-		// super.paint(gr);
-		// gr.setColor(Color.blue);
-		// gr.fillOval(x, 100, 100, 100);
-		// gr.dispose();
-		// b.show();
-		// }
+
+		this.renderer = new Renderer(getWidth(), getHeight());
 	}
+
+	private int x = 0;
 
 	/**
 	 * This method will render everything onto the screen
 	 */
 	public void render() {
-
+		BufferStrategy b = canvas.getBufferStrategy();
+		Graphics g = b.getDrawGraphics();
+		super.paint(g);
+		renderer.render(g);
+		// gr.setColor(Color.blue);
+		// gr.fillOval(x, 100, 100, 100);
+		g.dispose();
+		b.show();
 	}
 
 	/**
@@ -71,7 +66,7 @@ public class Engine extends JFrame implements Runnable {
 	 * This method will run at a specified speed.
 	 */
 	public void update() {
-
+		x += 1;
 	}
 
 	/**
@@ -79,24 +74,21 @@ public class Engine extends JFrame implements Runnable {
 	 */
 	@Override
 	public void run() {
-		BufferStrategy b = canvas.getBufferStrategy();
-		int i = 0;
-		int x = 0;
+		long lastTime = System.nanoTime();
+		/** 60 FPS */
+		double nanoSecondConversion = 1000000000.0 / 60;
+		double changeInSeconds = 0;
 		while (true) {
-			i++;
-			if (i == 10) {
-				i = 0;
-				x++;
-			}
-			b = canvas.getBufferStrategy();
-			Graphics gr = b.getDrawGraphics();
-			super.paint(gr);
-			gr.setColor(Color.blue);
-			gr.fillOval(x, 100, 100, 100);
-			gr.dispose();
-			b.show();
-		}
+			long now = System.nanoTime();
+			changeInSeconds += (now - lastTime) / nanoSecondConversion;
 
+			while (changeInSeconds >= 1) {
+				update();
+				changeInSeconds = 0;
+			}
+			render();
+			lastTime = now;
+		}
 	}
 
 	public static void main(String[] args) {
