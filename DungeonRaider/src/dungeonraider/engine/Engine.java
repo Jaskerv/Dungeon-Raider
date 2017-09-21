@@ -23,6 +23,7 @@ import javax.swing.Timer;
  */
 public class Engine extends JFrame implements Runnable, Observer {
 
+	private static final long serialVersionUID = 1L;
 	private Canvas canvas;
 	private Toolkit tk;
 	private Renderer renderer;
