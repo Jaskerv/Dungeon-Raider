@@ -103,9 +103,126 @@ public class Player implements Character {
 	public BufferedImage getSpriteImage() {
 		return spriteImage;
 	}
-	
+
 	public void render(Graphics g) {
 		g.drawImage(this.getSpriteImage(), 10, 10, null);
 	}
+
+
+	public int getLives() {
+		return lives;
+	}
+
+
+	public void setLives(int lives) {
+		this.lives = lives;
+	}
+
+
+	public int getHealthPoints() {
+		return healthPoints;
+	}
+
+
+	public void setHealthPoints(int healthPoints) {
+		this.healthPoints = healthPoints;
+	}
+
+
+	public int getGold() {
+		return gold;
+	}
+
+
+	public void setGold(int gold) {
+		this.gold = gold;
+	}
+
+
+	public int getStamina() {
+		return stamina;
+	}
+
+
+	public void setStamina(int stamina) {
+		this.stamina = stamina;
+	}
+
+
+	public boolean isSprint() {
+		return sprint;
+	}
+
+
+	public void setSprint(boolean sprint) {
+		this.sprint = sprint;
+	}
+
+
+	public int getCurrentCapacity() {
+		return currentCapacity;
+	}
+
+
+	public void setCurrentCapacity(int currentCapacity) {
+		this.currentCapacity = currentCapacity;
+	}
+
+
+	public Position getPosition() {
+		return position;
+	}
+
+
+	public void setPosition(Position position) {
+		this.position = position;
+	}
+
+
+	public Weapon getPrimaryWeapon() {
+		return primaryWeapon;
+	}
+
+
+	public void setPrimaryWeapon(Weapon primaryWeapon) {
+		this.primaryWeapon = primaryWeapon;
+	}
+
+
+	public Weapon getSecondaryWeapon() {
+		return secondaryWeapon;
+	}
+
+
+	public void setSecondaryWeapon(Weapon secondaryWeapon) {
+		this.secondaryWeapon = secondaryWeapon;
+	}
+
+
+	public Armour getArmour() {
+		return armour;
+	}
+
+
+	public void setArmour(Armour armour) {
+		this.armour = armour;
+	}
+
+
+	public Inventory getInventory() {
+		return inventory;
+	}
+
+
+	public void setInventory(Inventory inventory) {
+		this.inventory = inventory;
+	}
+
+
+	public void setSpriteImage(BufferedImage spriteImage) {
+		this.spriteImage = spriteImage;
+	}
+
+
 
 }
