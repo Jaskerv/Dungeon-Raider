@@ -105,7 +105,7 @@ public class Player implements Character {
 	}
 	
 	public void render(Graphics g) {
-		g.drawImage(this.getSpriteImage(), 10, 10, null);
+		g.drawImage(this.spriteImage, 10, 10, null);
 	}
 
 }
