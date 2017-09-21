@@ -6,11 +6,11 @@ import lib.MapParser;
 
 public class Map {
 	private static final int WIDTH = 22;
-    private static final int LENGTH = 22;
-    private static final int TILE_WIDTH = 30;
-    private static final int TILE_HEIGHT = 30;
+	private static final int LENGTH = 22;
+	private static final int TILE_WIDTH = 30;
+	private static final int TILE_HEIGHT = 30;
 	/** Fixed size dungeon 2D array containing each individual tile */
-    private Tile[][] map = new Tile[WIDTH][LENGTH];
+	private Tile[][] map = new Tile[WIDTH][LENGTH];
 	/** 0 for dungeon map, 1 for safe room, etc. */
 	private final int mapType;
 	/** Number of monsters that are in the map */
@@ -39,17 +39,16 @@ public class Map {
 	 */
 	public void intialiseMap() {
 		try {
-			//Tutorial map for now
+			// Tutorial map for now
 			String path = "resources/maps/TutorialMap.txt";
 			File file = new File(path);
 			char[][] map = MapParser.parseStringToMapArray(file);
 			for (int y = 0; y < LENGTH; y++) {
 				for (int x = 0; x < WIDTH; x++) {
-					this.map[x][y] = new Tile(x*TILE_WIDTH, y*TILE_HEIGHT);
+					this.map[x][y] = new Tile(x * TILE_WIDTH, y * TILE_HEIGHT);
 				}
-			}	
-		}
-		catch (Exception e) {
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -61,7 +60,5 @@ public class Map {
 	public void setMap(Tile[][] map) {
 		this.map = map;
 	}
-	
-	
 
 }

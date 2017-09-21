@@ -19,8 +19,9 @@ import dungeonraider.map.Map;
 import dungeonraider.map.Tile;
 
 /**
- * The main engine class which implements runnable and also contains the main method.
- * 
+ * The main engine class which implements runnable and also contains the main
+ * method.
+ *
  * @author Jono Yan
  *
  */
@@ -30,8 +31,8 @@ public class Engine extends JFrame implements Runnable, Observer {
 	private Canvas canvas;
 	private Toolkit tk;
 	private Renderer renderer;
-	private static final int WIDTH = 1000;
-	private static final int HEIGHT = 800;
+	private static final int WIDTH = 1280;
+	private static final int HEIGHT = 720;
 	int x = 0;
 
 	public Engine() {
@@ -47,7 +48,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 		setLocationRelativeTo(null);
 		/** Adds canvas to JFrame */
 		add(canvas);
-		/** Disable Resizeable*/
+		/** Disable Resizeable */
 		setResizable(false);
 		/** Sets JFrame to visible */
 		setVisible(true);
@@ -57,6 +58,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 
 		this.renderer = new Renderer(getWidth(), getHeight());
 	}
+
 	/**
 	 * This method will render everything onto the screen
 	 */
@@ -114,30 +116,30 @@ public class Engine extends JFrame implements Runnable, Observer {
 		thread.start();
 	}
 
-
 	/**
-	 * This method gets called when the Observable class calls
-	 * setChanged() & notifyObservers()
+	 * This method gets called when the Observable class calls setChanged() &
+	 * notifyObservers()
 	 */
 	@Override
-	public void update(Observable o, Object arg) { 
-		update(); 
+	public void update(Observable o, Object arg) {
+		update();
 	}
-	
+
 	/**
 	 * This method will update to the buffer. EG. char movement
-	 * 
+	 *
 	 * This method will run at a specified speed.
 	 */
 	public void update() {
 		x++;
 	}
-	
-	
-	
-	public int getWidth() { return WIDTH; }
-	
-	public int getHeight() { return HEIGHT; }
-	
-	
+
+	public int getWidth() {
+		return WIDTH;
+	}
+
+	public int getHeight() {
+		return HEIGHT;
+	}
+
 }
