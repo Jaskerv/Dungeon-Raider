@@ -9,6 +9,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.image.BufferStrategy;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JFrame;
 import javax.swing.Timer;
@@ -19,19 +21,18 @@ import javax.swing.Timer;
  * @author Jono Yan
  *
  */
-public class Engine extends JFrame implements Runnable {
+public class Engine extends JFrame implements Runnable, Observer {
 
 	private Canvas canvas;
 	private Toolkit tk;
 	private Renderer renderer;
-	private boolean initialized;
 	private int width = 1000;
 	private int height = 800;
+	int x = 0;
 
 	public Engine() {
 		this.canvas = new Canvas();
 		this.tk = this.getToolkit();
-		this.initialized = false;
 		/** Sets name of JFrame window */
 		setTitle("Dungeon Raider");
 		/** Close program on exit */
@@ -51,7 +52,6 @@ public class Engine extends JFrame implements Runnable {
 		canvas.createBufferStrategy(3);
 
 		this.renderer = new Renderer(getWidth(), getHeight());
-		addComponentListener(new ResizeListener(this));
 	}
 	/**
 	 * This method will render everything onto the screen
@@ -61,18 +61,10 @@ public class Engine extends JFrame implements Runnable {
 		Graphics g = b.getDrawGraphics();
 		super.paint(g);
 		renderer.render(g);
-		// gr.setColor(Color.blue);
-		// gr.fillOval(x, 100, 100, 100);
+		 g.setColor(Color.blue);
+		 g.fillOval(x, 100, 100, 100);
 		g.dispose();
 		b.show();
-	}
-
-	/**
-	 * This method will update to the buffer. EG. char movement
-	 * 
-	 * This method will run at a specified speed.
-	 */
-	public void update() {
 	}
 
 	/**
@@ -84,7 +76,6 @@ public class Engine extends JFrame implements Runnable {
 		/** 60 FPS */
 		double nanoSecondConversion = 1000000000.0 / 60;
 		double changeInSeconds = 0;
-		this.initialized = true;
 		while (true) {
 			long now = System.nanoTime();
 			changeInSeconds += (now - lastTime) / nanoSecondConversion;
@@ -111,39 +102,22 @@ public class Engine extends JFrame implements Runnable {
 		thread.start();
 	}
 
-	private class ResizeListener implements ComponentListener {
-		private Engine window;
-		private final int DELAY = 1000;
 
-		public ResizeListener(Engine window) {
-			this.window = window;
-		}
-
-		@Override
-		public void componentResized(ComponentEvent e) {
-			if (window.initialized) {
-				System.out.println("Updated");
-				this.window.updateFrame();
-			}
-		}
-
-		@Override
-		public void componentMoved(ComponentEvent e) {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void componentShown(ComponentEvent e) {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void componentHidden(ComponentEvent e) {
-			// TODO Auto-generated method stub
-
-		}
-
+	/**
+	 * This method gets called when the Observable class calls
+	 * setChanged() & notifyObservers()
+	 */
+	@Override
+	public void update(Observable o, Object arg) { 
+		update(); 
+	}
+	
+	/**
+	 * This method will update to the buffer. EG. char movement
+	 * 
+	 * This method will run at a specified speed.
+	 */
+	public void update() {
+		x++;
 	}
 }
