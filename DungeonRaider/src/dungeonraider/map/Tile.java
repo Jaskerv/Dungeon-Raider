@@ -29,6 +29,7 @@ public class Tile {
 		Graphics g = spriteImage.getGraphics();
 		g.setColor(new Color(color));
 		g.drawRect(x, y, spriteImage.getWidth(), spriteImage.getHeight());
+		g.dispose();
 	}
 
 	public BufferedImage getSpriteImage() {
@@ -55,5 +56,4 @@ public class Tile {
 		this.y = y;
 	}
 
-	
 }
