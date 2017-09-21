@@ -2,7 +2,7 @@ package dungeonraider.map;
 
 public class Map {
 
-	private static final int SIZE = 50; //placeholder value
+	private static final int SIZE = 50; // placeholder value
 	/** Fixed size dungeon 2D array containing each individual tile */
 	private Tile[][] map = new Tile[SIZE][SIZE];
 	/** 0 for dungeon map, 1 for safe room, etc. */
@@ -14,6 +14,7 @@ public class Map {
 
 	/**
 	 * Map Constructor
+	 *
 	 * @param mapType
 	 * @param numMonsters
 	 * @param timeLimit
@@ -25,8 +26,9 @@ public class Map {
 	}
 
 	/**
-	 * Assuming you get parsed in the map as a string, e.g.
-	 * "WWWW\nWWPW" - Where each W is a wall, and P is the player, then:
+	 * Assuming you get parsed in the map as a string, e.g. "WWWW\nWWPW" - Where
+	 * each W is a wall, and P is the player, then:
+	 *
 	 * @param mapString
 	 */
 	public void intialiseMap(String mapString) {
@@ -43,18 +45,21 @@ public class Map {
 	}
 
 	/**
-	 * Grabs the appropriate tile object for the character that is parsed
-	 * in.
-	 * @param c - the character being parsed in
-	 * @param x - the x co-ordinate of the tile being made
-	 * @param y - the y co-ordinate of the tile being made
+	 * Grabs the appropriate tile object for the character that is parsed in.
+	 *
+	 * @param c
+	 *            - the character being parsed in
+	 * @param x
+	 *            - the x co-ordinate of the tile being made
+	 * @param y
+	 *            - the y co-ordinate of the tile being made
 	 * @return the new tile object, or null if none was found
 	 */
 	public Tile getTileObject(char c, int x, int y) {
 		switch (c) {
-			case 'W':
-				//return new Tile(Images.Wall, x*SIZE, y*SIZE);
-				return new Tile(null, x*SIZE, y*SIZE);
+		case 'W':
+			// return new Tile(Images.Wall, x*SIZE, y*SIZE);
+			return new Tile(null, x * SIZE, y * SIZE);
 		}
 		return null;
 	}
