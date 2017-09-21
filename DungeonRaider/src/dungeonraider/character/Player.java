@@ -35,6 +35,7 @@ public class Player implements Character {
 		g.dispose();
 	}
 
+
 	@Override
 	public void lightAttack() {
 		// TODO Auto-generated method stub
@@ -101,6 +102,10 @@ public class Player implements Character {
 
 	public BufferedImage getSpriteImage() {
 		return spriteImage;
+	}
+	
+	public void render(Graphics g) {
+		g.drawImage(this.getSpriteImage(), 10, 10, null);
 	}
 
 }

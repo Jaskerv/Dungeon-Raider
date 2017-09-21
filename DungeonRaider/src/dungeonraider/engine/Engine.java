@@ -32,6 +32,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 	public static int HEIGHT = 720;
 	int x = 0;
 	Player player;
+	private Map currentMap;
 
 	public Engine() {
 		this.canvas = new Canvas();
@@ -56,6 +57,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 		this.addKeyListener(new KeyController());
 		this.renderer = new Renderer(getWidth(), getHeight());
 		this.player = new Player();
+		this.currentMap = new Map(0, 0, 0);
 	}
 
 	/**
@@ -67,15 +69,8 @@ public class Engine extends JFrame implements Runnable, Observer {
 		super.paint(g);
 		renderer.render(g);
 		g.setColor(Color.blue);
-		Map map = new Map(0, 0, 0);
-		map.intialiseMap();
-		for (int y = 0; y < 22; y++) {
-			for (int x = 0; x < 22; x++) {
-				Tile tile = map.getMap()[x][y];
-				g.drawRect(tile.getX(), tile.getY(), WIDTH / 22, WIDTH / 22);
-			}
-		}
-		g.drawImage(player.getSpriteImage(), 10, 10, null);
+		currentMap.render(g);
+		player.render(g);
 		g.dispose();
 		b.show();
 	}

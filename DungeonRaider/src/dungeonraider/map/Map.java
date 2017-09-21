@@ -1,5 +1,6 @@
 package dungeonraider.map;
 
+import java.awt.Graphics;
 import java.io.File;
 
 import dungeonraider.engine.Engine;
@@ -38,7 +39,7 @@ public class Map {
 	 *
 	 * @param mapString
 	 */
-	public void intialiseMap() {
+	public void initialiseMap() {
 		try {
 			// Tutorial map for now
 			String path = "resources/maps/TutorialMap.txt";
@@ -52,6 +53,17 @@ public class Map {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public void render(Graphics g) {
+		initialiseMap();
+		for (int y = 0; y < 22; y++) {
+			for (int x = 0; x < 22; x++) {
+				Tile tile = this.map[x][y];
+				g.drawRect(tile.getX(), tile.getY(), Engine.WIDTH / 22, 
+						Engine.WIDTH / 22);
+			}
 		}
 	}
 	
