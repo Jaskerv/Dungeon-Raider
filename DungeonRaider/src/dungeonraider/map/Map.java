@@ -1,10 +1,16 @@
 package dungeonraider.map;
 
-public class Map {
+import java.io.File;
 
-	private static final int SIZE = 50; // placeholder value
+import lib.MapParser;
+
+public class Map {
+	private static final int WIDTH = 22;
+    private static final int LENGTH = 22;
+    private static final int TILE_WIDTH = 30;
+    private static final int TILE_HEIGHT = 30;
 	/** Fixed size dungeon 2D array containing each individual tile */
-	private Tile[][] map = new Tile[SIZE][SIZE];
+    private Tile[][] map = new Tile[WIDTH][LENGTH];
 	/** 0 for dungeon map, 1 for safe room, etc. */
 	private final int mapType;
 	/** Number of monsters that are in the map */
@@ -31,37 +37,31 @@ public class Map {
 	 *
 	 * @param mapString
 	 */
-	public void intialiseMap(String mapString) {
-		int row = 0;
-		for (int i = 0; i < mapString.length(); i++) {
-			char c = mapString.charAt(i);
-			if (c == '\n') {
-				row++;
-				continue;
-			}
-			Tile tile = getTileObject(c, i, row);
-			map[i][row] = tile;
+	public void intialiseMap() {
+		try {
+			//Tutorial map for now
+			String path = "resources/maps/TutorialMap.txt";
+			File file = new File(path);
+			char[][] map = MapParser.parseStringToMapArray(file);
+			for (int y = 0; y < LENGTH; y++) {
+				for (int x = 0; x < WIDTH; x++) {
+					this.map[x][y] = new Tile(x*TILE_WIDTH, y*TILE_HEIGHT);
+				}
+			}	
+		}
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
-	/**
-	 * Grabs the appropriate tile object for the character that is parsed in.
-	 *
-	 * @param c
-	 *            - the character being parsed in
-	 * @param x
-	 *            - the x co-ordinate of the tile being made
-	 * @param y
-	 *            - the y co-ordinate of the tile being made
-	 * @return the new tile object, or null if none was found
-	 */
-	public Tile getTileObject(char c, int x, int y) {
-		switch (c) {
-		case 'W':
-			// return new Tile(Images.Wall, x*SIZE, y*SIZE);
-			return new Tile(null, x * SIZE, y * SIZE);
-		}
-		return null;
+	public Tile[][] getMap() {
+		return map;
 	}
+
+	public void setMap(Tile[][] map) {
+		this.map = map;
+	}
+	
+	
 
 }

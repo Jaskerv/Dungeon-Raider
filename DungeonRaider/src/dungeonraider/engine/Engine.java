@@ -15,6 +15,9 @@ import java.util.Observer;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
+import dungeonraider.map.Map;
+import dungeonraider.map.Tile;
+
 /**
  * The main engine class which implements runnable and also contains the main method.
  * 
@@ -27,8 +30,8 @@ public class Engine extends JFrame implements Runnable, Observer {
 	private Canvas canvas;
 	private Toolkit tk;
 	private Renderer renderer;
-	private int width = 1000;
-	private int height = 800;
+	private static final int WIDTH = 1000;
+	private static final int HEIGHT = 800;
 	int x = 0;
 
 	public Engine() {
@@ -39,7 +42,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 		/** Close program on exit */
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		/** Set location of JFrame window and size */
-		setBounds(0, 0, width, height);
+		setBounds(0, 0, WIDTH, HEIGHT);
 		/** Sets window to center */
 		setLocationRelativeTo(null);
 		/** Adds canvas to JFrame */
@@ -62,8 +65,16 @@ public class Engine extends JFrame implements Runnable, Observer {
 		Graphics g = b.getDrawGraphics();
 		super.paint(g);
 		renderer.render(g);
-		 g.setColor(Color.blue);
-		 g.fillOval(x, 100, 100, 100);
+		g.setColor(Color.blue);
+		Map map = new Map(0, 0, 0);
+		map.intialiseMap();
+		for (int y = 0; y < 22; y++) {
+			for (int x = 0; x < 22; x++) {
+				Tile tile = map.getMap()[x][y];
+				g.drawRect(tile.getX(), tile.getY(), 30, 30);
+			}
+		}
+		g.fillOval(x, 100, 100, 100);
 		g.dispose();
 		b.show();
 	}
@@ -121,4 +132,12 @@ public class Engine extends JFrame implements Runnable, Observer {
 	public void update() {
 		x++;
 	}
+	
+	
+	
+	public int getWidth() { return WIDTH; }
+	
+	public int getHeight() { return HEIGHT; }
+	
+	
 }
