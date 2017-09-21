@@ -2,7 +2,10 @@ package dungeonraider.item;
 
 public class Weapon extends Equipment implements Upgradable {
 
-	public Weapon(int cost) {
+	private int damage;
+	private double critChance;
+
+	public Weapon(int cost, int damage, int critChance) {
 		super(cost);
 		// TODO Auto-generated constructor stub
 	}
