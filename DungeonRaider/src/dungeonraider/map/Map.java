@@ -8,8 +8,7 @@ import lib.MapParser;
 public class Map {
 	private static final int WIDTH = 22;
 	private static final int LENGTH = 22;
-	private static final int TILE_WIDTH = findTileWidth();
-	private static final int TILE_HEIGHT = findTileHeight();
+	private static final int TILE_SIZE = findTileSize();
 	/** Fixed size dungeon 2D array containing each individual tile */
 	private Tile[][] map = new Tile[WIDTH][LENGTH];
 	/** 0 for dungeon map, 1 for safe room, etc. */
@@ -47,8 +46,8 @@ public class Map {
 			char[][] map = MapParser.parseStringToMapArray(file);
 			for (int y = 0; y < LENGTH; y++) {
 				for (int x = 0; x < WIDTH; x++) {
-					this.map[x][y] = new Tile(x * TILE_WIDTH, y * TILE_HEIGHT, 
-							TILE_WIDTH, TILE_HEIGHT);
+					this.map[x][y] = new Tile(x * TILE_SIZE, y * TILE_SIZE, 
+							TILE_SIZE, TILE_SIZE);
 				}
 			}
 		} catch (Exception e) {
@@ -56,14 +55,9 @@ public class Map {
 		}
 	}
 	
-	public static int findTileWidth() {
+	public static int findTileSize() {
 		int screenWidth = Engine.WIDTH;
 		return screenWidth / 22;
-	}
-	
-	public static int findTileHeight() {
-		int screenHeight = Engine.HEIGHT;
-		return screenHeight / 22;
 	}
 
 	public Tile[][] getMap() {

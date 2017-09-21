@@ -68,7 +68,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 		for (int y = 0; y < 22; y++) {
 			for (int x = 0; x < 22; x++) {
 				Tile tile = map.getMap()[x][y];
-				g.drawRect(tile.getX(), tile.getY(), 30, 30);
+				g.drawRect(tile.getX(), tile.getY(), WIDTH / 22, WIDTH / 22);
 			}
 		}
 		g.fillOval(x, 100, 100, 100);
