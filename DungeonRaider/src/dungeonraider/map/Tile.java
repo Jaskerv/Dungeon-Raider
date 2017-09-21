@@ -15,12 +15,15 @@ public class Tile {
 
 	private BufferedImage spriteImage;
 	private int x, y;
-	private final int SIZE = 30;
+	private final int width;
+	private final int height;
 
-	public Tile(int x, int y) {
+	public Tile(int x, int y, int width, int height) {
 		this.x = x;
 		this.y = y;
-		this.spriteImage = new BufferedImage(SIZE, SIZE,
+		this.width = width;
+		this.height = height;
+		this.spriteImage = new BufferedImage(this.width, this.height,
 				BufferedImage.TYPE_INT_RGB);
 		int color = (int) (Math.random() * 0xFFFFFF);
 		Graphics g = spriteImage.getGraphics();

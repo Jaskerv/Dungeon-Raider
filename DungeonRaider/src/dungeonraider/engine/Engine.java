@@ -2,18 +2,13 @@ package dungeonraider.engine;
 
 import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Toolkit;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.image.BufferStrategy;
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.JFrame;
-import javax.swing.Timer;
 
 import dungeonraider.map.Map;
 import dungeonraider.map.Tile;
@@ -31,8 +26,8 @@ public class Engine extends JFrame implements Runnable, Observer {
 	private Canvas canvas;
 	private Toolkit tk;
 	private Renderer renderer;
-	private static final int WIDTH = 1280;
-	private static final int HEIGHT = 720;
+	public static int WIDTH = 1280;
+	public static int HEIGHT = 720;
 	int x = 0;
 
 	public Engine() {
@@ -107,7 +102,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 	 * Updates Renderer if JFrame is resized
 	 */
 	public void updateFrame() {
-		this.renderer.updateSize(this.getWidth(), this.getHeight());
+		this.renderer.updateSize(WIDTH, HEIGHT);
 	}
 
 	public static void main(String[] args) {
@@ -132,14 +127,6 @@ public class Engine extends JFrame implements Runnable, Observer {
 	 */
 	public void update() {
 		x++;
-	}
-
-	public int getWidth() {
-		return WIDTH;
-	}
-
-	public int getHeight() {
-		return HEIGHT;
 	}
 
 }
