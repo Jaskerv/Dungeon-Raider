@@ -10,6 +10,8 @@ import java.util.Observer;
 
 import javax.swing.JFrame;
 
+import dungeonraider.character.Player;
+import dungeonraider.controller.KeyController;
 import dungeonraider.map.Map;
 import dungeonraider.map.Tile;
 
@@ -29,6 +31,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 	public static int WIDTH = 1280;
 	public static int HEIGHT = 720;
 	int x = 0;
+	Player player;
 
 	public Engine() {
 		this.canvas = new Canvas();
@@ -50,8 +53,9 @@ public class Engine extends JFrame implements Runnable, Observer {
 		/** Component listener to see if JFrame is resized */
 		/** Creates 2 buffer renderer */
 		canvas.createBufferStrategy(3);
-
+		this.addKeyListener(new KeyController());
 		this.renderer = new Renderer(getWidth(), getHeight());
+		this.player = new Player();
 	}
 
 	/**
@@ -71,7 +75,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 				g.drawRect(tile.getX(), tile.getY(), WIDTH / 22, WIDTH / 22);
 			}
 		}
-		g.fillOval(x, 100, 100, 100);
+		g.drawImage(player.getSpriteImage(), 10, 10, null);
 		g.dispose();
 		b.show();
 	}

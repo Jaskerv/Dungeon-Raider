@@ -99,4 +99,8 @@ public class Player implements Character {
 
 	}
 
+	public BufferedImage getSpriteImage() {
+		return spriteImage;
+	}
+
 }
