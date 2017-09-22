@@ -77,7 +77,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 		BufferStrategy b = canvas.getBufferStrategy();
 		Graphics g = b.getDrawGraphics();
 		super.paint(g);
-		renderer.renderImage(test, 0, 0);
+		renderer.renderImage(test, 0, 0, 3, 3);
 		renderer.render(g);
 		// g.setColor(Color.blue);
 		// currentMap.render(g);
