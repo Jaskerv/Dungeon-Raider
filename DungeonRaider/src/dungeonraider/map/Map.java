@@ -18,7 +18,6 @@ public class Map {
 	private int numMonsters;
 	/** Time limit for being in this map (if this will be implemented). */
 	private int timeLimit;
-	
 
 	/**
 	 * Map Constructor
@@ -47,26 +46,26 @@ public class Map {
 			char[][] map = MapParser.parseStringToMapArray(file);
 			for (int y = 0; y < LENGTH; y++) {
 				for (int x = 0; x < WIDTH; x++) {
-					this.map[x][y] = new Tile(x * TILE_SIZE, y * TILE_SIZE, 
-							TILE_SIZE, TILE_SIZE);
+					this.map[x][y] = new Tile(x * TILE_SIZE, y * TILE_SIZE,
+							TILE_SIZE, TILE_SIZE, false);
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void render(Graphics g) {
 		initialiseMap();
 		for (int y = 0; y < 22; y++) {
 			for (int x = 0; x < 22; x++) {
 				Tile tile = this.map[x][y];
-				g.drawRect(tile.getX(), tile.getY(), Engine.WIDTH / 22, 
+				g.drawRect(tile.getX(), tile.getY(), Engine.WIDTH / 22,
 						Engine.WIDTH / 22);
 			}
 		}
 	}
-	
+
 	public static int findTileSize() {
 		int screenWidth = Engine.WIDTH;
 		return screenWidth / 22;
