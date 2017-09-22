@@ -32,22 +32,27 @@ public class Renderer {
 	}
 
 	/**
-	 * Renders pixel to the screen
+	 * This method will render pixel array in Renderer onto the screen
 	 */
 	public void render(Graphics g) {
 		/** Draws image to JFrame */
-		if (black) {
-			g.drawImage(view, 0, 0, view.getWidth(), view.getHeight(), null);
-		} else {
-			random();
-			g.drawImage(view, 0, 0, view.getWidth(), view.getHeight(), null);
-		}
+		g.drawImage(view, 0, 0, view.getWidth(), view.getHeight(), null);
+
 	}
 
-	private void random() {
-		for (int i = 0; i < pixels.length; i++) {
-			int color = (int) (Math.random() * 0xFFFFFF);
-			pixels[i] = color;
+	/**
+	 * Render image to pixel array.
+	 * 
+	 * @param img
+	 * @param x
+	 * @param y
+	 */
+	public void renderImage(BufferedImage img, int xPos, int yPos) {
+		int[] imgPixels = ((DataBufferInt) img.getRaster().getDataBuffer()).getData();
+		for (int y = 0; y < img.getHeight(); y++) {
+			for (int x = 0; x < img.getWidth(); x++) {
+				pixels[(x + xPos) + (y + yPos) * view.getWidth()] = imgPixels[x + y * img.getWidth()];
+			}
 		}
 	}
 

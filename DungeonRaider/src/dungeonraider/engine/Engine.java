@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBuffer;
+import java.awt.image.DataBufferInt;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -75,10 +77,11 @@ public class Engine extends JFrame implements Runnable, Observer {
 		BufferStrategy b = canvas.getBufferStrategy();
 		Graphics g = b.getDrawGraphics();
 		super.paint(g);
+		renderer.renderImage(test, 0, 0);
 		renderer.render(g);
-		g.setColor(Color.blue);
-		currentMap.render(g);
-		this.player.render(g);
+		// g.setColor(Color.blue);
+		// currentMap.render(g);
+		// this.player.render(g);
 		g.dispose();
 		b.show();
 	}
@@ -158,4 +161,5 @@ public class Engine extends JFrame implements Runnable, Observer {
 		}
 
 	}
+
 }
