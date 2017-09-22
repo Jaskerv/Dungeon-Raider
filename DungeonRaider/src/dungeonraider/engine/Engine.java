@@ -5,9 +5,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import dungeonraider.character.Player;
@@ -129,4 +132,24 @@ public class Engine extends JFrame implements Runnable, Observer {
 		x++;
 	}
 
+	/**
+	 * Returns a buffered image from the path
+	 * 
+	 * @param path
+	 */
+	private BufferedImage loadImage(String path) {
+		BufferedImage loadedImage = null;
+		try {
+			loadedImage = ImageIO.read(Engine.class.getResource(path));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		if (loadedImage == null) {
+			loadedImage = new BufferedImage(30, 30, BufferedImage.TYPE_INT_RGB);
+			loadedImage.getGraphics().setColor(Color.PINK);
+			loadedImage.getGraphics().fillRect(0, 0, 30, 30);
+		}
+		return loadedImage;
+
+	}
 }
