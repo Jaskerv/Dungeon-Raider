@@ -6,7 +6,7 @@ import java.awt.image.DataBufferInt;
 
 /**
  * Renders view to window
- * 
+ *
  * @author Jono Yan
  *
  */

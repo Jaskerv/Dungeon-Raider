@@ -54,10 +54,11 @@ public class Engine extends JFrame implements Runnable, Observer {
 		/** Component listener to see if JFrame is resized */
 		/** Creates 2 buffer renderer */
 		canvas.createBufferStrategy(3);
-		this.addKeyListener(new KeyController());
 		this.renderer = new Renderer(getWidth(), getHeight());
 		this.player = new Player();
 		this.currentMap = new Map(0, 0, 0);
+		this.addKeyListener(new KeyController(this.player));
+		this.setFocusable(true);
 	}
 
 	/**
@@ -70,7 +71,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 		renderer.render(g);
 		g.setColor(Color.blue);
 		currentMap.render(g);
-		player.render(g);
+		this.player.render(g);
 		g.dispose();
 		b.show();
 	}
