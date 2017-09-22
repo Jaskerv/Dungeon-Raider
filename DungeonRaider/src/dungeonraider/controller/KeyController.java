@@ -3,14 +3,9 @@ package dungeonraider.controller;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import dungeonraider.main.DungeonRaider;
-
 public class KeyController implements KeyListener {
 
-	private DungeonRaider myModel;
-
 	public KeyController() {
-		this.myModel = myModel;
 	}
 
 	@Override
