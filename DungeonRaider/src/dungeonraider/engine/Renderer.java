@@ -63,9 +63,15 @@ public class Renderer {
 			for (int x = 0; x < img.getWidth(); x++)
 				for (int yZoomIndex = 0; yZoomIndex < yZoom; yZoomIndex++)
 					for (int xZoomIndex = 0; xZoomIndex < xZoom; xZoomIndex++)
-						pixels[((x * xZoom) + xPos + xZoomIndex)
-								+ ((y * yZoom) + yPos + yZoomIndex) * view.getWidth()] = imgPixels[x
-										+ y * img.getWidth()];
+						setPixel(imgPixels[x + y * img.getWidth()], (x * xZoom) + xPos + xZoomIndex,
+								(y * yZoom) + yPos + yZoomIndex);
+	}
+
+	private void setPixel(int pixel, int x, int y) {
+		int pixelIndex = x + y * view.getWidth();
+		if (pixels.length >= pixelIndex) {
+			pixels[pixelIndex] = pixel;
+		}
 	}
 
 	/**
