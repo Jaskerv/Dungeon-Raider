@@ -19,6 +19,7 @@ public class Player implements Character {
 	private int currentCapacity;
 	private int x;
 	private int y;
+	public static final int speed = 3;
 
 	private Position position;
 	private Weapon primaryWeapon;
@@ -57,25 +58,25 @@ public class Player implements Character {
 	@Override
 	public void walkLeft() {
 		// TODO Auto-generated method stub
-		this.x -= 3;
+		this.x -= speed;
 	}
 
 	@Override
 	public void walkRight() {
 		// TODO Auto-generated method stub
-		this.x += 3;
+		this.x += speed;
 	}
 
 	@Override
 	public void walkUp() {
 		// TODO Auto-generated method stub
-		this.y -= 3;
+		this.y -= speed;
 	}
 
 	@Override
 	public void walkDown() {
 		// TODO Auto-generated method stub
-		this.y += 3;
+		this.y += speed;
 	}
 
 	@Override

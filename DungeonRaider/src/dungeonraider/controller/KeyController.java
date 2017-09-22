@@ -27,21 +27,21 @@ public class KeyController extends Observable implements KeyListener {
 		case KeyEvent.VK_W:
 			//move up
 			this.player.walkUp();
-			System.out.println("w pressed");
+			//System.out.println("w pressed");
 			break;
 		case KeyEvent.VK_A:
 			//move left
 			this.player.walkLeft();
-			System.out.println("a pressed");
+			//System.out.println("a pressed");
 			break;
 		case KeyEvent.VK_S:
 			//move down
 			this.player.walkDown();
-			System.out.println("s pressed");
+			//System.out.println("s pressed");
 			break;
 		case KeyEvent.VK_D:
 			this.player.walkRight();
-			System.out.println("d pressed");
+			//System.out.println("d pressed");
 			//move right
 			break;
 		case KeyEvent.VK_I:
