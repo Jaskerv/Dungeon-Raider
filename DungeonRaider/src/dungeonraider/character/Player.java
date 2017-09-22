@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import dungeonraider.controller.KeyController;
 import dungeonraider.item.Armour;
 import dungeonraider.item.Weapon;
 import dungeonraider.util.Position;
@@ -16,6 +17,9 @@ public class Player implements Character {
 	private int stamina;
 	private boolean sprint;
 	private int currentCapacity;
+	private int x;
+	private int y;
+	public static final int speed = 3;
 
 	private Position position;
 	private Weapon primaryWeapon;
@@ -26,12 +30,15 @@ public class Player implements Character {
 
 	private static final int MAX_CAPACITY = 20;
 
+
 	public Player() {
+		this.x = 0;
+		this.y = 0;
 		this.spriteImage = new BufferedImage(10, 30,
 				BufferedImage.TYPE_INT_RGB);
 		Graphics g = spriteImage.getGraphics();
 		g.setColor(Color.RED);
-		g.fillRect(0, 0, 10, 30);
+		g.fillRect(this.x, this.y, 10, 30);
 		g.dispose();
 	}
 
@@ -51,25 +58,25 @@ public class Player implements Character {
 	@Override
 	public void walkLeft() {
 		// TODO Auto-generated method stub
-
+		this.x -= speed;
 	}
 
 	@Override
 	public void walkRight() {
 		// TODO Auto-generated method stub
-
+		this.x += speed;
 	}
 
 	@Override
 	public void walkUp() {
 		// TODO Auto-generated method stub
-
+		this.y -= speed;
 	}
 
 	@Override
 	public void walkDown() {
 		// TODO Auto-generated method stub
-
+		this.y += speed;
 	}
 
 	@Override
@@ -105,7 +112,7 @@ public class Player implements Character {
 	}
 
 	public void render(Graphics g) {
-		g.drawImage(this.spriteImage, 10, 10, null);
+		g.drawImage(this.spriteImage, x, y, null);
 	}
 
 

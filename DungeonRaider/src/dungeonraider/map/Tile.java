@@ -17,12 +17,14 @@ public class Tile {
 	private int x, y;
 	private final int width;
 	private final int height;
+	private boolean boundry;
 
-	public Tile(int x, int y, int width, int height) {
+	public Tile(int x, int y, int width, int height, boolean boundry) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.boundry = boundry;
 		this.spriteImage = new BufferedImage(this.width, this.height,
 				BufferedImage.TYPE_INT_RGB);
 		int color = (int) (Math.random() * 0xFFFFFF);
