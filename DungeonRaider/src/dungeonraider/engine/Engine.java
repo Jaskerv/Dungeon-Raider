@@ -78,7 +78,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 		Graphics g = b.getDrawGraphics();
 		super.paint(g);
 		/** Need to render all the images first */
-		renderer.renderImage(test, 0, 0, 3, 3);
+		renderer.renderImage(test, 0, 0, 30, 30);
 		// g.setColor(Color.blue);
 		// currentMap.render(g);
 		// this.player.render(g);
