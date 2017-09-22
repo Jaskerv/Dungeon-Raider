@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
@@ -36,6 +38,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 	int x = 0;
 	Player player;
 	private Map currentMap;
+	private BufferedImage test;
 
 	public Engine() {
 		this.canvas = new Canvas();
@@ -62,6 +65,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 		this.currentMap = new Map(0, 0, 0);
 		this.addKeyListener(new KeyController(this.player));
 		this.setFocusable(true);
+		test = loadImage("resources/tiles/grassTile.PNG");
 	}
 
 	/**
@@ -138,18 +142,20 @@ public class Engine extends JFrame implements Runnable, Observer {
 	 * @param path
 	 */
 	private BufferedImage loadImage(String path) {
-		BufferedImage loadedImage = null;
+		BufferedImage loadedImage;
 		try {
-			loadedImage = ImageIO.read(Engine.class.getResource(path));
+			loadedImage = ImageIO.read(new FileInputStream(path));
+			BufferedImage format = new BufferedImage(loadedImage.getWidth(), loadedImage.getHeight(),
+					BufferedImage.TYPE_INT_RGB);
+			format.getGraphics().drawImage(loadedImage, 0, 0, null);
+			return format;
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		if (loadedImage == null) {
 			loadedImage = new BufferedImage(30, 30, BufferedImage.TYPE_INT_RGB);
 			loadedImage.getGraphics().setColor(Color.PINK);
 			loadedImage.getGraphics().fillRect(0, 0, 30, 30);
+			return loadedImage;
 		}
-		return loadedImage;
 
 	}
 }
