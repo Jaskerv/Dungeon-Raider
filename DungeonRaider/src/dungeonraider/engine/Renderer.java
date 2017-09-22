@@ -69,7 +69,7 @@ public class Renderer {
 
 	private void setPixel(int pixel, int x, int y) {
 		int pixelIndex = x + y * view.getWidth();
-		if (pixels.length >= pixelIndex) {
+		if (pixels.length > pixelIndex) {
 			pixels[pixelIndex] = pixel;
 		}
 	}
