@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
+import dungeonraider.util.HitBox;
+
 /**
  * Renders view to window
  *
@@ -13,11 +15,12 @@ import java.awt.image.DataBufferInt;
 public class Renderer {
 	private BufferedImage view;
 	private int[] pixels;
-	private boolean black;
+	private HitBox camera;
 
 	public Renderer(int width, int height) {
 		/** Creates view */
 		this.view = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		this.camera = new HitBox(0, 0, view.getWidth(), view.getHeight());
 		/** Creates array for pixels */
 		pixels = ((DataBufferInt) view.getRaster().getDataBuffer()).getData();
 
@@ -27,7 +30,6 @@ public class Renderer {
 				pixels[row * width + col] = color;
 			}
 		}
-		this.black = true;
 
 	}
 
