@@ -1,11 +1,11 @@
 package dungeonraider.util;
 
-public class HitBox {
+public class Rectangle {
 	private Position pos;
 	private int width;
 	private int height;
 
-	public HitBox(int x, int y, int width, int height) {
+	public Rectangle(int x, int y, int width, int height) {
 		this.pos = new Position(x, y);
 		this.width = width;
 		this.height = height;

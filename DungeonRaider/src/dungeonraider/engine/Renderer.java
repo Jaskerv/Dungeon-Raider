@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
-import dungeonraider.util.HitBox;
+import dungeonraider.util.Rectangle;
 
 /**
  * Renders view to window
@@ -15,12 +15,12 @@ import dungeonraider.util.HitBox;
 public class Renderer {
 	private BufferedImage view;
 	private int[] pixels;
-	private HitBox camera;
+	private Rectangle camera;
 
 	public Renderer(int width, int height) {
 		/** Creates view */
 		this.view = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		this.camera = new HitBox(0, 0, view.getWidth(), view.getHeight());
+		this.camera = new Rectangle(0, 0, view.getWidth(), view.getHeight());
 		/** Creates array for pixels */
 		pixels = ((DataBufferInt) view.getRaster().getDataBuffer()).getData();
 
