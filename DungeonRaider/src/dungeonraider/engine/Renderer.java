@@ -88,7 +88,6 @@ public class Renderer {
 			int color = (int) (Math.random() * 0xFFFFFF);
 			pixels[i] = color;
 		}
-		this.black = false;
 
 	}
 }
