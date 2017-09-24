@@ -31,7 +31,7 @@ import dungeonraider.util.Rectangle;
  *
  */
 public class Engine extends JFrame implements Runnable, Observer {
-
+	public static final int alpha = 0xFF00DC;
 	private static final long serialVersionUID = 1L;
 	private Canvas canvas;
 	private Toolkit tk;
@@ -48,7 +48,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 		this.canvas = new Canvas();
 		this.tk = this.getToolkit();
 		this.testRect = new Rectangle(30, 90, 40, 40);
-		this.testRect.generateGraphics(54);
+		this.testRect.generateGraphics(10, 356);
 		/** Sets name of JFrame window */
 		setTitle("Dungeon Raider");
 		/** Close program on exit */

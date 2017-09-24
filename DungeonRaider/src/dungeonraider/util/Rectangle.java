@@ -1,5 +1,7 @@
 package dungeonraider.util;
 
+import dungeonraider.engine.Engine;
+
 public class Rectangle {
 	private int x;
 	private int y;
@@ -14,11 +16,35 @@ public class Rectangle {
 		this.height = height;
 	}
 
+	/**
+	 * Generates a filled Rectangle
+	 * 
+	 * @param color
+	 */
 	public void generateGraphics(int color) {
 		pixels = new int[width * height];
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				pixels[x + y * width] = color;
+			}
+		}
+	}
+
+	/**
+	 * Generates a bordered Rectangle
+	 * 
+	 * @param borderWidth
+	 * @param color
+	 */
+	public void generateGraphics(int borderWidth, int color) {
+		pixels = new int[width * height];
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				if (x < borderWidth || (width - borderWidth) < x || y < borderWidth || (height - borderWidth) < y) {
+					pixels[x + y * width] = color;
+				} else {
+					pixels[x + y * width] = Engine.alpha;
+				}
 			}
 		}
 	}
