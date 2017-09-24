@@ -21,6 +21,7 @@ import dungeonraider.character.Player;
 import dungeonraider.controller.KeyController;
 import dungeonraider.map.Map;
 import dungeonraider.map.Tile;
+import dungeonraider.util.Rectangle;
 
 /**
  * The main engine class which implements runnable and also contains the main
@@ -41,10 +42,13 @@ public class Engine extends JFrame implements Runnable, Observer {
 	Player player;
 	private Map currentMap;
 	private BufferedImage test;
+	private Rectangle testRect;
 
 	public Engine() {
 		this.canvas = new Canvas();
 		this.tk = this.getToolkit();
+		this.testRect = new Rectangle(30, 90, 40, 40);
+		this.testRect.generateGraphics(54);
 		/** Sets name of JFrame window */
 		setTitle("Dungeon Raider");
 		/** Close program on exit */
@@ -77,8 +81,9 @@ public class Engine extends JFrame implements Runnable, Observer {
 		BufferStrategy b = canvas.getBufferStrategy();
 		Graphics g = b.getDrawGraphics();
 		super.paint(g);
+		renderer.renderRectangle(testRect, 10, 10);
 		/** Need to render all the images first */
-		renderer.renderImage(test, 0, 0, 30, 30);
+		renderer.renderImage(test, 0, 0, 10, 10);
 		// g.setColor(Color.blue);
 		// currentMap.render(g);
 		// this.player.render(g);

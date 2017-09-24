@@ -64,11 +64,23 @@ public class Renderer {
 	 */
 	public void renderImage(BufferedImage img, int xPos, int yPos, int xZoom, int yZoom) {
 		int[] imgPixels = ((DataBufferInt) img.getRaster().getDataBuffer()).getData();
-		for (int y = 0; y < img.getHeight(); y++)
-			for (int x = 0; x < img.getWidth(); x++)
+		renderArray(imgPixels, img.getWidth(), img.getHeight(), xPos, yPos, xZoom, yZoom);
+	}
+
+	public void renderRectangle(Rectangle rect, int xZoom, int yZoom) {
+		int[] rectPixels = rect.getPixels();
+		if (rectPixels != null) {
+			renderArray(rectPixels, rect.getWidth(), rect.getHeight(), rect.getX(), rect.getY(), xZoom, yZoom);
+		}
+	}
+
+	public void renderArray(int[] renderPixel, int renderWidth, int renderHeight, int xPos, int yPos, int xZoom,
+			int yZoom) {
+		for (int y = 0; y < renderHeight; y++)
+			for (int x = 0; x < renderWidth; x++)
 				for (int yZoomIndex = 0; yZoomIndex < yZoom; yZoomIndex++)
 					for (int xZoomIndex = 0; xZoomIndex < xZoom; xZoomIndex++)
-						setPixel(imgPixels[x + y * img.getWidth()], (x * xZoom) + xPos + xZoomIndex,
+						setPixel(renderPixel[x + y * renderWidth], (x * xZoom) + xPos + xZoomIndex,
 								(y * yZoom) + yPos + yZoomIndex);
 	}
 

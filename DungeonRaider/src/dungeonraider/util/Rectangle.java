@@ -5,12 +5,34 @@ public class Rectangle {
 	private int y;
 	private int width;
 	private int height;
+	private int[] pixels;
 
 	public Rectangle(int x, int y, int width, int height) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
+	}
+
+	public void generateGraphics(int color) {
+		pixels = new int[width * height];
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				pixels[x + y * width] = color;
+			}
+		}
+	}
+
+	/**
+	 * @return the pixels
+	 */
+	public int[] getPixels() {
+		if (pixels != null) {
+			return pixels;
+		} else {
+			System.out.println("Error,attempted to get pixels without generating pixels");
+			return null;
+		}
 	}
 
 	public int getWidth() {
