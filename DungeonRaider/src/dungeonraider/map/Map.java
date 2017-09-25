@@ -33,15 +33,13 @@ public class Map {
 	}
 
 	/**
-	 * Assuming you get parsed in the map as a string, e.g. "WWWW\nWWPW" - Where
-	 * each W is a wall, and P is the player, then:
-	 *
+	 * This method generates the map from reading a file and stores it into
+	 * its Map 2D Array.
 	 * @param mapString
 	 */
-	public void initialiseMap() {
+	public void initialiseMap(String mapName) {
 		try {
-			// Tutorial map for now
-			String path = "resources/maps/TutorialMap.txt";
+			String path = "resources/maps/"+mapName+".txt";
 			File file = new File(path);
 			char[][] map = MapParser.parseStringToMapArray(file);
 			for (int y = 0; y < LENGTH; y++) {
@@ -56,7 +54,6 @@ public class Map {
 	}
 
 	public void render(Graphics g) {
-		initialiseMap();
 		for (int y = 0; y < 22; y++) {
 			for (int x = 0; x < 22; x++) {
 				Tile tile = this.map[x][y];

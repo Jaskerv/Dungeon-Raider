@@ -6,11 +6,9 @@ import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferInt;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -20,7 +18,6 @@ import javax.swing.JFrame;
 import dungeonraider.character.Player;
 import dungeonraider.controller.KeyController;
 import dungeonraider.map.Map;
-import dungeonraider.map.Tile;
 import dungeonraider.util.Rectangle;
 
 /**
@@ -31,6 +28,7 @@ import dungeonraider.util.Rectangle;
  *
  */
 public class Engine extends JFrame implements Runnable, Observer {
+	
 	public static final int alpha = 0xFF00DC;
 	private static final long serialVersionUID = 1L;
 	private Canvas canvas;
@@ -40,9 +38,11 @@ public class Engine extends JFrame implements Runnable, Observer {
 	public static int HEIGHT = 720;
 	int x = 0;
 	Player player;
-	private Map currentMap;
 	private BufferedImage test;
 	private Rectangle testRect;
+	/** This will contain the list of maps from start to finish */
+	private HashMap<Integer, Map> mapList = initialiseMaps();
+	private Map currentMap = mapList.get(0);
 
 	public Engine() {
 		this.canvas = new Canvas();
@@ -68,7 +68,6 @@ public class Engine extends JFrame implements Runnable, Observer {
 		canvas.createBufferStrategy(3);
 		this.renderer = new Renderer(getWidth(), getHeight());
 		this.player = new Player();
-		this.currentMap = new Map(0, 0, 0);
 		this.addKeyListener(new KeyController(this.player));
 		this.setFocusable(true);
 		test = loadImage("resources/tiles/grassTile.PNG");
@@ -167,6 +166,25 @@ public class Engine extends JFrame implements Runnable, Observer {
 			return loadedImage;
 		}
 
+	}
+	
+	/**
+	 * This method is responsible for creating every map instance at the
+	 * beginning, and storing it for later use until the player traverses
+	 * through to each map.
+	 * 
+	 * @return list of maps
+	 */
+	private HashMap<Integer, Map> initialiseMaps() {
+		HashMap<Integer, Map> mapList = new HashMap<Integer, Map>();
+		int count = 0;
+		//Tutorial map
+		Map tutMap = new Map(0, 0, 0);
+		tutMap.initialiseMap("TutorialMap");
+		mapList.put(count, tutMap);
+		count++;
+		return mapList;
+		
 	}
 
 }
