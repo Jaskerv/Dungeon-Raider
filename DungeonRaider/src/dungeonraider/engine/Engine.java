@@ -179,7 +179,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 		HashMap<Integer, Map> mapList = new HashMap<Integer, Map>();
 		int count = 0;
 		//Tutorial map
-		Map tutMap = new Map(0, 0, 0);
+		Map tutMap = new Map();
 		tutMap.initialiseMap("TutorialMap");
 		mapList.put(count, tutMap);
 		count++;

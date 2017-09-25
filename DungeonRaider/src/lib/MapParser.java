@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.util.Random;
 import java.util.Scanner;
 
+import org.junit.experimental.theories.Theories;
+
 /**
  * The Map library contains the logic for the creation of the maps and has
  * helpful map-related methods that can be used throughout building Dungeon
@@ -20,6 +22,7 @@ public class MapParser {
     private static int safeRoomCounter = 0;
     private static final int WIDTH = 22;
     private static final int LENGTH = 22;
+    private static int[] mapStates = new int[3];
 
     /**
      * This method will convert a string to a map (2D array of chars).
@@ -43,6 +46,11 @@ public class MapParser {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+		//the first three values are the map states
+		mapStates[0] = Integer.parseInt(scan.next());
+		mapStates[1] = Integer.parseInt(scan.next());
+		mapStates[2] = Integer.parseInt(scan.next());
+		//parses all chars into the map array
         for (int y = 0; y < LENGTH; y++) {
         	for (int x = 0; x < WIDTH; x++) {
         		map[x][y] = scan.next().charAt(0);
@@ -64,6 +72,10 @@ public class MapParser {
     	char[][] safeRoomMap = new char[WIDTH][LENGTH];
     	safeRoomCounter++;
     	return safeRoomMap;
+    }
+    
+    public static int[] getMapStates() {
+    	return mapStates;
     }
 
     /**
