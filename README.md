@@ -28,4 +28,5 @@ pushing any work.</h1>
 <h2> Week 9 (25/09 - 01/10) </h2>
 
 - [ ] Finish sprites
+- [ ] Finish libraries
 - [ ] etc.
