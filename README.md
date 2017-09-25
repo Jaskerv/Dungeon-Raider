@@ -20,3 +20,12 @@ Upon entering dungeon rooms (the enviroment inbetween safe rooms)  monsters, ite
 
 <h1>Don't forget to <code>git pull</code> first before making any changes and before 
 pushing any work.</h1>
+
+----------------------------------------------------
+
+<h1>TO-DO List:</h1>
+
+<h2> Week 9 (25/09 - 01/10) </h2>
+
+- [ ] Finish sprites
+- [ ] etc..
