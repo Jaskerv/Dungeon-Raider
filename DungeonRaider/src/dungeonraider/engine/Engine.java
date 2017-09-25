@@ -18,6 +18,8 @@ import javax.swing.JFrame;
 import dungeonraider.character.Player;
 import dungeonraider.controller.KeyController;
 import dungeonraider.map.Map;
+import dungeonraider.sprite.Sprite;
+import dungeonraider.sprite.SpriteSheet;
 import dungeonraider.util.Rectangle;
 
 /**
@@ -28,7 +30,7 @@ import dungeonraider.util.Rectangle;
  *
  */
 public class Engine extends JFrame implements Runnable, Observer {
-	
+
 	public static final int alpha = 0xFF00DC;
 	private static final long serialVersionUID = 1L;
 	private Canvas canvas;
@@ -38,17 +40,20 @@ public class Engine extends JFrame implements Runnable, Observer {
 	public static int HEIGHT = 720;
 	int x = 0;
 	Player player;
-	private BufferedImage test;
-	private Rectangle testRect;
+
 	/** This will contain the list of maps from start to finish */
 	private HashMap<Integer, Map> mapList = initialiseMaps();
 	private Map currentMap = mapList.get(0);
 
+	/** Test Objects */
+	private BufferedImage testImage;
+	private Rectangle testRect;
+	private Sprite testSprite;
+	private SpriteSheet testSpriteSheet;
+
 	public Engine() {
 		this.canvas = new Canvas();
 		this.tk = this.getToolkit();
-		this.testRect = new Rectangle(30, 90, 40, 40);
-		this.testRect.generateGraphics(10, 356);
 		/** Sets name of JFrame window */
 		setTitle("Dungeon Raider");
 		/** Close program on exit */
@@ -70,7 +75,17 @@ public class Engine extends JFrame implements Runnable, Observer {
 		this.player = new Player();
 		this.addKeyListener(new KeyController(this.player));
 		this.setFocusable(true);
-		test = loadImage("resources/tiles/grassTile.PNG");
+
+		/**
+		 * Testing Objects
+		 */
+		this.testRect = new Rectangle(30, 90, 40, 40);
+		this.testRect.generateGraphics(10, 356);
+		testImage = loadImage("resources/tiles/grassTile.PNG");
+		BufferedImage sheet = loadImage("resources/tiles/Tiles1.png");
+		testSpriteSheet = new SpriteSheet(sheet);
+		testSpriteSheet.loadSprites(16, 16);
+		this.testSprite = testSpriteSheet.getSprite(1, 1);
 	}
 
 	/**
@@ -82,7 +97,8 @@ public class Engine extends JFrame implements Runnable, Observer {
 		super.paint(g);
 		renderer.renderRectangle(testRect, 10, 10);
 		/** Need to render all the images first */
-		renderer.renderImage(test, 0, 0, 10, 10);
+		renderer.renderSprite(testSprite, 0, 0, 5, 5);
+		// renderer.renderImage(test, 0, 0, 10, 10);
 		// g.setColor(Color.blue);
 		// currentMap.render(g);
 		// this.player.render(g);
@@ -167,24 +183,23 @@ public class Engine extends JFrame implements Runnable, Observer {
 		}
 
 	}
-	
+
 	/**
-	 * This method is responsible for creating every map instance at the
-	 * beginning, and storing it for later use until the player traverses
-	 * through to each map.
+	 * This method is responsible for creating every map instance at the beginning,
+	 * and storing it for later use until the player traverses through to each map.
 	 * 
 	 * @return list of maps
 	 */
 	private HashMap<Integer, Map> initialiseMaps() {
 		HashMap<Integer, Map> mapList = new HashMap<Integer, Map>();
 		int count = 0;
-		//Tutorial map
+		// Tutorial map
 		Map tutMap = new Map();
 		tutMap.initialiseMap("TutorialMap");
 		mapList.put(count, tutMap);
 		count++;
 		return mapList;
-		
+
 	}
 
 }

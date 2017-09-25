@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
+import dungeonraider.sprite.Sprite;
 import dungeonraider.util.Rectangle;
 
 /**
@@ -22,8 +23,8 @@ public class Renderer {
 		/** Creates view */
 		this.view = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		this.camera = new Rectangle(0, 0, view.getWidth(), view.getHeight());
-		this.camera.setX(-100);
-		this.camera.setY(-30);
+		// this.camera.setX(-100);
+		// this.camera.setY(-30);
 		/** Creates array for pixels */
 		pixels = ((DataBufferInt) view.getRaster().getDataBuffer()).getData();
 
@@ -67,6 +68,32 @@ public class Renderer {
 		renderArray(imgPixels, img.getWidth(), img.getHeight(), xPos, yPos, xZoom, yZoom);
 	}
 
+	/**
+	 * Renders sprite using its pixel Array at xPos and yPos
+	 * 
+	 * @param sprite
+	 * @param xPos
+	 * @param yPos
+	 * @param xZoom
+	 *            Horizontal zoom multiplier
+	 * @param yZoom
+	 *            Vertical zoom multiplier
+	 */
+	public void renderSprite(Sprite sprite, int xPos, int yPos, int xZoom, int yZoom) {
+		renderArray(sprite.getPixels(), sprite.getWidth(), sprite.getHeight(), xPos, yPos, xZoom, yZoom);
+	}
+
+	/**
+	 * Renders Rectangle using its pixel Array at xPos and yPos of Rectangle
+	 * 
+	 * @param sprite
+	 * @param xPos
+	 * @param yPos
+	 * @param xZoom
+	 *            Horizontal zoom multiplier
+	 * @param yZoom
+	 *            Vertical zoom multiplier
+	 */
 	public void renderRectangle(Rectangle rect, int xZoom, int yZoom) {
 		int[] rectPixels = rect.getPixels();
 		if (rectPixels != null) {
@@ -74,6 +101,19 @@ public class Renderer {
 		}
 	}
 
+	/**
+	 * Renders pixels from int array.
+	 * 
+	 * @param renderPixel
+	 * @param renderWidth
+	 * @param renderHeight
+	 * @param xPos
+	 * @param yPos
+	 * @param xZoom
+	 *            Horizontal zoom multiplier
+	 * @param yZoom
+	 *            Vertical zoom multiplier
+	 */
 	public void renderArray(int[] renderPixel, int renderWidth, int renderHeight, int xPos, int yPos, int xZoom,
 			int yZoom) {
 		for (int y = 0; y < renderHeight; y++)
@@ -84,6 +124,13 @@ public class Renderer {
 								(y * yZoom) + yPos + yZoomIndex);
 	}
 
+	/**
+	 * Sets pixel to Pixels array.
+	 * 
+	 * @param pixel
+	 * @param x
+	 * @param y
+	 */
 	private void setPixel(int pixel, int x, int y) {
 		if (this.camera.contains(x, y)) {
 			int pixelIndex = (x - this.camera.getX()) + (y - this.camera.getY()) * view.getWidth();
