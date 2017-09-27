@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
 import dungeonraider.sprite.Sprite;
+import dungeonraider.util.Camera;
 import dungeonraider.util.Rectangle;
 
 /**
@@ -17,12 +18,12 @@ public class Renderer {
 	private BufferedImage view;
 	private int[] pixels;
 	/** The camera that the player sees from */
-	private Rectangle camera;
+	private Camera camera;
 
 	public Renderer(int width, int height) {
 		/** Creates view */
 		this.view = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		this.camera = new Rectangle(0, 0, view.getWidth(), view.getHeight());
+		this.camera = new Camera(0, 0, view.getWidth(), view.getHeight());
 		// this.camera.setX(-100);
 		// this.camera.setY(-30);
 		/** Creates array for pixels */
