@@ -31,7 +31,7 @@ import dungeonraider.util.Rectangle;
  */
 public class Engine extends JFrame implements Runnable, Observer {
 
-	public static final int alpha = 0xFF00DC;
+	public static final int alpha = 0xFFFF00DC;
 	private static final long serialVersionUID = 1L;
 	private Canvas canvas;
 	private Toolkit tk;
@@ -85,7 +85,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 		BufferedImage sheet = loadImage("resources/tiles/Tiles1.png");
 		testSpriteSheet = new SpriteSheet(sheet);
 		testSpriteSheet.loadSprites(16, 16);
-		this.testSprite = testSpriteSheet.getSprite(1, 1);
+		this.testSprite = testSpriteSheet.getSprite(0, 0);
 	}
 
 	/**
