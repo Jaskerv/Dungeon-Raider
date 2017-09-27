@@ -27,6 +27,19 @@ pushing any work.</h1>
 
 <h2> Week 9 (25/09 - 01/10) </h2>
 
+Tasks for Jono:
 - [x] Finish sprites - All sprites and spritesheet is done - Jono Yan
-- [ ] Finish libraries
-- [ ] etc.
+- [x] Rendering engine
+- [x] Item parser Library
+
+Tasks for Ali:
+- [ ] Sound library
+
+Tasks for Charnon:
+- [ ] Movement Library
+
+Tasks for Harry:
+- [ ] Map library
+
+Tasks for Gabe:
+- [ ] Stat Library
