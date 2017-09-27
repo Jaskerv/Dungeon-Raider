@@ -5,6 +5,8 @@ import java.awt.image.BufferedImage;
 import dungeonraider.sprite.Sprite;
 
 /**
+ * This class imports a BufferedImage which it can sub image into different
+ * sprites.
  * 
  * @author Jono Yan
  *

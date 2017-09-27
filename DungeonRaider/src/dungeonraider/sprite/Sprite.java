@@ -3,7 +3,7 @@ package dungeonraider.sprite;
 import java.awt.image.BufferedImage;
 
 /**
- * 
+ * This is an individual sprite
  * @author Jono Yan
  *
  */
