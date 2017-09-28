@@ -22,7 +22,6 @@ public class Tile {
 	private boolean boundary;
 	/** Sprite image resources */
 	private static final String SPRITE_SHEET_PATH = "resources/tiles/Tiles1.png";
-	private BufferedImage spriteImage;
 	private Sprite sprite;
 	private static final SpriteSheet SPRITE_SHEET =
 			new SpriteSheet(Engine.loadImage(SPRITE_SHEET_PATH));
@@ -44,9 +43,8 @@ public class Tile {
 		this.width = width;
 		this.height = height;
 		this.boundary = boundary;
-		this.spriteImage = getImage(symbol);
 		SPRITE_SHEET.loadSprites(16, 16);
-		this.sprite = SPRITE_SHEET.getSprite(2, 1);
+		this.sprite = getImage(symbol);
 	}
 
 	/**
@@ -55,19 +53,13 @@ public class Tile {
 	 * @param symbol  the character
 	 * @return  the image related to the character
 	 */
-	public BufferedImage getImage(char symbol) {
+	public Sprite getImage(char symbol) {
 		switch (symbol) {
 			case 'W':
 				//grass tile for now
-				return SPRITE_SHEET.getSheet().getSubimage(0, 16, 16, 16);
+				return SPRITE_SHEET.getSprite(0, 1);
 		}
 		return null;
-	}
-
-	public BufferedImage getSpriteImage() { return spriteImage; }
-
-	public void setSpriteImage(BufferedImage spriteImage) {
-		this.spriteImage = spriteImage;
 	}
 
 	public int getWidth() { return width; }
