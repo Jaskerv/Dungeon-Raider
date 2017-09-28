@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
+import dungeonraider.map.Map;
+import dungeonraider.map.Tile;
 import dungeonraider.sprite.Sprite;
 import dungeonraider.util.Camera;
 import dungeonraider.util.Rectangle;
@@ -99,6 +101,21 @@ public class Renderer {
 		int[] rectPixels = rect.getPixels();
 		if (rectPixels != null) {
 			renderArray(rectPixels, rect.getWidth(), rect.getHeight(), rect.getX(), rect.getY(), xZoom, yZoom);
+		}
+	}
+
+	/**
+	 * This method renders the map by rendering each tile's pixels.
+	 * @param map
+	 */
+	public void renderMap(Map map) {
+		for (int y = 0; y < 22; y++) {
+			for (int x = 0; x < 22; x++) {
+				Tile tile = map.getMap()[x][y];
+				Sprite tileSprite = tile.getSprite();
+				renderArray(tileSprite.getPixels(), tileSprite.getWidth(),
+						tileSprite.getHeight(), tile.getX(), tile.getY(), 4, 4);
+			}
 		}
 	}
 

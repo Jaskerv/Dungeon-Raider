@@ -37,27 +37,14 @@ public class Map {
 	 * @param mapName  the name of the map
 	 */
 	public void initialiseMap(String mapName) {
-			String path = "resources/maps/"+mapName+".txt";
-			File file = new File(path);
-			char[][] map = MapParser.parseStringToMapArray(file);
-			initialiseFields();
-			for (int y = 0; y < LENGTH; y++) {
-				for (int x = 0; x < WIDTH; x++) {
-					this.map[x][y] = new Tile(map[x][y], x * TILE_SIZE,
-							y * TILE_SIZE, TILE_SIZE, TILE_SIZE, false);
-				}
-			}
-	}
-
-	/**
-	 * Draws the tiles to the graphics pane
-	 * @param g  Graphics instance
-	 */
-	public void render(Graphics g) {
-		for (int y = 0; y < 22; y++) {
-			for (int x = 0; x < 22; x++) {
-				Tile tile = this.map[x][y];
-				tile.render(g);
+		String path = "resources/maps/"+mapName+".txt";
+		File file = new File(path);
+		char[][] map = MapParser.parseStringToMapArray(file);
+		initialiseFields();
+		for (int y = 0; y < LENGTH; y++) {
+			for (int x = 0; x < WIDTH; x++) {
+				this.map[x][y] = new Tile(map[x][y], x * TILE_SIZE,
+						y * TILE_SIZE, TILE_SIZE, TILE_SIZE, false);
 			}
 		}
 	}

@@ -95,16 +95,18 @@ public class Engine extends JFrame implements Runnable, Observer {
 		BufferStrategy b = canvas.getBufferStrategy();
 		Graphics g = b.getDrawGraphics();
 		super.paint(g);
+		//Renders the map first (bottom layer of the image)
+		renderer.renderMap(currentMap);
 		renderer.renderRectangle(testRect, 10, 10);
 		/** Need to render all the images first */
 		renderer.renderSprite(testSprite, 0, 0, 5, 5);
+
 		// renderer.renderImage(test, 0, 0, 10, 10);
 		// g.setColor(Color.blue);
 
 		// this.player.render(g);
 		/** Then render the Renderer */
 		renderer.render(g);
-		currentMap.render(g);
 		g.dispose();
 		b.show();
 	}

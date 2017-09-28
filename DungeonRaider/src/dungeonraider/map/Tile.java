@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import dungeonraider.engine.Engine;
+import dungeonraider.sprite.Sprite;
+import dungeonraider.sprite.SpriteSheet;
 
 /**
  * This represents a tile within the Map.
@@ -19,10 +21,11 @@ public class Tile {
 	private final int height;
 	private boolean boundary;
 	/** Sprite image resources */
-	private BufferedImage spriteImage;
 	private static final String SPRITE_SHEET_PATH = "resources/tiles/Tiles1.png";
-	private static final BufferedImage SPRITE_SHEET =
-			Engine.loadImage(SPRITE_SHEET_PATH);
+	private BufferedImage spriteImage;
+	private Sprite sprite;
+	private static final SpriteSheet SPRITE_SHEET =
+			new SpriteSheet(Engine.loadImage(SPRITE_SHEET_PATH));
 
 	/**
 	 * This initialises the tile instance. Each tile instance is contained
@@ -42,6 +45,8 @@ public class Tile {
 		this.height = height;
 		this.boundary = boundary;
 		this.spriteImage = getImage(symbol);
+		SPRITE_SHEET.loadSprites(16, 16);
+		this.sprite = SPRITE_SHEET.getSprite(2, 1);
 	}
 
 	/**
@@ -54,17 +59,9 @@ public class Tile {
 		switch (symbol) {
 			case 'W':
 				//grass tile for now
-				return SPRITE_SHEET.getSubimage(0, 16, 16, 16);
+				return SPRITE_SHEET.getSheet().getSubimage(0, 16, 16, 16);
 		}
 		return null;
-	}
-
-	/**
-	 * Renders the tile image to the graphics
-	 * @param g
-	 */
-	public void render(Graphics g) {
-		g.drawImage(spriteImage, x, y, width, height, null);
 	}
 
 	public BufferedImage getSpriteImage() { return spriteImage; }
@@ -72,6 +69,14 @@ public class Tile {
 	public void setSpriteImage(BufferedImage spriteImage) {
 		this.spriteImage = spriteImage;
 	}
+
+	public int getWidth() { return width; }
+
+	public int getHeight() { return height; }
+
+	public Sprite getSprite() { return sprite; }
+
+	public void setSprite(Sprite sprite) { this.sprite = sprite; }
 
 	public int getX() { return x; }
 
