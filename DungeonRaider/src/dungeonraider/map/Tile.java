@@ -1,8 +1,5 @@
 package dungeonraider.map;
 
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-
 import dungeonraider.engine.Engine;
 import dungeonraider.sprite.Sprite;
 import dungeonraider.sprite.SpriteSheet;
@@ -51,13 +48,25 @@ public class Tile {
 	 * This method will find the appropriate image for the character symbol
 	 * being parsed in. For example, a symbol 'W' indicates a Wall.
 	 * @param symbol  the character
-	 * @return  the image related to the character
+	 * @return  the sprite related to the character symbol
 	 */
 	public Sprite getImage(char symbol) {
 		switch (symbol) {
+			//standard centre grass tile
 			case 'W':
-				//grass tile for now
-				return SPRITE_SHEET.getSprite(0, 1);
+				return SPRITE_SHEET.getSprite(0, 2);
+			//north wall
+			case '1':
+				return SPRITE_SHEET.getSprite(5, 1);
+			//west wall
+			case '2':
+				return SPRITE_SHEET.getSprite(4, 1);
+			//south wall
+			case '3':
+				return SPRITE_SHEET.getSprite(5, 2);
+			//east wall
+			case '4':
+				return SPRITE_SHEET.getSprite(6, 1);
 		}
 		return null;
 	}

@@ -1,8 +1,6 @@
 package dungeonraider.map;
 
-import java.awt.Graphics;
 import java.io.File;
-import java.io.FileNotFoundException;
 
 import dungeonraider.engine.Engine;
 import lib.MapParser;

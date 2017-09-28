@@ -114,7 +114,7 @@ public class Renderer {
 				Tile tile = map.getMap()[x][y];
 				Sprite tileSprite = tile.getSprite();
 				renderArray(tileSprite.getPixels(), tileSprite.getWidth(),
-						tileSprite.getHeight(), tile.getX(), tile.getY(), 4, 4);
+						tileSprite.getHeight(), tile.getX(), tile.getY(), 3, 3);
 			}
 		}
 	}
@@ -132,8 +132,8 @@ public class Renderer {
 	 * @param yZoom
 	 *            Vertical zoom multiplier
 	 */
-	public void renderArray(int[] renderPixel, int renderWidth, int renderHeight, int xPos, int yPos, int xZoom,
-			int yZoom) {
+	public void renderArray(int[] renderPixel, int renderWidth,
+			int renderHeight, int xPos, int yPos, int xZoom, int yZoom) {
 		for (int y = 0; y < renderHeight; y++)
 			for (int x = 0; x < renderWidth; x++)
 				for (int yZoomIndex = 0; yZoomIndex < yZoom; yZoomIndex++)
