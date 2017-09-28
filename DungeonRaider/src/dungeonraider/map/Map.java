@@ -2,6 +2,7 @@ package dungeonraider.map;
 
 import java.awt.Graphics;
 import java.io.File;
+import java.io.FileNotFoundException;
 
 import dungeonraider.engine.Engine;
 import lib.MapParser;
@@ -9,7 +10,7 @@ import lib.MapParser;
 /**
  * Map instances store everything about each map, including what tiles
  * are inside the map, what type of map it is, and so forth.
- * 
+ *
  * @author harry
  */
 public class Map {
@@ -36,20 +37,16 @@ public class Map {
 	 * @param mapName  the name of the map
 	 */
 	public void initialiseMap(String mapName) {
-		try {
 			String path = "resources/maps/"+mapName+".txt";
 			File file = new File(path);
 			char[][] map = MapParser.parseStringToMapArray(file);
 			initialiseFields();
 			for (int y = 0; y < LENGTH; y++) {
 				for (int x = 0; x < WIDTH; x++) {
-					this.map[x][y] = new Tile(x * TILE_SIZE, y * TILE_SIZE,
-							TILE_SIZE, TILE_SIZE, false);
+					this.map[x][y] = new Tile(map[x][y], x * TILE_SIZE,
+							y * TILE_SIZE, TILE_SIZE, TILE_SIZE, false);
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -60,14 +57,13 @@ public class Map {
 		for (int y = 0; y < 22; y++) {
 			for (int x = 0; x < 22; x++) {
 				Tile tile = this.map[x][y];
-				g.drawRect(tile.getX(), tile.getY(), Engine.WIDTH / 22,
-						Engine.WIDTH / 22);
+				tile.render(g);
 			}
 		}
 	}
-	
+
 	/**
-	 * This method initialises the fields by having the library read the 
+	 * This method initialises the fields by having the library read the
 	 * first three values of the file, and set the fields according to those.
 	 */
 	private void initialiseFields() {
@@ -82,12 +78,8 @@ public class Map {
 		return screenWidth / 22;
 	}
 
-	public Tile[][] getMap() {
-		return map;
-	}
+	public Tile[][] getMap() { return map; }
 
-	public void setMap(Tile[][] map) {
-		this.map = map;
-	}
+	public void setMap(Tile[][] map) { this.map = map; }
 
 }

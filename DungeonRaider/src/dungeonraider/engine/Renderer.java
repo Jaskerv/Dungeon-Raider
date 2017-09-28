@@ -50,7 +50,7 @@ public class Renderer {
 	/**
 	 * Renders Image to the Pixel array. For default size, please use xZoom and
 	 * yZoom = 1.
-	 * 
+	 *
 	 * @param img
 	 *            image to draw
 	 * @param xPos
@@ -71,7 +71,7 @@ public class Renderer {
 
 	/**
 	 * Renders sprite using its pixel Array at xPos and yPos
-	 * 
+	 *
 	 * @param sprite
 	 * @param xPos
 	 * @param yPos
@@ -86,7 +86,7 @@ public class Renderer {
 
 	/**
 	 * Renders Rectangle using its pixel Array at xPos and yPos of Rectangle
-	 * 
+	 *
 	 * @param sprite
 	 * @param xPos
 	 * @param yPos
@@ -104,7 +104,7 @@ public class Renderer {
 
 	/**
 	 * Renders pixels from int array.
-	 * 
+	 *
 	 * @param renderPixel
 	 * @param renderWidth
 	 * @param renderHeight
@@ -127,7 +127,7 @@ public class Renderer {
 
 	/**
 	 * Sets pixel to Pixels array.
-	 * 
+	 *
 	 * @param pixel
 	 * @param x
 	 * @param y

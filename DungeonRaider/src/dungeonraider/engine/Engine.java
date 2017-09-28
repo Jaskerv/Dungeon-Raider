@@ -100,10 +100,11 @@ public class Engine extends JFrame implements Runnable, Observer {
 		renderer.renderSprite(testSprite, 0, 0, 5, 5);
 		// renderer.renderImage(test, 0, 0, 10, 10);
 		// g.setColor(Color.blue);
-		// currentMap.render(g);
+
 		// this.player.render(g);
 		/** Then render the Renderer */
 		renderer.render(g);
+		currentMap.render(g);
 		g.dispose();
 		b.show();
 	}
@@ -163,10 +164,10 @@ public class Engine extends JFrame implements Runnable, Observer {
 
 	/**
 	 * Returns a buffered image from the path
-	 * 
+	 *
 	 * @param path
 	 */
-	private BufferedImage loadImage(String path) {
+	public static BufferedImage loadImage(String path) {
 		BufferedImage loadedImage;
 		try {
 			loadedImage = ImageIO.read(new FileInputStream(path));
@@ -187,7 +188,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 	/**
 	 * This method is responsible for creating every map instance at the beginning,
 	 * and storing it for later use until the player traverses through to each map.
-	 * 
+	 *
 	 * @return list of maps
 	 */
 	private HashMap<Integer, Map> initialiseMaps() {
