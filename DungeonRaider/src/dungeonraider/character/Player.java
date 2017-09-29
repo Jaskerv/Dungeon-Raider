@@ -120,6 +120,9 @@ public class Player implements Character {
 		gold = gold + amountRecieved;
 	}
 
+
+
+
 	public BufferedImage getSpriteImage() {
 		return spriteImage;
 	}
