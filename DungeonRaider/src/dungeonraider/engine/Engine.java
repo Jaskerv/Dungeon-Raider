@@ -59,8 +59,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 	private Rectangle testRect;
 	private Sprite playerSprite;
 	private SpriteSheet testSpriteSheet;
-	private SpriteSheet dungeonTiles = 
-			new SpriteSheet(loadImage("resources/tiles/DungeonTileset1.png"));
+	private SpriteSheet dungeonTiles = new SpriteSheet(loadImage("resources/tiles/DungeonTileset1.png"));
 
 	public Engine() {
 		this.canvas = new Canvas();
@@ -117,14 +116,11 @@ public class Engine extends JFrame implements Runnable, Observer {
 		Graphics g = b.getDrawGraphics();
 		super.paint(g);
 		// Renders the map first (bottom layer of the image)
+		/** Set black first */
+		renderer.clearArray();
 		renderer.renderMap(currentMap);
-		// renderer.renderSprite(testSprite, 0, 0, 1, 1);
 		renderer.renderSprite(player.getSpriteImage(), player.getX(), player.getY(), 10, 10);
 
-		// renderer.renderImage(test, 0, 0, 10, 10);
-		// g.setColor(Color.blue);
-
-		// this.player.render(g);
 		/** Then render the Renderer */
 		renderer.render(g);
 		g.dispose();
@@ -182,10 +178,14 @@ public class Engine extends JFrame implements Runnable, Observer {
 	 */
 	public void update() {
 		Camera camera = renderer.getCamera();
-		if(keyBinds.isUp()) renderer.getCamera().moveCamera(0, player.getSpeed());
-		if(keyBinds.isDown()) renderer.getCamera().moveCamera(0, -player.getSpeed());
-		if(keyBinds.isLeft()) renderer.getCamera().moveCamera(-player.getSpeed(), 0);
-		if(keyBinds.isRight()) renderer.getCamera().moveCamera(player.getSpeed(), 0);
+		if (keyBinds.isUp())
+			renderer.getCamera().moveCamera(0, player.getSpeed());
+		if (keyBinds.isDown())
+			renderer.getCamera().moveCamera(0, -player.getSpeed());
+		if (keyBinds.isLeft())
+			renderer.getCamera().moveCamera(-player.getSpeed(), 0);
+		if (keyBinds.isRight())
+			renderer.getCamera().moveCamera(player.getSpeed(), 0);
 		this.player.setX(camera.getCenter().getX());
 		this.player.setY(camera.getCenter().getY());
 	}
