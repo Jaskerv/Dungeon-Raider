@@ -15,7 +15,7 @@ public class Player implements Character {
 	private int currentCapacity;
 	private int x;
 	private int y;
-	public static final int speed = 3;
+	public static final int speed = 5;
 
 	private Position position;
 	private Weapon primaryWeapon;
