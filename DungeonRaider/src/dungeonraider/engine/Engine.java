@@ -8,7 +8,9 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -20,6 +22,7 @@ import dungeonraider.controller.KeyController;
 import dungeonraider.map.Map;
 import dungeonraider.sprite.Sprite;
 import dungeonraider.sprite.SpriteSheet;
+import dungeonraider.util.Camera;
 import dungeonraider.util.Rectangle;
 
 /**
@@ -36,15 +39,21 @@ public class Engine extends JFrame implements Runnable, Observer {
 	private Canvas canvas;
 	private Toolkit tk;
 	private Renderer renderer;
+	private List<Player> players;
 	public static int WIDTH = 1280;
 	public static int HEIGHT = 720;
-	int x = 0;
-	Player player;
+
+	/**
+	 * Key listener - keeps track of cameras movement
+	 */
+	private KeyController keyBinds;
+
+	private Player player;
 
 	/** This will contain the list of maps from start to finish */
 	private HashMap<Integer, Map> mapList = initialiseMaps();
 	private Map currentMap = mapList.get(0);
-
+	int x = 0;
 	/** Test Objects */
 	private BufferedImage testImage;
 	private Rectangle testRect;
@@ -54,6 +63,10 @@ public class Engine extends JFrame implements Runnable, Observer {
 	public Engine() {
 		this.canvas = new Canvas();
 		this.tk = this.getToolkit();
+		/**
+		 * initiating key listener
+		 */
+		this.keyBinds = new KeyController();
 		/** Sets name of JFrame window */
 		setTitle("Dungeon Raider");
 		/** Close program on exit */
@@ -72,9 +85,6 @@ public class Engine extends JFrame implements Runnable, Observer {
 		/** Creates 2 buffer renderer */
 		canvas.createBufferStrategy(3);
 		this.renderer = new Renderer(getWidth(), getHeight());
-		this.player = new Player();
-		this.addKeyListener(new KeyController(this.player));
-		this.setFocusable(true);
 
 		/**
 		 * Testing Objects
@@ -86,6 +96,14 @@ public class Engine extends JFrame implements Runnable, Observer {
 		testSpriteSheet = new SpriteSheet(sheet);
 		testSpriteSheet.loadSprites(16, 16);
 		this.testSprite = testSpriteSheet.getSprite(0, 0);
+
+		/**
+		 * Initiating the players
+		 */
+		players = new ArrayList<Player>();
+		this.player = new Player(100, 1, 100, testSprite);
+		this.addKeyListener(keyBinds);
+		this.setFocusable(true);
 	}
 
 	/**
@@ -95,9 +113,10 @@ public class Engine extends JFrame implements Runnable, Observer {
 		BufferStrategy b = canvas.getBufferStrategy();
 		Graphics g = b.getDrawGraphics();
 		super.paint(g);
-		//Renders the map first (bottom layer of the image)
+		// Renders the map first (bottom layer of the image)
 		renderer.renderMap(currentMap);
-
+		// renderer.renderSprite(testSprite, 0, 0, 1, 1);
+		renderer.renderSprite(player.getSpriteImage(), player.getX(), player.getY(), 10, 10);
 
 		// renderer.renderImage(test, 0, 0, 10, 10);
 		// g.setColor(Color.blue);
@@ -159,7 +178,13 @@ public class Engine extends JFrame implements Runnable, Observer {
 	 * This method will run at a specified speed.
 	 */
 	public void update() {
-		x++;
+		Camera camera = renderer.getCamera();
+		if(keyBinds.isUp()) renderer.getCamera().moveCamera(0, player.getSpeed());
+		if(keyBinds.isDown()) renderer.getCamera().moveCamera(0, -player.getSpeed());
+		if(keyBinds.isLeft()) renderer.getCamera().moveCamera(-player.getSpeed(), 0);
+		if(keyBinds.isRight()) renderer.getCamera().moveCamera(player.getSpeed(), 0);
+		this.player.setX(camera.getCenter().getX());
+		this.player.setY(camera.getCenter().getY());
 	}
 
 	/**

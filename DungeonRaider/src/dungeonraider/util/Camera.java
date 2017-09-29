@@ -8,7 +8,7 @@ public class Camera extends Box {
 	/**
 	 * This moves the camera relative to its current position. example of 10,0 will
 	 * move the camera 10 px to the right
-	 * 
+	 *
 	 * @param dx
 	 *            +ve dx will move camera right, -ve dx will move camera left
 	 * @param dy
@@ -21,7 +21,7 @@ public class Camera extends Box {
 
 	/**
 	 * Gets center Position of the camera.
-	 * 
+	 *
 	 * @param width
 	 * @param height
 	 * @return

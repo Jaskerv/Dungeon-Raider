@@ -33,9 +33,11 @@ public class Player implements Character {
 	private static final int SPRINT_MODIFIER = 2;
 
 
-	public Player() {
-		this.x = 0;
-		this.y = 0;
+	public Player(int x, int y, int stamina, Sprite sprite) {
+		this.x = x;
+		this.y = y;
+		this.spriteImage = sprite;
+		this.stamina = stamina;
 //		Graphics g = spriteImage.getGraphics();
 //		g.setColor(Color.RED);
 //		g.fillRect(this.x, this.y, 10, 30);
@@ -119,16 +121,36 @@ public class Player implements Character {
 		gold = gold + amountRecieved;
 	}
 
+	public int getX() {
+		return x;
+	}
 
 
+	public void setX(int x) {
+		this.x = x;
+	}
 
-/*	public BufferedImage getSpriteImage() {
+
+	public int getY() {
+		return y;
+	}
+
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+
+	public Sprite getSpriteImage() {
 		return spriteImage;
 	}
 
-	public void render(Graphics g) {
-		g.drawImage(this.spriteImage, x, y, null);
-	}*/
+
+	public int getSpeed() {
+		return speed;
+	}
+
+
 
 
 
