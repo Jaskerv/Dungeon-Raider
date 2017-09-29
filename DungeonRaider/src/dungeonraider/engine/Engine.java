@@ -179,9 +179,9 @@ public class Engine extends JFrame implements Runnable, Observer {
 	public void update() {
 		Camera camera = renderer.getCamera();
 		if (keyBinds.isUp())
-			renderer.getCamera().moveCamera(0, player.getSpeed());
-		if (keyBinds.isDown())
 			renderer.getCamera().moveCamera(0, -player.getSpeed());
+		if (keyBinds.isDown())
+			renderer.getCamera().moveCamera(0, player.getSpeed());
 		if (keyBinds.isLeft())
 			renderer.getCamera().moveCamera(-player.getSpeed(), 0);
 		if (keyBinds.isRight())
