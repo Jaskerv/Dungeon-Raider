@@ -156,9 +156,10 @@ public class Renderer {
 			int pixelIndex = (x - this.camera.getX()) + (y - this.camera.getY()) * view.getWidth();
 			if (pixels.length > pixelIndex && !Engine.alpha.match(pixel)) {
 				pixels[pixelIndex] = pixel;
-			} else if (pixels.length > pixelIndex) {
-				pixels[pixelIndex] = 0;
 			}
+			// else if (pixels.length > pixelIndex && pixel != Engine.alpha) {
+			// pixels[pixelIndex] = 0;
+			// }
 		}
 	}
 

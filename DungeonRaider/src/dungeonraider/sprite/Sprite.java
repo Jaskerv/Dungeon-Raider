@@ -51,7 +51,6 @@ public class Sprite {
 		StringBuilder s = new StringBuilder();
 		for (int i = 0; i < pixels.length; i++) {
 			s.append(pixels[i]);
-			break;
 		}
 		return s.toString();
 	}

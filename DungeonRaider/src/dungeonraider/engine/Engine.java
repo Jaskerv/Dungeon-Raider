@@ -98,7 +98,6 @@ public class Engine extends JFrame implements Runnable, Observer {
 		testSpriteSheet.loadSprites(16, 16);
 		dungeonTiles.loadSprites(16, 16);
 		this.playerSprite = dungeonTiles.getSprite(4, 6);
-		System.out.println(this.playerSprite.toString());
 
 		/**
 		 * Initiating the players
