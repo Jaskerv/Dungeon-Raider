@@ -23,6 +23,7 @@ import dungeonraider.map.Map;
 import dungeonraider.sprite.Sprite;
 import dungeonraider.sprite.SpriteSheet;
 import dungeonraider.util.Camera;
+import dungeonraider.util.PatternInt;
 import dungeonraider.util.Rectangle;
 
 /**
@@ -33,8 +34,7 @@ import dungeonraider.util.Rectangle;
  *
  */
 public class Engine extends JFrame implements Runnable, Observer {
-
-	public static final int alpha = 0xFFFF00DC;
+	public static final PatternInt alpha = new PatternInt(0xFFFF00DC, -16777216);
 	private static final long serialVersionUID = 1L;
 	private Canvas canvas;
 	private Toolkit tk;
@@ -98,6 +98,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 		testSpriteSheet.loadSprites(16, 16);
 		dungeonTiles.loadSprites(16, 16);
 		this.playerSprite = dungeonTiles.getSprite(4, 6);
+		System.out.println(this.playerSprite.toString());
 
 		/**
 		 * Initiating the players

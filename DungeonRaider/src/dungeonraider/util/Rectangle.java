@@ -42,7 +42,7 @@ public class Rectangle extends Box {
 				if (x < borderWidth || (width - borderWidth) < x || y < borderWidth || (height - borderWidth) < y) {
 					pixels[x + y * width] = color;
 				} else {
-					pixels[x + y * width] = Engine.alpha;
+					pixels[x + y * width] = Engine.alpha.getValue();
 				}
 			}
 		}

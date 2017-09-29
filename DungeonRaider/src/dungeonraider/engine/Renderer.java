@@ -154,7 +154,7 @@ public class Renderer {
 	private void setPixel(int pixel, int x, int y) {
 		if (this.camera.contains(x, y)) {
 			int pixelIndex = (x - this.camera.getX()) + (y - this.camera.getY()) * view.getWidth();
-			if (pixels.length > pixelIndex && pixel != Engine.alpha) {
+			if (pixels.length > pixelIndex && !Engine.alpha.match(pixel)) {
 				pixels[pixelIndex] = pixel;
 			} else if (pixels.length > pixelIndex) {
 				pixels[pixelIndex] = 0;

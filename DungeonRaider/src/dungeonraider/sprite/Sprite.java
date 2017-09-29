@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 
 /**
  * This is an individual sprite
+ * 
  * @author Jono Yan
  *
  */
@@ -46,4 +47,12 @@ public class Sprite {
 		return pixels;
 	}
 
+	public String toString() {
+		StringBuilder s = new StringBuilder();
+		for (int i = 0; i < pixels.length; i++) {
+			s.append(pixels[i]);
+			break;
+		}
+		return s.toString();
+	}
 }
