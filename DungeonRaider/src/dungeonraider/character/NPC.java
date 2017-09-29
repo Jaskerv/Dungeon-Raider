@@ -36,15 +36,15 @@ public class NPC implements Character {
 	}
 
 	@Override
-	public void lightAttack() {
+	public int lightAttack() {
 		// TODO Auto-generated method stub
-
+		return 0;
 	}
 
 	@Override
-	public void heavyAttack() {
+	public int heavyAttack() {
 		// TODO Auto-generated method stub
-
+		return 0;
 	}
 
 	@Override

@@ -109,44 +109,51 @@ public class StatModifier {
 	@Test
 	public void test_03() {
 		double result = calcDamage(10, 100, 0, 0);
-		assertTrue("Upon taking damage with no amrour and no crit chance the damage number is dealth unmodified", result == (90));
+		double pass = 90;
+		assertTrue("Upon taking damage with no amrour and no crit chance the damage number is dealth unmodified", result == pass);
 	}
 
 	/**
 	 * Tests taking fatal damage
-	 *//*
+	 */
 	@Test
 	public void test_04() {
 		double result = calcDamage(90, 100, 0, 0);
-		assertEquals("Upon taking fatal damage the amount of HP returned is 0 and not negative", result == (10));
-	}*/
+		double pass = 10;
+		assertTrue("Upon taking fatal damage the amount of HP returned is 0 and not negative:" + result, result == pass);
+	}
 
-	/*	*//**
+	/**
 	 * Tests taking healing under normal circumstance
-	 *//*
-	@Test
-	public void test_03() {
-		double result = calculateHealing(10, 50, 100);
-		assertEquals("Upon taking healing a players HP should increase by the amount healed", 60, result);
-	}
-
-	*//**
-	 * Tests taking healing once the player is already at max HP
-	 *//*
-	@Test
-	public void test_04() {
-		double result = calculateHealing(10, 100, 100);
-		assertEquals("Upon taking healing a players HP should increase by not past the players Maximum HP", 100, result);
-	}
-
-	*//**
-	 * Tests healing a dead player
-	 *//*
+	 */
 	@Test
 	public void test_05() {
+		double result = calculateHealing(10, 50, 100);
+		double pass = 60;
+		assertTrue("Upon taking healing a players HP should increase by the amount healed", result == pass);
+	}
+
+
+	/**
+	 * Tests taking healing once the player is already at max HP
+	 */
+	@Test
+	public void test_06() {
+		double result = calculateHealing(10, 100, 100);
+		double pass = 100;
+		assertTrue("Upon taking healing a players HP should increase by not past the players Maximum HP", result == pass);
+	}
+
+
+	
+	/**
+	 * Tests healing a dead player
+	 */
+	@Test
+	public void test_07() {
 		double result = calculateHealing(10, 0, 100);
 		boolean stillDead = true;
 		if(result > 0) stillDead = false;
 		assertTrue("A dead player should not be able to be healed", stillDead);
-	}*/
+	}
 }

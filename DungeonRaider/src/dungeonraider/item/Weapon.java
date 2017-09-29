@@ -28,4 +28,30 @@ public class Weapon extends Equipment implements Upgradable {
 
 	}
 
+	public int getDamage() {
+		return damage;
+	}
+
+	public void setDamage(int damage) {
+		this.damage = damage;
+	}
+
+	public double getCritChance() {
+		return critChance;
+	}
+
+	public void setCritChance(double critChance) {
+		this.critChance = critChance;
+	}
+
+	public int getRange() {
+		return range;
+	}
+
+	public void setRange(int range) {
+		this.range = range;
+	}
+
+
+
 }

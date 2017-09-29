@@ -2,8 +2,8 @@ package dungeonraider.character;
 
 public interface Character {
 
-	public void lightAttack();
-	public void heavyAttack();
+	public int lightAttack();
+	public int heavyAttack();
 
 	public void walkLeft();
 	public void walkRight();

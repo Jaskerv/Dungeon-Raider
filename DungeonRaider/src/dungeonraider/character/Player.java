@@ -29,6 +29,7 @@ public class Player implements Character {
 	private BufferedImage spriteImage;
 
 	private static final int MAX_CAPACITY = 20;
+	private static final int SPRINT_MODIFIER = 2;
 
 
 	public Player() {
@@ -44,15 +45,15 @@ public class Player implements Character {
 
 
 	@Override
-	public void lightAttack() {
+	public int lightAttack() {
 		// TODO Auto-generated method stub
-
+		return secondaryWeapon.getDamage();
 	}
 
 	@Override
-	public void heavyAttack() {
+	public int heavyAttack() {
 		// TODO Auto-generated method stub
-
+		return primaryWeapon.getDamage();
 	}
 
 	@Override
@@ -82,29 +83,41 @@ public class Player implements Character {
 	@Override
 	public void runLeft() {
 		// TODO Auto-generated method stub
-
+		this.x -= speed*SPRINT_MODIFIER;
 	}
 
 	@Override
 	public void runRight() {
 		// TODO Auto-generated method stub
-
+		this.x += speed*SPRINT_MODIFIER;
 	}
 
 	@Override
 	public void runUp() {
 		// TODO Auto-generated method stub
-
+		this.y += speed*SPRINT_MODIFIER;
 	}
 
 	@Override
 	public void runDown() {
 		// TODO Auto-generated method stub
-
+		this.y -= speed*SPRINT_MODIFIER;
 	}
 
 	public void interact() {
 
+	}
+
+	public int getGoldTotal() {
+		return gold;
+	}
+
+	public void spendGold(int amountSpent) {
+		gold = gold - amountSpent;
+	}
+
+	public void collectgold(int amountRecieved) {
+		gold = gold + amountRecieved;
 	}
 
 	public BufferedImage getSpriteImage() {
