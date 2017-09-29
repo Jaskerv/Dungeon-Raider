@@ -5,6 +5,7 @@ public class Weapon extends Equipment implements Upgradable {
 	private int damage;
 	private double critChance;
 	private int range;
+	private int upgradeModifier;
 
 	/**
 	 *
@@ -25,7 +26,7 @@ public class Weapon extends Equipment implements Upgradable {
 	 */
 	@Override
 	public void upgrade() {
-
+		damage += upgradeModifier * damage / 2;
 	}
 
 	public int getDamage() {

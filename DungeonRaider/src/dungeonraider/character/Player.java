@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import dungeonraider.controller.KeyController;
 import dungeonraider.item.Armour;
 import dungeonraider.item.Weapon;
+import dungeonraider.sprite.Sprite;
 import dungeonraider.util.Position;
 
 public class Player implements Character {
@@ -26,7 +27,7 @@ public class Player implements Character {
 	private Weapon secondaryWeapon;
 	private Armour armour;
 	private Inventory inventory;
-	private BufferedImage spriteImage;
+	private Sprite spriteImage;
 
 	private static final int MAX_CAPACITY = 20;
 	private static final int SPRINT_MODIFIER = 2;
@@ -35,12 +36,10 @@ public class Player implements Character {
 	public Player() {
 		this.x = 0;
 		this.y = 0;
-		this.spriteImage = new BufferedImage(10, 30,
-				BufferedImage.TYPE_INT_RGB);
-		Graphics g = spriteImage.getGraphics();
-		g.setColor(Color.RED);
-		g.fillRect(this.x, this.y, 10, 30);
-		g.dispose();
+//		Graphics g = spriteImage.getGraphics();
+//		g.setColor(Color.RED);
+//		g.fillRect(this.x, this.y, 10, 30);
+//		g.dispose();
 	}
 
 
@@ -123,14 +122,13 @@ public class Player implements Character {
 
 
 
-	public BufferedImage getSpriteImage() {
+/*	public BufferedImage getSpriteImage() {
 		return spriteImage;
 	}
 
 	public void render(Graphics g) {
 		g.drawImage(this.spriteImage, x, y, null);
-	}
-
+	}*/
 
 
 

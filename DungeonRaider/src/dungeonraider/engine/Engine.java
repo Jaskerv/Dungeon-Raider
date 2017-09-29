@@ -97,9 +97,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 		super.paint(g);
 		//Renders the map first (bottom layer of the image)
 		renderer.renderMap(currentMap);
-		renderer.renderRectangle(testRect, 10, 10);
-		/** Need to render all the images first */
-		renderer.renderSprite(testSprite, 0, 0, 5, 5);
+
 
 		// renderer.renderImage(test, 0, 0, 10, 10);
 		// g.setColor(Color.blue);
