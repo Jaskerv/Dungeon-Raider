@@ -58,9 +58,13 @@ public class Map {
 		this.timeLimit = mapStates[2];
 	}
 
+//	public static int findTileSize() {
+//		int screenWidth = Engine.WIDTH;
+//		return screenWidth / 22;
+//	}
+	
 	public static int findTileSize() {
-		int screenWidth = Engine.WIDTH;
-		return screenWidth / 22;
+		return 96;
 	}
 
 	public Tile[][] getMap() { return map; }

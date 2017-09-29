@@ -114,7 +114,7 @@ public class Renderer {
 				Tile tile = map.getMap()[x][y];
 				Sprite tileSprite = tile.getSprite();
 				renderArray(tileSprite.getPixels(), tileSprite.getWidth(),
-						tileSprite.getHeight(), tile.getX(), tile.getY(), 3, 3);
+						tileSprite.getHeight(), tile.getX(), tile.getY(), 6, 6);
 			}
 		}
 	}
