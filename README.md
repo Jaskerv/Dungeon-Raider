@@ -39,7 +39,11 @@ Tasks for Charnon:
 - [ ] Movement Library
 
 Tasks for Harry:
-- [ ] Map library
+- [x] Map library
 
 Tasks for Gabe:
 - [ ] Stat Library
+
+<h2> Week 10 (02/10 - 08/10) </h2>
+
+
