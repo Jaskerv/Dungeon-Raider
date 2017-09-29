@@ -18,7 +18,7 @@ public class Tile {
 	private final int height;
 	private boolean boundary;
 	/** Sprite image resources */
-	private static final String SPRITE_SHEET_PATH = "resources/tiles/Tiles1.png";
+	private static final String SPRITE_SHEET_PATH = "resources/tiles/DungeonTileset1.png";
 	private Sprite sprite;
 	private static final SpriteSheet SPRITE_SHEET =
 			new SpriteSheet(Engine.loadImage(SPRITE_SHEET_PATH));
@@ -54,24 +54,23 @@ public class Tile {
 		switch (symbol) {
 			//standard centre grass tile
 			case 'W':
-				this.boundary = true;
-				return SPRITE_SHEET.getSprite(0, 2);
+				return SPRITE_SHEET.getSprite(4, 8);
 			//north wall
 			case '1':
 				this.boundary = true;
-				return SPRITE_SHEET.getSprite(5, 1);
+				return SPRITE_SHEET.getSprite(0, 1);
 			//west wall
 			case '2':
 				this.boundary = true;
-				return SPRITE_SHEET.getSprite(4, 1);
+				return SPRITE_SHEET.getSprite(0, 1);
 			//south wall
 			case '3':
 				this.boundary = true;
-				return SPRITE_SHEET.getSprite(5, 2);
+				return SPRITE_SHEET.getSprite(0, 1);
 			//east wall
 			case '4':
 				this.boundary = true;
-				return SPRITE_SHEET.getSprite(6, 1);
+				return SPRITE_SHEET.getSprite(0, 1);
 		}
 		return null;
 	}

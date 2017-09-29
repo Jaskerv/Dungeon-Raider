@@ -57,8 +57,10 @@ public class Engine extends JFrame implements Runnable, Observer {
 	/** Test Objects */
 	private BufferedImage testImage;
 	private Rectangle testRect;
-	private Sprite testSprite;
+	private Sprite playerSprite;
 	private SpriteSheet testSpriteSheet;
+	private SpriteSheet dungeonTiles = 
+			new SpriteSheet(loadImage("resources/tiles/DungeonTileset1.png"));
 
 	public Engine() {
 		this.canvas = new Canvas();
@@ -95,13 +97,14 @@ public class Engine extends JFrame implements Runnable, Observer {
 		BufferedImage sheet = loadImage("resources/tiles/Tiles1.png");
 		testSpriteSheet = new SpriteSheet(sheet);
 		testSpriteSheet.loadSprites(16, 16);
-		this.testSprite = testSpriteSheet.getSprite(0, 0);
+		dungeonTiles.loadSprites(16, 16);
+		this.playerSprite = dungeonTiles.getSprite(4, 6);
 
 		/**
 		 * Initiating the players
 		 */
 		players = new ArrayList<Player>();
-		this.player = new Player(100, 1, 100, testSprite);
+		this.player = new Player(100, 100, 100, playerSprite);
 		this.addKeyListener(keyBinds);
 		this.setFocusable(true);
 	}

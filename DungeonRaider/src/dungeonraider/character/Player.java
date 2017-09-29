@@ -1,10 +1,5 @@
 package dungeonraider.character;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-
-import dungeonraider.controller.KeyController;
 import dungeonraider.item.Armour;
 import dungeonraider.item.Weapon;
 import dungeonraider.sprite.Sprite;

@@ -17,7 +17,7 @@ public class NPC implements Character {
 	 * NPC Constructor constructor
 	 */
 	public NPC() {
-
+		
 	}
 
 	/**
@@ -94,5 +94,6 @@ public class NPC implements Character {
 		// TODO Auto-generated method stub
 
 	}
+
 
 }
