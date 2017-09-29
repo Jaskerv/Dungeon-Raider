@@ -103,7 +103,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 		 * Initiating the players
 		 */
 		players = new ArrayList<Player>();
-		this.player = new Player(100, 100, 100, playerSprite);
+		this.player = new Player(this.renderer.getCamera().getCenter(), 100, playerSprite, 10);
 		this.addKeyListener(keyBinds);
 		this.setFocusable(true);
 	}
@@ -119,7 +119,8 @@ public class Engine extends JFrame implements Runnable, Observer {
 		/** Set black first */
 		renderer.clearArray();
 		renderer.renderMap(currentMap);
-		renderer.renderSprite(player.getSpriteImage(), player.getX(), player.getY(), 10, 10);
+		renderer.renderSprite(player.getSpriteImage(), player.getX(), player.getY(), player.getZoom(),
+				player.getZoom());
 
 		/** Then render the Renderer */
 		renderer.render(g);
@@ -178,16 +179,22 @@ public class Engine extends JFrame implements Runnable, Observer {
 	 */
 	public void update() {
 		Camera camera = renderer.getCamera();
-		if (keyBinds.isUp())
-			renderer.getCamera().moveCamera(0, -player.getSpeed());
-		if (keyBinds.isDown())
-			renderer.getCamera().moveCamera(0, player.getSpeed());
-		if (keyBinds.isLeft())
-			renderer.getCamera().moveCamera(-player.getSpeed(), 0);
-		if (keyBinds.isRight())
-			renderer.getCamera().moveCamera(player.getSpeed(), 0);
-		this.player.setX(camera.getCenter().getX());
-		this.player.setY(camera.getCenter().getY());
+		if (keyBinds.isUp()) {
+			camera.moveCamera(0, -player.getSpeed());
+			player.walkUp();
+		}
+		if (keyBinds.isDown()) {
+			camera.moveCamera(0, player.getSpeed());
+			player.walkDown();
+		}
+		if (keyBinds.isLeft()) {
+			camera.moveCamera(-player.getSpeed(), 0);
+			player.walkLeft();
+		}
+		if (keyBinds.isRight()) {
+			camera.moveCamera(player.getSpeed(), 0);
+			player.walkRight();
+		}
 	}
 
 	/**
