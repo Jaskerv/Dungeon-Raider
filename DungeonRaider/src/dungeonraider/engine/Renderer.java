@@ -106,7 +106,7 @@ public class Renderer {
 
 	/**
 	 * This method renders the map by rendering each tile's pixels.
-	 * @param map
+	 * @param map  this is the current map that will be displayed
 	 */
 	public void renderMap(Map map) {
 		for (int y = 0; y < 22; y++) {
