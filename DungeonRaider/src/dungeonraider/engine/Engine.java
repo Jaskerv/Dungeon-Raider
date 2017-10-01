@@ -60,7 +60,14 @@ public class Engine extends JFrame implements Runnable, Observer {
 	private Sprite playerSprite;
 	private SpriteSheet testSpriteSheet;
 	private SpriteSheet dungeonTiles = new SpriteSheet(loadImage("resources/tiles/DungeonTileset1.png"));
+	/** Tutorial map wall boundaries */
+	private static final int LEFT_WALL = 60;
+	private static final int TOP_WALL = 100;
+	private static final int RIGHT_WALL = 1895;
+	private static final int BOTTOM_WALL = 1850;
 
+	
+	
 	public Engine() {
 		this.canvas = new Canvas();
 		this.tk = this.getToolkit();
@@ -178,22 +185,32 @@ public class Engine extends JFrame implements Runnable, Observer {
 	 * This method will run at a specified speed.
 	 */
 	public void update() {
+		System.out.print(player.getX() + "," + player.getY());
+		System.out.println();
 		Camera camera = renderer.getCamera();
 		if (keyBinds.isUp()) {
-			camera.moveCamera(0, -player.getSpeed());
-			player.walkUp();
+			if (player.getY() >= TOP_WALL) {
+				camera.moveCamera(0, -player.getSpeed());
+				player.walkUp();
+			}
 		}
 		if (keyBinds.isDown()) {
-			camera.moveCamera(0, player.getSpeed());
-			player.walkDown();
+			if (player.getY() <= BOTTOM_WALL) {
+				camera.moveCamera(0, player.getSpeed());
+				player.walkDown();
+			}
 		}
 		if (keyBinds.isLeft()) {
-			camera.moveCamera(-player.getSpeed(), 0);
-			player.walkLeft();
+			if (player.getX() >= LEFT_WALL) {
+				camera.moveCamera(-player.getSpeed(), 0);
+				player.walkLeft();
+			}
 		}
 		if (keyBinds.isRight()) {
-			camera.moveCamera(player.getSpeed(), 0);
-			player.walkRight();
+			if (player.getX() <= RIGHT_WALL) {
+				camera.moveCamera(player.getSpeed(), 0);
+				player.walkRight();
+			}
 		}
 	}
 
