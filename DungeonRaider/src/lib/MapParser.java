@@ -60,8 +60,10 @@ public class MapParser {
         	}
         }
         if (scan.hasNext()) {
+            scan.close();
         	throw new IllegalArgumentException("Map is too large");
         }
+        scan.close();
         safeRoomCounter++;
         return map;
     }
