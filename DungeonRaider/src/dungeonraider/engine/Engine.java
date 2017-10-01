@@ -185,8 +185,6 @@ public class Engine extends JFrame implements Runnable, Observer {
 	 * This method will run at a specified speed.
 	 */
 	public void update() {
-		System.out.print(player.getX() + "," + player.getY());
-		System.out.println();
 		Camera camera = renderer.getCamera();
 		if (keyBinds.isUp()) {
 			if (player.getY() >= TOP_WALL) {
