@@ -1,11 +1,18 @@
 package dungeonraider.character;
 
+import dungeonraider.controller.KeyController;
+import dungeonraider.engine.Engine;
+import dungeonraider.engine.GameObject;
+import dungeonraider.engine.Renderer;
 import dungeonraider.item.Armour;
 import dungeonraider.item.Weapon;
 import dungeonraider.sprite.Sprite;
+import dungeonraider.util.Box;
+import dungeonraider.util.Camera;
 import dungeonraider.util.Position;
+import dungeonraider.util.Rectangle;
 
-public class Player implements Character {
+public class Player implements Character, GameObject {
 
 	private int lives;
 	private int healthPoints;
@@ -15,7 +22,7 @@ public class Player implements Character {
 	private int currentCapacity;
 	private int x;
 	private int y;
-	public static final int speed = 5;
+	public static final int speed = 7;
 
 	private Position position;
 	private Weapon primaryWeapon;
@@ -40,8 +47,6 @@ public class Player implements Character {
 	public Player(Position center, int stamina, Sprite playerSprite, int zoom) {
 		this.spriteImage = playerSprite;
 		this.zoom = zoom;
-		System.out.println(center.getX() + " " + center.getY());
-		System.out.println(playerSprite.getWidth() + " " + playerSprite.getHeight());
 		this.x = center.getX() - (playerSprite.getWidth() / 2 * zoom);
 		this.y = center.getY() - (playerSprite.getHeight() / 2 * zoom);
 	}
@@ -153,4 +158,64 @@ public class Player implements Character {
 		return zoom;
 	}
 
+	@Override
+	public void render(Renderer renderer, int xZoom, int yZoom) {
+		renderer.renderArray(spriteImage.getPixels(), spriteImage.getWidth(), spriteImage.getWidth(), x, y, zoom, zoom);
+
+	}
+
+	@Override
+	public void update(Engine engine) {
+		KeyController keyBinds = engine.getKeyBinds();
+		/** Player */
+		if (keyBinds.isUp()) {
+			walkUp();
+		}
+		if (keyBinds.isDown()) {
+			walkDown();
+		}
+		if (keyBinds.isLeft()) {
+			walkLeft();
+		}
+		if (keyBinds.isRight()) {
+			walkRight();
+		}
+		this.updateCamera(engine.getRenderer().getCamera());
+		// /** Player */
+		// Camera camera = renderer.getCamera();
+		// if (keyBinds.isUp()) {
+		// if (player.getY() >= TOP_WALL) {
+		// camera.moveCamera(0, -player.getSpeed());
+		// player.walkUp();
+		// }
+		// }
+		// if (keyBinds.isDown()) {
+		// if (player.getY() <= BOTTOM_WALL) {
+		// camera.moveCamera(0, player.getSpeed());
+		// player.walkDown();
+		// }
+		// }
+		// if (keyBinds.isLeft()) {
+		// if (player.getX() >= LEFT_WALL) {
+		// camera.moveCamera(-player.getSpeed(), 0);
+		// player.walkLeft();
+		// }
+		// }
+		// if (keyBinds.isRight()) {
+		// if (player.getX() <= RIGHT_WALL) {
+		// camera.moveCamera(player.getSpeed(), 0);
+		// player.walkRight();
+		// }
+		// }
+	}
+
+	/**
+	 * Updates the camera's position to center the player
+	 * 
+	 * @param camera
+	 */
+	private void updateCamera(Box camera) {
+		camera.setX(x - (camera.getWidth() / 2) + (this.spriteImage.getWidth() * zoom / 2));
+		camera.setY(y - (camera.getHeight() / 2) + (this.spriteImage.getHeight() * zoom / 2));
+	}
 }

@@ -1,5 +1,7 @@
 package dungeonraider.controller;
 
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Observable;
@@ -8,7 +10,7 @@ import dungeonraider.character.Player;
 import dungeonraider.engine.Engine;
 import dungeonraider.util.Camera;
 
-public class KeyController extends Observable implements KeyListener {
+public class KeyController extends Observable implements KeyListener,FocusListener {
 
 	private boolean up;
 	private boolean down;
@@ -104,6 +106,18 @@ public class KeyController extends Observable implements KeyListener {
 
 	public boolean isRight() {
 		return right;
+	}
+
+	@Override
+	public void focusGained(FocusEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void focusLost(FocusEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

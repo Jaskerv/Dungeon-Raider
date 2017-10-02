@@ -24,6 +24,7 @@ import dungeonraider.sprite.Sprite;
 import dungeonraider.sprite.SpriteSheet;
 import dungeonraider.util.Camera;
 import dungeonraider.util.PatternInt;
+import dungeonraider.util.Position;
 import dungeonraider.util.Rectangle;
 
 /**
@@ -39,7 +40,6 @@ public class Engine extends JFrame implements Runnable, Observer {
 	private Canvas canvas;
 	private Toolkit tk;
 	private Renderer renderer;
-	private List<Player> players;
 	public static int WIDTH = 1280;
 	public static int HEIGHT = 720;
 
@@ -55,22 +55,20 @@ public class Engine extends JFrame implements Runnable, Observer {
 	private Map currentMap = mapList.get(0);
 	int x = 0;
 	/** Test Objects */
-	private BufferedImage testImage;
-	private Rectangle testRect;
 	private Sprite playerSprite;
 	private SpriteSheet testSpriteSheet;
 	private SpriteSheet dungeonTiles = new SpriteSheet(loadImage("resources/tiles/DungeonTileset1.png"));
+	private GameObject[] object;
 	/** Tutorial map wall boundaries */
 	private static final int LEFT_WALL = 60;
 	private static final int TOP_WALL = 100;
 	private static final int RIGHT_WALL = 1895;
 	private static final int BOTTOM_WALL = 1850;
 
-	
-	
 	public Engine() {
 		this.canvas = new Canvas();
 		this.tk = this.getToolkit();
+		this.object = new GameObject[1];
 		/**
 		 * initiating key listener
 		 */
@@ -97,9 +95,6 @@ public class Engine extends JFrame implements Runnable, Observer {
 		/**
 		 * Testing Objects
 		 */
-		this.testRect = new Rectangle(30, 90, 40, 40);
-		this.testRect.generateGraphics(10, 356);
-		testImage = loadImage("resources/tiles/grassTile.PNG");
 		BufferedImage sheet = loadImage("resources/tiles/Tiles1.png");
 		testSpriteSheet = new SpriteSheet(sheet);
 		testSpriteSheet.loadSprites(16, 16);
@@ -109,10 +104,12 @@ public class Engine extends JFrame implements Runnable, Observer {
 		/**
 		 * Initiating the players
 		 */
-		players = new ArrayList<Player>();
-		this.player = new Player(this.renderer.getCamera().getCenter(), 100, playerSprite, 10);
+		this.player = new Player(new Position(200, 200), 100, playerSprite, 5);
+		this.object[0] = player;
+		this.canvas.addKeyListener(keyBinds);
+		this.canvas.addFocusListener(keyBinds);
 		this.addKeyListener(keyBinds);
-		this.setFocusable(true);
+		this.addFocusListener(keyBinds);
 	}
 
 	/**
@@ -122,13 +119,13 @@ public class Engine extends JFrame implements Runnable, Observer {
 		BufferStrategy b = canvas.getBufferStrategy();
 		Graphics g = b.getDrawGraphics();
 		super.paint(g);
+		 this.renderer.clearArray();
 		// Renders the map first (bottom layer of the image)
-		/** Set black first */
-		renderer.clearArray();
 		renderer.renderMap(currentMap);
-		renderer.renderSprite(player.getSpriteImage(), player.getX(), player.getY(), player.getZoom(),
-				player.getZoom());
-
+		/** Render Objects */
+		for (GameObject gameObject : object) {
+			gameObject.render(renderer, 3, 3);
+		}
 		/** Then render the Renderer */
 		renderer.render(g);
 		g.dispose();
@@ -185,30 +182,8 @@ public class Engine extends JFrame implements Runnable, Observer {
 	 * This method will run at a specified speed.
 	 */
 	public void update() {
-		Camera camera = renderer.getCamera();
-		if (keyBinds.isUp()) {
-			if (player.getY() >= TOP_WALL) {
-				camera.moveCamera(0, -player.getSpeed());
-				player.walkUp();
-			}
-		}
-		if (keyBinds.isDown()) {
-			if (player.getY() <= BOTTOM_WALL) {
-				camera.moveCamera(0, player.getSpeed());
-				player.walkDown();
-			}
-		}
-		if (keyBinds.isLeft()) {
-			if (player.getX() >= LEFT_WALL) {
-				camera.moveCamera(-player.getSpeed(), 0);
-				player.walkLeft();
-			}
-		}
-		if (keyBinds.isRight()) {
-			if (player.getX() <= RIGHT_WALL) {
-				camera.moveCamera(player.getSpeed(), 0);
-				player.walkRight();
-			}
+		for (GameObject gameObject : object) {
+			gameObject.update(this);
 		}
 	}
 
@@ -251,6 +226,20 @@ public class Engine extends JFrame implements Runnable, Observer {
 		count++;
 		return mapList;
 
+	}
+
+	/**
+	 * @return the keyBinds
+	 */
+	public KeyController getKeyBinds() {
+		return keyBinds;
+	}
+
+	/**
+	 * @return the renderer
+	 */
+	public Renderer getRenderer() {
+		return renderer;
 	}
 
 }
