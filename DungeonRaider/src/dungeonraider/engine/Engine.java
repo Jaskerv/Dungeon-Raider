@@ -19,6 +19,7 @@ import javax.swing.JFrame;
 
 import dungeonraider.character.Player;
 import dungeonraider.controller.KeyController;
+import dungeonraider.controller.MouseController;
 import dungeonraider.map.Map;
 import dungeonraider.sprite.Sprite;
 import dungeonraider.sprite.SpriteSheet;
@@ -47,7 +48,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 	 * Key listener - keeps track of cameras movement
 	 */
 	private KeyController keyBinds;
-
+	private MouseController mouseListener;
 	private Player player;
 
 	/** This will contain the list of maps from start to finish */
@@ -73,6 +74,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 		 * initiating key listener
 		 */
 		this.keyBinds = new KeyController();
+		this.mouseListener = new MouseController(this);
 		/** Sets name of JFrame window */
 		setTitle("Dungeon Raider");
 		/** Close program on exit */
@@ -106,10 +108,13 @@ public class Engine extends JFrame implements Runnable, Observer {
 		 */
 		this.player = new Player(new Position(200, 200), 100, playerSprite, 5);
 		this.object[0] = player;
+		
 		this.canvas.addKeyListener(keyBinds);
 		this.canvas.addFocusListener(keyBinds);
+		this.canvas.addMouseListener(mouseListener);
 		this.addKeyListener(keyBinds);
 		this.addFocusListener(keyBinds);
+		this.addMouseListener(mouseListener);
 	}
 
 	/**
