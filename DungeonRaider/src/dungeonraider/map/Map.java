@@ -62,7 +62,7 @@ public class Map {
 //		int screenWidth = Engine.WIDTH;
 //		return screenWidth / 22;
 //	}
-	
+
 	public static int findTileSize() {
 		return 96;
 	}
