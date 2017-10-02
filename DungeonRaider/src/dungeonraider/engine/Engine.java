@@ -54,7 +54,6 @@ public class Engine extends JFrame implements Runnable, Observer {
 	/** This will contain the list of maps from start to finish */
 	private HashMap<Integer, Map> mapList = initialiseMaps();
 	private Map currentMap = mapList.get(0);
-	int x = 0;
 	/** Test Objects */
 	private Sprite playerSprite;
 	private SpriteSheet testSpriteSheet;
