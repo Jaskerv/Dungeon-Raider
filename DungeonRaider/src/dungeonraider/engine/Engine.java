@@ -17,6 +17,7 @@ import java.util.Observer;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import dungeonraider.UI.IngameInterface;
 import dungeonraider.character.Player;
 import dungeonraider.controller.KeyController;
 import dungeonraider.controller.MouseController;
@@ -50,7 +51,10 @@ public class Engine extends JFrame implements Runnable, Observer {
 	private KeyController keyBinds;
 	private MouseController mouseListener;
 	private Player player;
-
+	/**
+	 * 
+	 */
+	private IngameInterface GUI;
 	/** This will contain the list of maps from start to finish */
 	private HashMap<Integer, Map> mapList = initialiseMaps();
 	private Map currentMap = mapList.get(0);
@@ -92,7 +96,6 @@ public class Engine extends JFrame implements Runnable, Observer {
 		/** Creates 2 buffer renderer */
 		canvas.createBufferStrategy(3);
 		this.renderer = new Renderer(getWidth(), getHeight());
-
 		/**
 		 * Testing Objects
 		 */
@@ -107,7 +110,9 @@ public class Engine extends JFrame implements Runnable, Observer {
 		 */
 		this.player = new Player(new Position(200, 200), 100, playerSprite, 5);
 		this.object[0] = player;
-		
+		/** GUI */
+		this.GUI = new IngameInterface(player, WIDTH, HEIGHT);
+
 		this.canvas.addKeyListener(keyBinds);
 		this.canvas.addFocusListener(keyBinds);
 		this.canvas.addMouseListener(mouseListener);
@@ -123,13 +128,15 @@ public class Engine extends JFrame implements Runnable, Observer {
 		BufferStrategy b = canvas.getBufferStrategy();
 		Graphics g = b.getDrawGraphics();
 		super.paint(g);
-		 this.renderer.clearArray();
+		this.renderer.clearArray();
 		// Renders the map first (bottom layer of the image)
 		renderer.renderMap(currentMap);
 		/** Render Objects */
 		for (GameObject gameObject : object) {
 			gameObject.render(renderer, 3, 3);
 		}
+		/** Render GUI */
+		this.GUI.render(renderer, GUI.XZOOM, GUI.YZOOM);
 		/** Then render the Renderer */
 		renderer.render(g);
 		g.dispose();

@@ -145,6 +145,24 @@ public class Renderer {
 	}
 
 	/**
+	 * Renders the overlay of the GUI
+	 * 
+	 * @param sprite
+	 */
+	public void renderGUI(Sprite sprite) {
+		int[] ui = sprite.getPixels();
+		int height = view.getHeight();
+		int width = view.getWidth();
+		for (int y = 0; y < height; y++)
+			for (int x = 0; x < width; x++) {
+				int pixelIndex = (x + (y * view.getWidth()));
+				if (pixels.length > pixelIndex && !Engine.alpha.match(ui[pixelIndex])) {
+					pixels[pixelIndex] = ui[pixelIndex];
+				}
+			}
+	}
+
+	/**
 	 * Sets pixel to Pixels array.
 	 *
 	 * @param pixel
