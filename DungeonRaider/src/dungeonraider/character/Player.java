@@ -37,8 +37,6 @@ public class Player implements Character, GameObject {
 
 	private static final int MAX_CAPACITY = 20;
 	private static final int SPRINT_MODIFIER = 2;
-	private boolean guiUpdate;
-
 	private int zoom;
 	private Queue<Integer> damageQueue;
 
@@ -58,7 +56,6 @@ public class Player implements Character, GameObject {
 		this.y = center.getY() - (playerSprite.getHeight() / 2 * zoom);
 		this.hp = hp;
 		this.hpMax = hpMax;
-		this.guiUpdate = false;
 	}
 
 	@Override
@@ -194,7 +191,6 @@ public class Player implements Character, GameObject {
 		if (!damageQueue.isEmpty()) {
 			int damage = damageQueue.poll();
 			this.hp += damage;
-			this.guiUpdate = true;
 		}
 		// /** Player */
 		// Camera camera = renderer.getCamera();
@@ -264,18 +260,5 @@ public class Player implements Character, GameObject {
 		return damageQueue;
 	}
 
-	/**
-	 * @return the guiUpdate
-	 */
-	public boolean isGuiUpdate() {
-		return guiUpdate;
-	}
-
-	/**
-	 * @param guiUpdate the guiUpdate to set
-	 */
-	public void setGuiUpdate(boolean guiUpdate) {
-		this.guiUpdate = guiUpdate;
-	}
 
 }

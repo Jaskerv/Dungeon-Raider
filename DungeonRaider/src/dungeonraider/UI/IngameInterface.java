@@ -78,9 +78,7 @@ public class IngameInterface implements GameObject {
 		int hpBar = (int) (hpPerc * (double) HPMAX);
 		Player player = engine.getPlayer();
 		if (hpBar <= HPMAX && hpBar >= 0) {
-			System.out.println(healthBar.getWidth());
 			this.healthBar = new Box(hpX, hpY, hpBar, hpHeight);
-			player.setGuiUpdate(false);
 		}
 	}
 
