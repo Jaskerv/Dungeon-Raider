@@ -27,12 +27,16 @@ public class IngameInterface implements GameObject {
 	public final int XZOOM = 1;
 	public final int YZOOM = 1;
 	private Box healthBar;
+	private final int HPMAX = 300;
+	private final int hpX = 112;
+	private final int hpY = 60;
+	private final int hpHeight = 30;
 
 	public IngameInterface(Player player, int width, int height) {
 		this.player = player;
 		this.width = width;
 		this.height = height;
-		this.healthBar = new Box(112, 60, 300, 30);
+		this.healthBar = new Box(hpX, hpY, HPMAX, hpHeight);
 		generateUI();
 	}
 
@@ -45,17 +49,23 @@ public class IngameInterface implements GameObject {
 		} catch (Exception e) {
 			System.out.println("File not found");
 		}
-		pixels = ui.getPixels();
-
+		pixels = ui.getPixels().clone();
 	}
 
 	@Override
 	public void render(Renderer renderer, int xZoom, int yZoom) {
+		this.ui.setPixels(pixels.clone());
 		for (int y = 0; y < height; y++)
 			for (int x = 0; x < width; x++) {
-				if (x >= healthBar.getX() && x <= (healthBar.getX() + healthBar.getWidth())) {
-					if (y >= healthBar.getY() && y <= (healthBar.getY() + healthBar.getHeight())) {
-						pixels[x + y * width] = Color.GREEN.getRGB();
+				if (healthBar.getWidth() != 0) {
+					if (x >= healthBar.getX() && x <= (healthBar.getX() + healthBar.getWidth())) {
+						if (y >= healthBar.getY() && y <= (healthBar.getY() + healthBar.getHeight())) {
+							int[] tempArray = ui.getPixels();
+							int r = (int) (Math.random() * 7000000);
+							tempArray[x + y * width] = r;
+							// tempArray[x + y * width] = Color.green.getRGB();
+							this.ui.setPixels(tempArray);
+						}
 					}
 				}
 			}
@@ -64,7 +74,14 @@ public class IngameInterface implements GameObject {
 
 	@Override
 	public void update(Engine engine) {
-
+		double hpPerc = ((double) player.getHp()) / ((double) player.getHpMax());
+		int hpBar = (int) (hpPerc * (double) HPMAX);
+		Player player = engine.getPlayer();
+		if (hpBar <= HPMAX && hpBar >= 0) {
+			System.out.println(healthBar.getWidth());
+			this.healthBar = new Box(hpX, hpY, hpBar, hpHeight);
+			player.setGuiUpdate(false);
+		}
 	}
 
 }

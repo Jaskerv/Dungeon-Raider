@@ -73,11 +73,6 @@ public class Engine extends JFrame implements Runnable, Observer {
 		this.canvas = new Canvas();
 		this.tk = this.getToolkit();
 		this.object = new GameObject[1];
-		/**
-		 * initiating key listener
-		 */
-		this.keyBinds = new KeyController();
-		this.mouseListener = new MouseController(this);
 		/** Sets name of JFrame window */
 		setTitle("Dungeon Raider");
 		/** Close program on exit */
@@ -108,14 +103,20 @@ public class Engine extends JFrame implements Runnable, Observer {
 		/**
 		 * Initiating the players
 		 */
-		this.player = new Player(new Position(200, 200), 100, playerSprite, 5);
+		this.player = new Player(new Position(200, 200), 100, playerSprite, 5, 100, 300);
 		this.object[0] = player;
 		/** GUI */
 		this.GUI = new IngameInterface(player, WIDTH, HEIGHT);
 
+		/**
+		 * initiating key listener
+		 */
+		this.keyBinds = new KeyController(player);
+		this.mouseListener = new MouseController(this);
 		this.canvas.addKeyListener(keyBinds);
 		this.canvas.addFocusListener(keyBinds);
 		this.canvas.addMouseListener(mouseListener);
+
 		this.addKeyListener(keyBinds);
 		this.addFocusListener(keyBinds);
 		this.addMouseListener(mouseListener);
@@ -196,6 +197,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 		for (GameObject gameObject : object) {
 			gameObject.update(this);
 		}
+		this.GUI.update(this);
 	}
 
 	/**
@@ -251,6 +253,13 @@ public class Engine extends JFrame implements Runnable, Observer {
 	 */
 	public Renderer getRenderer() {
 		return renderer;
+	}
+
+	/**
+	 * @return the player
+	 */
+	public Player getPlayer() {
+		return player;
 	}
 
 }

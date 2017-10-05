@@ -10,18 +10,22 @@ import dungeonraider.character.Player;
 import dungeonraider.engine.Engine;
 import dungeonraider.util.Camera;
 
-public class KeyController extends Observable implements KeyListener,FocusListener {
+public class KeyController extends Observable implements KeyListener, FocusListener {
 
 	private boolean up;
 	private boolean down;
 	private boolean left;
 	private boolean right;
+	private boolean hurtPlayer;
+	private Player player;
 
-	public KeyController() {
+	public KeyController(Player player) {
 		this.up = false;
 		this.down = false;
 		this.left = false;
 		this.right = false;
+		this.hurtPlayer = false;
+		this.player = player;
 	}
 
 	@Override
@@ -34,32 +38,34 @@ public class KeyController extends Observable implements KeyListener,FocusListen
 		int key = e.getKeyCode();
 		switch (key) {
 		case KeyEvent.VK_W:
-			//move up
+			// move up
 			this.up = true;
-			//System.out.println("w pressed");
+			// System.out.println("w pressed");
 			break;
 		case KeyEvent.VK_A:
-			//move left
+			// move left
 			this.left = true;
-			//System.out.println("a pressed");
+			// System.out.println("a pressed");
 			break;
 		case KeyEvent.VK_S:
-			//move down
+			// move down
 			this.down = true;
-			//System.out.println("s pressed");
+			// System.out.println("s pressed");
 			break;
 		case KeyEvent.VK_D:
-			//move right
+			// move right
 			this.right = true;
-			//System.out.println("d pressed");
+			// System.out.println("d pressed");
 			break;
 		case KeyEvent.VK_I:
 			// myModel.displayInventory()...
 			break;
+		// case KeyEvent.VK_P:
+		// hurtPlayer = true;
+		// break;
 		}
+
 	}
-
-
 
 	@Override
 	public void keyReleased(KeyEvent e) {
@@ -67,28 +73,30 @@ public class KeyController extends Observable implements KeyListener,FocusListen
 		int key = e.getKeyCode();
 		switch (key) {
 		case KeyEvent.VK_W:
-			//move up
+			// move up
 			this.up = false;
-			//System.out.println("w releasedd");
+			// System.out.println("w releasedd");
 			break;
 		case KeyEvent.VK_A:
-			//move left
+			// move left
 			this.left = false;
-			//System.out.println("a released");
+			// System.out.println("a released");
 			break;
 		case KeyEvent.VK_S:
-			//move down
+			// move down
 			this.down = false;
-			//System.out.println("s released");
+			// System.out.println("s released");
 			break;
 		case KeyEvent.VK_D:
-			//move right
+			// move right
 			this.right = false;
-			//System.out.println("d released");
+			// System.out.println("d released");
 			break;
 		case KeyEvent.VK_I:
 			// myModel.displayInventory()...
 			break;
+		case KeyEvent.VK_P:
+			this.player.damage(10);
 		}
 	}
 
@@ -108,16 +116,23 @@ public class KeyController extends Observable implements KeyListener,FocusListen
 		return right;
 	}
 
+	/**
+	 * @return the hurtPlayer
+	 */
+	public boolean isHurtPlayer() {
+		return hurtPlayer;
+	}
+
 	@Override
 	public void focusGained(FocusEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void focusLost(FocusEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

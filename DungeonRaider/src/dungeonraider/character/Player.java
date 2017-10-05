@@ -1,5 +1,8 @@
 package dungeonraider.character;
 
+import java.util.PriorityQueue;
+import java.util.Queue;
+
 import dungeonraider.controller.KeyController;
 import dungeonraider.engine.Engine;
 import dungeonraider.engine.GameObject;
@@ -15,7 +18,8 @@ import dungeonraider.util.Rectangle;
 public class Player implements Character, GameObject {
 
 	private int lives;
-	private int healthPoints;
+	private int hp;
+	private int hpMax;
 	private int gold;
 	private int stamina;
 	private boolean sprint;
@@ -33,10 +37,12 @@ public class Player implements Character, GameObject {
 
 	private static final int MAX_CAPACITY = 20;
 	private static final int SPRINT_MODIFIER = 2;
+	private boolean guiUpdate;
 
 	private int zoom;
+	private Queue<Integer> damageQueue;
 
-	public Player(int x, int y, int stamina, Sprite sprite, int zoom) {
+	public Player(int x, int y, int stamina, Sprite sprite, int zoom, int hp, int hpMax) {
 		this.x = x;
 		this.y = y;
 		this.zoom = zoom;
@@ -44,11 +50,15 @@ public class Player implements Character, GameObject {
 		this.stamina = stamina;
 	}
 
-	public Player(Position center, int stamina, Sprite playerSprite, int zoom) {
+	public Player(Position center, int stamina, Sprite playerSprite, int zoom, int hp, int hpMax) {
+		this.damageQueue = new PriorityQueue<>();
 		this.spriteImage = playerSprite;
 		this.zoom = zoom;
 		this.x = center.getX() - (playerSprite.getWidth() / 2 * zoom);
 		this.y = center.getY() - (playerSprite.getHeight() / 2 * zoom);
+		this.hp = hp;
+		this.hpMax = hpMax;
+		this.guiUpdate = false;
 	}
 
 	@Override
@@ -181,6 +191,11 @@ public class Player implements Character, GameObject {
 			walkRight();
 		}
 		this.updateCamera(engine.getRenderer().getCamera());
+		if (!damageQueue.isEmpty()) {
+			int damage = damageQueue.poll();
+			this.hp += damage;
+			this.guiUpdate = true;
+		}
 		// /** Player */
 		// Camera camera = renderer.getCamera();
 		// if (keyBinds.isUp()) {
@@ -218,4 +233,49 @@ public class Player implements Character, GameObject {
 		camera.setX(x - (camera.getWidth() / 2) + (this.spriteImage.getWidth() * zoom / 2));
 		camera.setY(y - (camera.getHeight() / 2) + (this.spriteImage.getHeight() * zoom / 2));
 	}
+
+	/**
+	 * @return the hp
+	 */
+	public int getHp() {
+		return hp;
+	}
+
+	/**
+	 * @return the hpMax
+	 */
+	public int getHpMax() {
+		return hpMax;
+	}
+
+	/**
+	 * Damages player with positive numbers, heals player with negative numbers
+	 * 
+	 * @param i
+	 */
+	public void damage(int i) {
+		this.damageQueue.offer(-i);
+	}
+
+	/**
+	 * @return the damageQueue
+	 */
+	public Queue<Integer> getDamageQueue() {
+		return damageQueue;
+	}
+
+	/**
+	 * @return the guiUpdate
+	 */
+	public boolean isGuiUpdate() {
+		return guiUpdate;
+	}
+
+	/**
+	 * @param guiUpdate the guiUpdate to set
+	 */
+	public void setGuiUpdate(boolean guiUpdate) {
+		this.guiUpdate = guiUpdate;
+	}
+
 }

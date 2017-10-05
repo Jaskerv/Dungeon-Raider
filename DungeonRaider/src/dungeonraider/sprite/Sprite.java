@@ -46,6 +46,13 @@ public class Sprite {
 	public int[] getPixels() {
 		return pixels;
 	}
+	
+	/**
+	 * @param pixels the pixels to set
+	 */
+	public void setPixels(int[] pixels) {
+		this.pixels = pixels;
+	}
 
 	public String toString() {
 		StringBuilder s = new StringBuilder();
