@@ -1,29 +1,24 @@
 package dungeonraider.item;
 
-public class Weapon extends Equipment implements Upgradable {
+import java.awt.Window.Type;
+
+public class Shield extends Equipment implements Upgradable {
 
 	private String type;
 	private String name;
 	private int cost;
-	private int damage;
-	private double critChance;
+	private int armour;
+	private int damageReflectChance;
 	private int numberOfUpgrades = 0;
 
-	/**
-	 * @param type weapon or shield
-	 * @param name
-	 * @param cost weapons or shields dropped from monsters cost nothing
-	 * @param damage
-	 * @param critChance in percentage
-	 *
-	 */
-	public Weapon(String type, String name, int cost, int damage, int critChance) {
+	public Shield(String type, String name, int cost, int armour,
+			int damageReflectChance) {
 		super(cost);
 		this.type = type;
 		this.name = name;
 		this.cost = cost;
-		this.damage = damage;
-		this.critChance = critChance;
+		this.armour = armour;
+		this.damageReflectChance = damageReflectChance;
 
 	}
 
@@ -32,7 +27,7 @@ public class Weapon extends Equipment implements Upgradable {
 	 */
 	@Override
 	public void upgrade() {
-		//damage += upgradeModifier * damage / 2;
+	//	defence += upgradeModifier * defence / 2;
 	}
 
 	public String getType() {
@@ -59,20 +54,20 @@ public class Weapon extends Equipment implements Upgradable {
 		this.cost = cost;
 	}
 
-	public int getDamage() {
-		return damage;
+	public int getArmour() {
+		return armour;
 	}
 
-	public void setDamage(int damage) {
-		this.damage = damage;
+	public void setArmour(int armour) {
+		this.armour = armour;
 	}
 
-	public double getCritChance() {
-		return critChance;
+	public int getDamageReflectChance() {
+		return damageReflectChance;
 	}
 
-	public void setCritChance(double critChance) {
-		this.critChance = critChance;
+	public void setDamageReflectChance(int damageReflectChance) {
+		this.damageReflectChance = damageReflectChance;
 	}
 
 	public int getNumberOfUpgrades() {
@@ -82,7 +77,6 @@ public class Weapon extends Equipment implements Upgradable {
 	public void setNumberOfUpgrades(int numberOfUpgrades) {
 		this.numberOfUpgrades = numberOfUpgrades;
 	}
-
 
 
 

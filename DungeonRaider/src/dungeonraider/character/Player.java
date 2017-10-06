@@ -7,7 +7,7 @@ import dungeonraider.controller.KeyController;
 import dungeonraider.engine.Engine;
 import dungeonraider.engine.GameObject;
 import dungeonraider.engine.Renderer;
-import dungeonraider.item.Armour;
+import dungeonraider.item.Shield;
 import dungeonraider.item.Weapon;
 import dungeonraider.map.Map;
 import dungeonraider.sprite.Sprite;
@@ -32,7 +32,7 @@ public class Player implements Character, GameObject {
 	private Position position;
 	private Weapon primaryWeapon;
 	private Weapon secondaryWeapon;
-	private Armour armour;
+	private Shield armour;
 	private Inventory inventory;
 	private Sprite spriteImage;
 
