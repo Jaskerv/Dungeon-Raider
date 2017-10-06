@@ -42,9 +42,26 @@ public class MapParser {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+		//If it detects a '{' (item contents of the map), then it skips over it
+		//and skips all of the contents contained inside it until it finds a
+		//closing brace '}'.
+		boolean openingBracesFound = false;
+		char itemContents = scan.next().charAt(0);
+		if (itemContents == '{') {
+			openingBracesFound = true;
+			while (itemContents != '}') {
+				itemContents = scan.next().charAt(0);
+			}
+		}
 		//the first three values are the map states
 		try {
-			mapStates[0] = Integer.parseInt(scan.next());
+			//if an opening brace was found, then the current scanner pointer
+			//will be pointed to a '}'. Instead it should point to the next
+			//element, which should be an integer specifying the map states.
+			//else, if it didn't find a '{' at the start, then the current
+			//scanner pointer element should be the map state integer
+			mapStates[0] = openingBracesFound ?
+					Integer.parseInt(scan.next()) : itemContents;
 			mapStates[1] = Integer.parseInt(scan.next());
 			mapStates[2] = Integer.parseInt(scan.next());
 		}

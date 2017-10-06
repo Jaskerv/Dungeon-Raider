@@ -222,6 +222,50 @@ public class MapParserTests {
         	//good
         }
     }
+    
+    /**
+     * With the introduction of items being inside the map files, this method
+     * tests to ensure that the map is still being generated correctly.
+     */
+    @Test
+    public void testStringToMap_05() {
+    	String testMap = 
+    			"{ \n" +	
+    			"Chest1 4 3 \n" +
+    			"Weapon-Chest1 ShortSword 0 2 10 \n" +
+    			"} \n" +
+    			"0 0 0\n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n";
+    	testMap = formStructure(testMap);
+        try {
+        	File testFile = createTestFile("testFile", testMap);
+            MapParser.parseFileToMapArray(testFile);
+        }
+        catch (IllegalArgumentException e) {
+        	fail("Nothing bad was supposed to happen");
+        }
+    }
 
     /**
      * This tests out the functionality of the MapLibrary.generateMonsters()
