@@ -2,7 +2,7 @@ package dungeonraider.item;
 
 public class Weapon extends Equipment implements Upgradable {
 
-	private String type;
+
 	private String name;
 	private int cost;
 	private int damage;
@@ -17,9 +17,9 @@ public class Weapon extends Equipment implements Upgradable {
 	 * @param critChance in percentage
 	 *
 	 */
-	public Weapon(String type, String name, int cost, int damage, int critChance) {
+	public Weapon(String name, int cost, int damage, int critChance) {
 		super(cost);
-		this.type = type;
+
 		this.name = name;
 		this.cost = cost;
 		this.damage = damage;
@@ -35,13 +35,7 @@ public class Weapon extends Equipment implements Upgradable {
 		//damage += upgradeModifier * damage / 2;
 	}
 
-	public String getType() {
-		return type;
-	}
 
-	public void setType(String type) {
-		this.type = type;
-	}
 
 	public String getName() {
 		return name;

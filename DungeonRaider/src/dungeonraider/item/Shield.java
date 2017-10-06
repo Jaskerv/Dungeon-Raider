@@ -4,17 +4,17 @@ import java.awt.Window.Type;
 
 public class Shield extends Equipment implements Upgradable {
 
-	private String type;
+
 	private String name;
 	private int cost;
 	private int armour;
 	private int damageReflectChance;
 	private int numberOfUpgrades = 0;
 
-	public Shield(String type, String name, int cost, int armour,
+	public Shield(String name, int cost, int armour,
 			int damageReflectChance) {
 		super(cost);
-		this.type = type;
+
 		this.name = name;
 		this.cost = cost;
 		this.armour = armour;
@@ -30,13 +30,7 @@ public class Shield extends Equipment implements Upgradable {
 	//	defence += upgradeModifier * defence / 2;
 	}
 
-	public String getType() {
-		return type;
-	}
 
-	public void setType(String type) {
-		this.type = type;
-	}
 
 	public String getName() {
 		return name;
