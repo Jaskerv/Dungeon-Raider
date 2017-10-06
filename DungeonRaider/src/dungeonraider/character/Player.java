@@ -136,7 +136,7 @@ public class Player implements Character, GameObject {
 	}
 
 	public void collectgold(int amountRecieved) {
-		gold = gold + amountRecieved;
+		gold = gold + amountRecieved;;
 	}
 
 	public int getX() {
@@ -181,18 +181,23 @@ public class Player implements Character, GameObject {
 	public void update(Engine engine) {
 		KeyController keyBinds = engine.getKeyBinds();
 		Map currentMap = engine.getCurrentMap();
+
+		int width = spriteImage.getHeight() * zoom;
+		int right = x + width;
+
+
 		/** Player */
 		if (keyBinds.isUp()) {
-			if(checkBoundry(currentMap, x, y - speed))	walkUp();
+			if(checkBoundry(currentMap, x + width/2, y - speed))	walkUp();
 		}
 		if (keyBinds.isDown()) {
-			if(checkBoundry(currentMap, x, y + speed))	walkDown();
+			if(checkBoundry(currentMap, x + width/2, y + speed))	walkDown();
 		}
 		if (keyBinds.isLeft()) {
 			if(checkBoundry(currentMap, x - speed, y))	walkLeft();
 		}
 		if (keyBinds.isRight()) {
-			if(checkBoundry(currentMap, x + speed, y))	walkRight();
+			if(checkBoundry(currentMap, right + speed, y))	walkRight();
 		}
 		this.updateCamera(engine.getRenderer().getCamera());
 		if (!damageQueue.isEmpty()) {
