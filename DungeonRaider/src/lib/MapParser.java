@@ -69,56 +69,6 @@ public class MapParser {
     }
     
     /**
-     * This method is only used for parsing in strings to simulate a file.
-     * This method is used for testing purposes (JUnit tests). The logic of
-     * this method is the same as the main parseStringToMapArray() method, so
-     * the functionality of both methods will be tested through this one.
-     * @param s  The 'file' string
-     * @return  The 2d map array
-     */
-    public static char[][] parseStringToMapArray(String s) {
-    	//gets rid of all whitespace and \n for easier iteration of the string
-    	s = s.replaceAll("\\s+","");
-    	if (s.length() > (WIDTH*LENGTH) + NUM_STATES) {
-    	    throw new IllegalArgumentException("Map is too large");
-    	}
-    	if (	   !Character.isDigit(s.charAt(0)) 
-    			|| !Character.isDigit(s.charAt(1)) 
-    			|| !Character.isDigit(s.charAt(2)) ) {
-    		throw new IllegalArgumentException("Invalid map syntax");	
-    	}
-    	char[][] map = new char[WIDTH][LENGTH];
-    	//every fifth room, there's a saferoom
-    	if (safeRoomCounter % 5 == 0 && safeRoomCounter != 0) { //tut level
-    		map = generateSafeRoom();
-    		return map;
-    	}
-    	//read the String into the 2d map array
-    	//the first three values are the map states.
-    	int index = 0;
-    	try 
-    	{
-    	mapStates[0] = Integer.parseInt(Character.toString(s.charAt(index++)));
-    	mapStates[1] = Integer.parseInt(Character.toString(s.charAt(index++)));
-    	mapStates[2] = Integer.parseInt(Character.toString(s.charAt(index++)));
-    	}
-    	catch(NumberFormatException e) {
-    		//First three letters were not all ints
-    		throw new IllegalArgumentException("Invalid map syntax. Expected"
-    				+ " numbers for the first three letters,"
-    				+ " but received characters instead.");
-    	}
-    	//parses all chars into the map array
-    	for (int y = 0; y < LENGTH; y++) {
-    		for (int x = 0; x < WIDTH; x++) {
-    			map[x][y] = s.charAt(index++);
-    		}
-    	}
-    	safeRoomCounter++;
-    	return map;
-    }
-    
-    /**
      * This method returns the safe room map as a 2D array. This is incomplete
      * as the safe rooms have not been designed yet.
      * TODO  generateSafeRoom()
