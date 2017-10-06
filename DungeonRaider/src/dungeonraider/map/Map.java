@@ -58,10 +58,18 @@ public class Map {
 		this.timeLimit = mapStates[2];
 	}
 
-//	public static int findTileSize() {
-//		int screenWidth = Engine.WIDTH;
-//		return screenWidth / 22;
-//	}
+	public boolean onWall(int x, int y) {
+		Tile currentTile;
+		for (int row = 0; row < LENGTH; row++) {
+			for (int col = 0; col < WIDTH; col++) {
+				currentTile = map[col][row];
+				if(currentTile.contains(x, y)) {
+					if(currentTile.isBoundary()) return false;
+				}
+			}
+		}
+		return true;
+	}
 
 	public static int findTileSize() {
 		return 96;

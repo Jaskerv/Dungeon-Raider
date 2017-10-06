@@ -9,6 +9,7 @@ import dungeonraider.engine.GameObject;
 import dungeonraider.engine.Renderer;
 import dungeonraider.item.Armour;
 import dungeonraider.item.Weapon;
+import dungeonraider.map.Map;
 import dungeonraider.sprite.Sprite;
 import dungeonraider.util.Box;
 import dungeonraider.util.Camera;
@@ -73,24 +74,28 @@ public class Player implements Character, GameObject {
 	@Override
 	public void walkLeft() {
 		// TODO Auto-generated method stub
+		//if(checkBoundry(this.x - speed, this.y))
 		this.x -= speed;
 	}
 
 	@Override
 	public void walkRight() {
 		// TODO Auto-generated method stub
+		//if(checkBoundry(this.x + speed, this.y))
 		this.x += speed;
 	}
 
 	@Override
 	public void walkUp() {
 		// TODO Auto-generated method stub
+		//if(checkBoundry(this.x, this.y-speed))
 		this.y -= speed;
 	}
 
 	@Override
 	public void walkDown() {
 		// TODO Auto-generated method stub
+		//if(checkBoundry(this.x, this.y+speed))
 		this.y += speed;
 	}
 
@@ -166,6 +171,7 @@ public class Player implements Character, GameObject {
 	}
 
 	@Override
+
 	public void render(Renderer renderer, int xZoom, int yZoom) {
 		renderer.renderArray(spriteImage.getPixels(), spriteImage.getWidth(), spriteImage.getWidth(), x, y, zoom, zoom);
 
@@ -174,18 +180,19 @@ public class Player implements Character, GameObject {
 	@Override
 	public void update(Engine engine) {
 		KeyController keyBinds = engine.getKeyBinds();
+		Map currentMap = engine.getCurrentMap();
 		/** Player */
 		if (keyBinds.isUp()) {
-			walkUp();
+			if(checkBoundry(currentMap, x, y - speed))	walkUp();
 		}
 		if (keyBinds.isDown()) {
-			walkDown();
+			if(checkBoundry(currentMap, x, y + speed))	walkDown();
 		}
 		if (keyBinds.isLeft()) {
-			walkLeft();
+			if(checkBoundry(currentMap, x - speed, y))	walkLeft();
 		}
 		if (keyBinds.isRight()) {
-			walkRight();
+			if(checkBoundry(currentMap, x + speed, y))	walkRight();
 		}
 		this.updateCamera(engine.getRenderer().getCamera());
 		if (!damageQueue.isEmpty()) {
@@ -220,9 +227,20 @@ public class Player implements Character, GameObject {
 		// }
 	}
 
+/*	*//**
+	 * Checks the engine to return the size of the map and then checks if the player is moving out of the map
+	 * @param engine the engine of the game
+	 * @param newX the new X coordinate that will be set after movement
+	 * @param newY the new Y coordinate that will be set after movement
+	 * @return returns whether the player is moving out of the map
+	 */
+	public boolean checkBoundry(Map currentMap, int newX, int newY) {
+		return currentMap.onWall(newX, newY);
+	}
+
 	/**
 	 * Updates the camera's position to center the player
-	 * 
+	 *
 	 * @param camera
 	 */
 	private void updateCamera(Box camera) {
@@ -246,7 +264,7 @@ public class Player implements Character, GameObject {
 
 	/**
 	 * Damages player with positive numbers, heals player with negative numbers
-	 * 
+	 *
 	 * @param i
 	 */
 	public void damage(int i) {

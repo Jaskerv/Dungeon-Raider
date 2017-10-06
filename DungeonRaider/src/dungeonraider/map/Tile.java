@@ -3,6 +3,7 @@ package dungeonraider.map;
 import dungeonraider.engine.Engine;
 import dungeonraider.sprite.Sprite;
 import dungeonraider.sprite.SpriteSheet;
+import dungeonraider.util.Box;
 
 /**
  * This represents a tile within the Map.
@@ -27,6 +28,7 @@ public class Tile {
 			new SpriteSheet(Engine.loadImage(SPRITE_SHEET_1_PATH));
 	private static final SpriteSheet SPRITE_SHEET_2 =
 			new SpriteSheet(Engine.loadImage(SPRITE_SHEET_2_PATH));
+	private Box boundingBox;
 
 	/**
 	 * This initialises the tile instance. Each tile instance is contained
@@ -48,6 +50,7 @@ public class Tile {
 		this.height = height;
 		this.boundary = boundary;
 		this.sprite = getImage(symbol);
+		this.boundingBox = new Box(this.x, this.y, this.width, this.height);
 	}
 
 	/**
@@ -83,6 +86,17 @@ public class Tile {
 		return null;
 	}
 
+	public boolean contains(int x, int y) {
+		return this.boundingBox.contains(x, y);
+	}
+
+	/**
+	 * Checks if the given tile is a wall
+	 */
+	public boolean checkWall(Tile tile) {
+		return tile.isBoundary();
+	}
+
 	public int getWidth() { return width; }
 
 	public int getHeight() { return height; }
@@ -98,5 +112,15 @@ public class Tile {
 	public int getY() { return y; }
 
 	public void setY(int y) { this.y = y; }
+
+	public boolean isBoundary() {
+		return boundary;
+	}
+
+	public void setBoundary(boolean boundary) {
+		this.boundary = boundary;
+	}
+
+
 
 }

@@ -262,4 +262,14 @@ public class Engine extends JFrame implements Runnable, Observer {
 		return player;
 	}
 
+	public Map getCurrentMap() {
+		return currentMap;
+	}
+
+	public void setCurrentMap(Map currentMap) {
+		this.currentMap = currentMap;
+	}
+
+
+
 }
