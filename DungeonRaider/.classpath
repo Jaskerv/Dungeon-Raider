@@ -6,5 +6,6 @@
 	<classpathentry kind="src" path="Lib"/>
 	<classpathentry kind="lib" path="Lib/MovementLibrary.jar"/>
 	<classpathentry kind="lib" path="Lib/ItemParser.jar"/>
+	<classpathentry kind="lib" path="Lib/MapParser.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
