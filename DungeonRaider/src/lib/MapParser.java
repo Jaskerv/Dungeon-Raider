@@ -28,7 +28,7 @@ public class MapParser {
      * @param s  the string being parsed in.
      * @return map  The 2D array map.
      */
-    public static char[][] parseStringToMapArray(File file) {  	
+    public static char[][] parseFileToMapArray(File file) {  	
         char[][] map = new char[WIDTH][LENGTH];
         //every fifth room, there's a saferoom
         if (safeRoomCounter % 5 == 0 && safeRoomCounter != 0) { //tut level

@@ -86,7 +86,7 @@ public class MapParserTests {
     	tutMap = formStructure(tutMap);
         try {
         	File testFile = createTestFile("testFile", tutMap);
-            char[][] map = MapParser.parseStringToMapArray(testFile);
+            char[][] map = MapParser.parseFileToMapArray(testFile);
 	        assertTrue(map[0][0]  ==  'G');
 	        assertTrue(map[21][0] ==  'O');
 	        assertTrue(map[0][21]  ==  'O');
@@ -129,7 +129,7 @@ public class MapParserTests {
 	    			"DFJTSQXKNQUFRLEVFGHXPE\n";
     	randomMap = formStructure(randomMap);
     	File testFile = createTestFile("testFile", randomMap);
-        char[][] map = MapParser.parseStringToMapArray(testFile);
+        char[][] map = MapParser.parseFileToMapArray(testFile);
     	int index = 3; //First three indexes are the map states, so start at 3
     	for (int y = 0; y < map[0].length; y++) {
     		for (int x = 0; x < map.length; x++) {
@@ -173,7 +173,7 @@ public class MapParserTests {
     	tutMap = formStructure(tutMap);
         try {
         	File testFile = createTestFile("testFile", tutMap);
-            MapParser.parseStringToMapArray(testFile);
+            MapParser.parseFileToMapArray(testFile);
         }
         catch (IllegalArgumentException e) {
         	//good
@@ -216,7 +216,7 @@ public class MapParserTests {
     	testMap = formStructure(testMap);
         try {
         	File testFile = createTestFile("testFile", testMap);
-            MapParser.parseStringToMapArray(testFile);
+            MapParser.parseFileToMapArray(testFile);
         }
         catch (IllegalArgumentException e) {
         	//good
