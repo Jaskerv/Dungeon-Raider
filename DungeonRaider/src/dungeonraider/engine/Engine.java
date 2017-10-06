@@ -52,7 +52,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 	private MouseController mouseListener;
 	private Player player;
 	/**
-	 * 
+	 *
 	 */
 	private IngameInterface GUI;
 	/** This will contain the list of maps from start to finish */
