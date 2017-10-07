@@ -73,10 +73,10 @@ public class Start extends JFrame implements KeyListener, MouseListener {
 		menuSelection[1] = 350;
 		menuSelection[2] = 500;
 		try {
-			backgroundImage = ImageIO
-					.read(new FileInputStream("resources/images/FlameArtwork.jpg"));
-			title = ImageIO
-					.read(new FileInputStream("resources/images/DungeonRaider.png"));
+			backgroundImage = ImageIO.read(
+					new FileInputStream("resources/images/FlameArtworktest.jpg"));
+			title = ImageIO.read(
+					new FileInputStream("resources/images/DungeonRaider.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -120,7 +120,7 @@ public class Start extends JFrame implements KeyListener, MouseListener {
 				}
 				else {
 					g.setFont(new Font("Purisa", Font.PLAIN, 20));
-					g.drawString("PRESS ANY KEY TO CONTINUE", 480, 350);
+					g.drawString("PRESS ANY KEY TO CONTINUE", 480, 370);
 				}
 			}
 		};
