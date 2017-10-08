@@ -18,14 +18,16 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 	private boolean right;
 	private boolean hurtPlayer;
 	private Player player;
+	private Engine engine;
 
-	public KeyController(Player player) {
+	public KeyController(Player player, Engine engine) {
 		this.up = false;
 		this.down = false;
 		this.left = false;
 		this.right = false;
 		this.hurtPlayer = false;
 		this.player = player;
+		this.engine = engine;
 	}
 
 	@Override
@@ -101,26 +103,36 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 	}
 
 	public boolean isUp() {
-		return up;
+		if (!engine.isMenu())
+			return up;
+		return false;
 	}
 
 	public boolean isDown() {
-		return down;
+		if (!engine.isMenu())
+			return down;
+		return false;
 	}
 
 	public boolean isLeft() {
-		return left;
+		if (!engine.isMenu())
+			return left;
+		return false;
 	}
 
 	public boolean isRight() {
-		return right;
+		if (!engine.isMenu())
+			return right;
+		return false;
 	}
 
 	/**
 	 * @return the hurtPlayer
 	 */
 	public boolean isHurtPlayer() {
-		return hurtPlayer;
+		if (!engine.isMenu())
+			return hurtPlayer;
+		return false;
 	}
 
 	@Override

@@ -1,4 +1,7 @@
+package dungeonraider.engine;
+
 import java.awt.BasicStroke;
+import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -9,6 +12,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,6 +33,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import dungeonraider.engine.Engine;
+import dungeonraider.sprite.Sprite;
 import dungeonraider.util.FontImporter;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
@@ -46,12 +51,9 @@ import javazoom.jl.player.Player;
  * @author harry
  *
  */
-public class Start extends JFrame implements KeyListener, MouseListener {
+public class StartGame extends Canvas implements KeyListener, MouseListener, GameObject {
 
-	private static final int WIDTH = 1280;
-	private static final int HEIGHT = 720;
-	private Image backgroundImage;
-	private Image title;
+	private BufferedImage backgroundImage;
 	/** Audio clip */
 	private Clip clip;
 	/** This boolean indicates if the user has pressed a button */
@@ -65,6 +67,12 @@ public class Start extends JFrame implements KeyListener, MouseListener {
 	private static final long serialVersionUID = 1L;
 
 	private Font font8Bit;
+	private Engine engine;
+	private final int xZoom = 1;
+	private final int yZoom = 1;
+	private BufferedImage img;
+	private Graphics g;
+	private Sprite sprite;
 
 	/**
 	 * Initialises the main menu frame, reads the resources and adds the key
@@ -72,8 +80,11 @@ public class Start extends JFrame implements KeyListener, MouseListener {
 	 * 
 	 * @param _title
 	 */
-	public Start(String _title) {
-		super(_title);
+	public StartGame(Engine engine) {
+		super();
+		img = new BufferedImage(Engine.WIDTH, Engine.HEIGHT, BufferedImage.TYPE_INT_RGB);
+		g = img.getGraphics();
+		this.engine = engine;
 		font8Bit = FontImporter.fontImport("resources/fonts/Perfect DOS VGA 437.ttf");
 		menuSelection[0] = 200;
 		menuSelection[1] = 350;
@@ -87,6 +98,7 @@ public class Start extends JFrame implements KeyListener, MouseListener {
 		}
 		addKeyListener(this);
 		setFocusable(true);
+		playMusic();
 	}
 
 	/**
@@ -94,45 +106,8 @@ public class Start extends JFrame implements KeyListener, MouseListener {
 	 * within the Frame
 	 */
 	public void execute() {
-		playMusic();
-		JPanel drawingPanel = new JPanel() {
-			private static final long serialVersionUID = 1L;
 
-			@Override
-			public void paintComponent(Graphics _g) {
-				super.paintComponent(_g);
-				Graphics2D g = (Graphics2D) _g;
-				// font smoothening
-				RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING,
-						RenderingHints.VALUE_ANTIALIAS_ON);
-
-				rh.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-				g.setRenderingHints(rh);
-				g.setFont(new Font("Purisa", Font.PLAIN, 35));
-				g.setColor(Color.gray.brighter());
-				g.drawImage(backgroundImage, 0, 0, 1280, 720, null);
-				// g.drawImage(title, 300, 30, title.getWidth(null), title.getHeight(null),
-				// null);
-
-				if (active) {
-					g.setFont(font8Bit.deriveFont(Font.PLAIN, 24));
-					g.drawString("Play", 600, 250);
-					g.drawString("Info", 597, 400);
-					g.drawString("Quit", 600, 550);
-					g.fillRect(578, menuSelection[index] + 37, 10, 10);
-				} else {
-					g.setFont(font8Bit.deriveFont(Font.PLAIN, 24));
-					g.drawString("PRESS ANY KEY TO CONTINUE", 480, 370);
-				}
-			}
-		};
-		this.setContentPane(drawingPanel);
 		this.validate();
-		setSize(WIDTH, HEIGHT);
-		setLocationRelativeTo(null);
-		setResizable(false);
-		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		setVisible(true);
 	}
 
 	/**
@@ -154,6 +129,7 @@ public class Start extends JFrame implements KeyListener, MouseListener {
 				}
 			});
 			clip.open(stream);
+			clip.loop(100);
 			clip.start();
 		} catch (Exception e) {
 
@@ -170,7 +146,6 @@ public class Start extends JFrame implements KeyListener, MouseListener {
 		if (firstKeyPress) {
 			active = true;
 			firstKeyPress = false;
-			this.repaint();
 			return;
 		}
 		active = true;
@@ -196,7 +171,6 @@ public class Start extends JFrame implements KeyListener, MouseListener {
 					}
 				});
 				t.start();
-				this.dispose();
 				// Creates the instance of the game
 				Engine game = new Engine();
 				Thread thread = new Thread(game);
@@ -241,13 +215,41 @@ public class Start extends JFrame implements KeyListener, MouseListener {
 	public void mouseExited(MouseEvent e) {
 	}
 
+	@Override
+	public void render(Renderer renderer, int xZoom, int yZoom) {
+		g.drawImage(backgroundImage, 0, 0, backgroundImage.getWidth(), backgroundImage.getHeight(), null);
+		if (active) {
+			g.setColor(Color.white);
+			g.setFont(font8Bit.deriveFont(Font.PLAIN, 24));
+			g.drawString("Play", 600, 250);
+			g.drawString("Info", 597, 400);
+			g.drawString("Quit", 600, 550);
+			g.fillRect(578, menuSelection[index] + 37, 10, 10);
+		} else {
+			g.setColor(Color.white);
+			g.setFont(font8Bit.deriveFont(Font.PLAIN, 24));
+			g.drawString("PRESS ANY KEY TO CONTINUE", 480, 370);
+		}
+		sprite = new Sprite(img);
+		renderer.renderGUI(sprite);
+	}
+
+	@Override
+	public void update(Engine engine) {
+	}
+
 	/**
-	 * s
-	 * 
-	 * @param args
+	 * @return the xZoom
 	 */
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> new Start("Dungeon Raider").execute());
+	public int getxZoom() {
+		return xZoom;
+	}
+
+	/**
+	 * @return the yZoom
+	 */
+	public int getyZoom() {
+		return yZoom;
 	}
 
 }

@@ -3,6 +3,7 @@ package dungeonraider.engine;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -55,6 +56,8 @@ public class Engine extends JFrame implements Runnable, Observer {
 	 *
 	 */
 	private IngameInterface GUI;
+	private StartGame startGame;
+	private boolean menu;
 	/** This will contain the list of maps from start to finish */
 	private HashMap<Integer, Map> mapList = initialiseMaps();
 	private Map currentMap = mapList.get(0);
@@ -70,7 +73,9 @@ public class Engine extends JFrame implements Runnable, Observer {
 	private static final int BOTTOM_WALL = 1850;
 
 	public Engine() {
-		this.canvas = new Canvas();
+		// this.canvas = new Canvas();
+		this.startGame = new StartGame(this);
+		this.menu = true;
 		this.tk = this.getToolkit();
 		this.object = new GameObject[1];
 		/** Sets name of JFrame window */
@@ -81,15 +86,17 @@ public class Engine extends JFrame implements Runnable, Observer {
 		setBounds(0, 0, WIDTH, HEIGHT);
 		/** Sets window to center */
 		setLocationRelativeTo(null);
-		/** Adds canvas to JFrame */
-		add(canvas);
+		// /** Adds canvas to JFrame */
+		// add(canvas);
+		add(startGame);
 		/** Disable Resizeable */
 		setResizable(false);
 		/** Sets JFrame to visible */
 		setVisible(true);
 		/** Component listener to see if JFrame is resized */
 		/** Creates 2 buffer renderer */
-		canvas.createBufferStrategy(3);
+		// canvas.createBufferStrategy(3);
+		this.startGame.createBufferStrategy(3);
 		this.renderer = new Renderer(getWidth(), getHeight());
 		/**
 		 * Testing Objects
@@ -111,11 +118,11 @@ public class Engine extends JFrame implements Runnable, Observer {
 		/**
 		 * initiating key listener
 		 */
-		this.keyBinds = new KeyController(player);
+		this.keyBinds = new KeyController(player, this);
 		this.mouseListener = new MouseController(this);
-		this.canvas.addKeyListener(keyBinds);
-		this.canvas.addFocusListener(keyBinds);
-		this.canvas.addMouseListener(mouseListener);
+		// this.canvas.addKeyListener(keyBinds);
+		// this.canvas.addFocusListener(keyBinds);
+		// this.canvas.addMouseListener(mouseListener);
 
 		this.addKeyListener(keyBinds);
 		this.addFocusListener(keyBinds);
@@ -126,22 +133,33 @@ public class Engine extends JFrame implements Runnable, Observer {
 	 * This method will render everything onto the screen
 	 */
 	public void render() {
-		BufferStrategy b = canvas.getBufferStrategy();
-		Graphics g = b.getDrawGraphics();
-		super.paint(g);
-		this.renderer.clearArray();
-		// Renders the map first (bottom layer of the image)
-		renderer.renderMap(currentMap);
-		/** Render Objects */
-		for (GameObject gameObject : object) {
-			gameObject.render(renderer, 3, 3);
+		if (!menu) {
+			BufferStrategy b = canvas.getBufferStrategy();
+			Graphics g = b.getDrawGraphics();
+			super.paint(g);
+			this.renderer.clearArray();
+			// Renders the map first (bottom layer of the image)
+			renderer.renderMap(currentMap);
+			/** Render Objects */
+			for (GameObject gameObject : object) {
+				gameObject.render(renderer, 3, 3);
+			}
+			/** Render GUI */
+			this.GUI.render(renderer, GUI.XZOOM, GUI.YZOOM);
+			/** Then render the Renderer */
+			renderer.render(g);
+			g.dispose();
+			b.show();
+		} else {
+			BufferStrategy b = startGame.getBufferStrategy();
+			Graphics g = b.getDrawGraphics();
+			super.paint(g);
+			this.renderer.clearArray();
+			startGame.render(renderer, 1, 1);
+			renderer.render(g);
+			g.dispose();
+			b.show();
 		}
-		/** Render GUI */
-		this.GUI.render(renderer, GUI.XZOOM, GUI.YZOOM);
-		/** Then render the Renderer */
-		renderer.render(g);
-		g.dispose();
-		b.show();
 	}
 
 	/**
@@ -194,10 +212,14 @@ public class Engine extends JFrame implements Runnable, Observer {
 	 * This method will run at a specified speed.
 	 */
 	public void update() {
-		for (GameObject gameObject : object) {
-			gameObject.update(this);
+		if (menu) {
+			startGame.update(this);
+		} else {
+			for (GameObject gameObject : object) {
+				gameObject.update(this);
+			}
+			this.GUI.update(this);
 		}
-		this.GUI.update(this);
 	}
 
 	/**
@@ -270,6 +292,19 @@ public class Engine extends JFrame implements Runnable, Observer {
 		this.currentMap = currentMap;
 	}
 
+	/**
+	 * @return the menu
+	 */
+	public boolean isMenu() {
+		return menu;
+	}
 
+	/**
+	 * @param menu
+	 *            the menu to set
+	 */
+	public void setMenu(boolean menu) {
+		this.menu = menu;
+	}
 
 }
