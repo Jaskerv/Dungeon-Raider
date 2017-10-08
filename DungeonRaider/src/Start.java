@@ -154,6 +154,7 @@ public class Start extends JFrame implements KeyListener, MouseListener {
 				}
 			});
 			clip.open(stream);
+			clip.loop(100);
 			clip.start();
 		} catch (Exception e) {
 
