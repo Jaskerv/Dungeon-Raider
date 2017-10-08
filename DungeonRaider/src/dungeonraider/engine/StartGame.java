@@ -73,6 +73,9 @@ public class StartGame extends Canvas implements KeyListener, MouseListener, Gam
 	private BufferedImage img;
 	private Graphics g;
 	private Sprite sprite;
+	private boolean up = false;
+	private boolean down = false;
+	private boolean enter = false;
 
 	/**
 	 * Initialises the main menu frame, reads the resources and adds the key
@@ -148,37 +151,24 @@ public class StartGame extends Canvas implements KeyListener, MouseListener, Gam
 			firstKeyPress = false;
 			return;
 		}
-		active = true;
 		int keyCode = e.getKeyCode();
 		// navigating the main menu
 		if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_W) {
 			if (index > 0) {
 				index--;
-				this.repaint();
 			}
 		} else if (keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_S) {
 			if (index < 2) {
 				index++;
-				this.repaint();
 			}
 		} else if (keyCode == KeyEvent.VK_ENTER) {
 			// starts the game (new Engine instance)
 			if (index == 0) {
-				// prevents freezing when stopping the music
-				Thread t = new Thread(new Runnable() {
-					public void run() {
-						clip.stop();
-					}
-				});
-				t.start();
-				// Creates the instance of the game
-				Engine game = new Engine();
-				Thread thread = new Thread(game);
-				thread.start();
+				engine.switchCanvas();
 			}
 			// 'Info' button - unimplemented
 			else if (index == 1) {
-				JOptionPane.showMessageDialog(this, "--Unimplemented--");
+				System.out.println("un");
 			}
 			// 'Quit' button
 			else if (index == 2) {
@@ -236,6 +226,7 @@ public class StartGame extends Canvas implements KeyListener, MouseListener, Gam
 
 	@Override
 	public void update(Engine engine) {
+
 	}
 
 	/**
@@ -252,4 +243,7 @@ public class StartGame extends Canvas implements KeyListener, MouseListener, Gam
 		return yZoom;
 	}
 
+	public void stopMusic() {
+		clip.stop();
+	}
 }

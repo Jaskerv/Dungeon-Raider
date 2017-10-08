@@ -95,7 +95,6 @@ public class Engine extends JFrame implements Runnable, Observer {
 		setVisible(true);
 		/** Component listener to see if JFrame is resized */
 		/** Creates 2 buffer renderer */
-		// canvas.createBufferStrategy(3);
 		this.startGame.createBufferStrategy(3);
 		this.renderer = new Renderer(getWidth(), getHeight());
 		/**
@@ -120,9 +119,6 @@ public class Engine extends JFrame implements Runnable, Observer {
 		 */
 		this.keyBinds = new KeyController(player, this);
 		this.mouseListener = new MouseController(this);
-		// this.canvas.addKeyListener(keyBinds);
-		// this.canvas.addFocusListener(keyBinds);
-		// this.canvas.addMouseListener(mouseListener);
 
 		this.addKeyListener(keyBinds);
 		this.addFocusListener(keyBinds);
@@ -150,16 +146,21 @@ public class Engine extends JFrame implements Runnable, Observer {
 			renderer.render(g);
 			g.dispose();
 			b.show();
-		} else {
-			BufferStrategy b = startGame.getBufferStrategy();
-			Graphics g = b.getDrawGraphics();
-			super.paint(g);
-			this.renderer.clearArray();
-			startGame.render(renderer, 1, 1);
-			renderer.render(g);
-			g.dispose();
-			b.show();
+		} else if (menu == true) {
+			try {
+				BufferStrategy b = startGame.getBufferStrategy();
+				Graphics g = b.getDrawGraphics();
+				super.paint(g);
+				this.renderer.clearArray();
+				startGame.render(renderer, 1, 1);
+				renderer.render(g);
+				g.dispose();
+				b.show();
+			} catch (Exception e) {
+				System.out.println("there is error");
+			}
 		}
+
 	}
 
 	/**
@@ -261,6 +262,29 @@ public class Engine extends JFrame implements Runnable, Observer {
 		count++;
 		return mapList;
 
+	}
+
+	public void switchCanvas() {
+		if (this.menu) {
+			this.startGame.stopMusic();
+			if (this.canvas == null) {
+				this.canvas = new Canvas();
+				this.add(canvas);
+				this.canvas.createBufferStrategy(3);
+				this.canvas.addKeyListener(keyBinds);
+				this.canvas.addFocusListener(keyBinds);
+				this.canvas.addMouseListener(mouseListener);
+				this.addKeyListener(keyBinds);
+				this.addFocusListener(keyBinds);
+				this.addMouseListener(mouseListener);
+				this.setFocusable(true);
+			}
+			this.menu = false;
+			this.remove(startGame);
+			this.revalidate();
+		} else {
+
+		}
 	}
 
 	/**
