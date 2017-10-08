@@ -140,7 +140,7 @@ public class Start extends JFrame implements KeyListener, MouseListener {
 	 */
 	public void playMusic() {
 		try {
-			File file = new File("resources/images/music.wav");
+			File file = new File("resources/sountracks/Born To Do This - RuneScape Soundtrack.wav");
 			AudioInputStream stream;
 			AudioFormat format;
 			DataLine.Info info;
