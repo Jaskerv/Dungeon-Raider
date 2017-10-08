@@ -9,8 +9,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -28,6 +30,8 @@ import javax.swing.WindowConstants;
 
 import dungeonraider.engine.Engine;
 import dungeonraider.util.FontImporter;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
 
 /**
  * Mockup main menu. Contains: Firey background image Dungeon Raider logo
@@ -59,8 +63,9 @@ public class Start extends JFrame implements KeyListener, MouseListener {
 	private int index = 0;
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Font font8Bit;
+
 	/**
 	 * Initialises the main menu frame, reads the resources and adds the key
 	 * listener
@@ -110,13 +115,13 @@ public class Start extends JFrame implements KeyListener, MouseListener {
 				// null);
 
 				if (active) {
-					g.setFont(font8Bit.deriveFont(Font.PLAIN,24));
+					g.setFont(font8Bit.deriveFont(Font.PLAIN, 24));
 					g.drawString("Play", 600, 250);
 					g.drawString("Info", 597, 400);
 					g.drawString("Quit", 600, 550);
-					g.fillRect(578, menuSelection[index]+37, 10, 10);
+					g.fillRect(578, menuSelection[index] + 37, 10, 10);
 				} else {
-					g.setFont(font8Bit.deriveFont(Font.PLAIN,24));
+					g.setFont(font8Bit.deriveFont(Font.PLAIN, 24));
 					g.drawString("PRESS ANY KEY TO CONTINUE", 480, 370);
 				}
 			}
@@ -171,12 +176,12 @@ public class Start extends JFrame implements KeyListener, MouseListener {
 		active = true;
 		int keyCode = e.getKeyCode();
 		// navigating the main menu
-		if (keyCode == KeyEvent.VK_UP||keyCode == KeyEvent.VK_W) {
+		if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_W) {
 			if (index > 0) {
 				index--;
 				this.repaint();
 			}
-		} else if (keyCode == KeyEvent.VK_DOWN||keyCode == KeyEvent.VK_S) {
+		} else if (keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_S) {
 			if (index < 2) {
 				index++;
 				this.repaint();
