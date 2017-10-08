@@ -27,6 +27,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import dungeonraider.engine.Engine;
+import dungeonraider.util.FontImporter;
 
 /**
  * Mockup main menu. Contains: Firey background image Dungeon Raider logo
@@ -58,7 +59,8 @@ public class Start extends JFrame implements KeyListener, MouseListener {
 	private int index = 0;
 
 	private static final long serialVersionUID = 1L;
-
+	
+	private Font font8Bit;
 	/**
 	 * Initialises the main menu frame, reads the resources and adds the key
 	 * listener
@@ -67,6 +69,7 @@ public class Start extends JFrame implements KeyListener, MouseListener {
 	 */
 	public Start(String _title) {
 		super(_title);
+		font8Bit = FontImporter.fontImport("resources/fonts/Perfect DOS VGA 437.ttf");
 		menuSelection[0] = 200;
 		menuSelection[1] = 350;
 		menuSelection[2] = 500;
@@ -107,14 +110,13 @@ public class Start extends JFrame implements KeyListener, MouseListener {
 				// null);
 
 				if (active) {
+					g.setFont(font8Bit.deriveFont(Font.PLAIN,24));
 					g.drawString("Play", 600, 250);
 					g.drawString("Info", 597, 400);
 					g.drawString("Quit", 600, 550);
-					g.setColor(Color.red.darker());
-					g.setStroke(new BasicStroke(3));
-					g.drawOval(578, menuSelection[index], 120, 70);
+					g.fillRect(578, menuSelection[index]+37, 10, 10);
 				} else {
-					g.setFont(new Font("Purisa", Font.PLAIN, 20));
+					g.setFont(font8Bit.deriveFont(Font.PLAIN,24));
 					g.drawString("PRESS ANY KEY TO CONTINUE", 480, 370);
 				}
 			}
@@ -169,12 +171,12 @@ public class Start extends JFrame implements KeyListener, MouseListener {
 		active = true;
 		int keyCode = e.getKeyCode();
 		// navigating the main menu
-		if (keyCode == KeyEvent.VK_UP) {
+		if (keyCode == KeyEvent.VK_UP||keyCode == KeyEvent.VK_W) {
 			if (index > 0) {
 				index--;
 				this.repaint();
 			}
-		} else if (keyCode == KeyEvent.VK_DOWN) {
+		} else if (keyCode == KeyEvent.VK_DOWN||keyCode == KeyEvent.VK_S) {
 			if (index < 2) {
 				index++;
 				this.repaint();
