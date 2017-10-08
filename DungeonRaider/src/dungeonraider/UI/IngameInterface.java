@@ -55,13 +55,13 @@ public class IngameInterface implements GameObject {
 	@Override
 	public void render(Renderer renderer, int xZoom, int yZoom) {
 		this.ui.setPixels(pixels.clone());
+		int r = (int) (Math.random() * 7000000);
 		for (int y = 0; y < height; y++)
 			for (int x = 0; x < width; x++) {
 				if (healthBar.getWidth() != 0) {
 					if (x >= healthBar.getX() && x <= (healthBar.getX() + healthBar.getWidth())) {
 						if (y >= healthBar.getY() && y <= (healthBar.getY() + healthBar.getHeight())) {
 							int[] tempArray = ui.getPixels();
-							int r = (int) (Math.random() * 7000000);
 							tempArray[x + y * width] = r;
 							// tempArray[x + y * width] = Color.green.getRGB();
 							this.ui.setPixels(tempArray);
