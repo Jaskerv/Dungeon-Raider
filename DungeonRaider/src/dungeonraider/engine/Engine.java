@@ -23,6 +23,7 @@ import dungeonraider.character.Player;
 import dungeonraider.controller.KeyController;
 import dungeonraider.controller.MouseController;
 import dungeonraider.map.Map;
+import dungeonraider.sound.SoundMap;
 import dungeonraider.sprite.Sprite;
 import dungeonraider.sprite.SpriteSheet;
 import dungeonraider.util.Camera;
@@ -72,12 +73,15 @@ public class Engine extends JFrame implements Runnable, Observer {
 	private static final int RIGHT_WALL = 1895;
 	private static final int BOTTOM_WALL = 1850;
 
+	private SoundMap soundLibrary;
+
 	public Engine() {
 		// this.canvas = new Canvas();
 		this.startGame = new StartGame(this);
 		this.menu = true;
 		this.tk = this.getToolkit();
 		this.object = new GameObject[1];
+		this.soundLibrary = new SoundMap("");
 		/** Sets name of JFrame window */
 		setTitle("Dungeon Raider");
 		/** Close program on exit */
