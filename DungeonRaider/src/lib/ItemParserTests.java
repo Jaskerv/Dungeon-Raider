@@ -1,11 +1,14 @@
 package lib;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 import java.util.Map;
 
-import object.parse.Parser;
+import org.junit.Test;
+
+import lib.ItemParser.ParserException;
 
 /**
  * This is a list of JUnit Tests that tests the library
@@ -38,7 +41,7 @@ public class ItemParserTests {
 	public void test_Exception_01() {
 		try {
 			String text = "";
-			Map<String, List<String>> mp = Parser.parse(text);
+			Map<String, List<String>> mp = ItemParser.parse(text);
 		} catch (Exception e) {
 			assertTrue(e.getMessage().equals("Input is empty or null."));
 		}
@@ -51,7 +54,7 @@ public class ItemParserTests {
 	public void test_Category_01() {
 		try {
 			String text = "{\nWeapon Short_Sword 1 2 3 4\n}";
-			Map<String, List<String>> mp = Parser.parse(text);
+			Map<String, List<String>> mp = ItemParser.parse(text);
 			String key = "Weapon";
 			String value = "Short_Sword 1 2 3 4";
 			testKey(mp, key);
@@ -70,7 +73,7 @@ public class ItemParserTests {
 		try {
 			String text = "{\nWeapon Short_Sword 1 2 3 4\n"
 					+ "Consumable Small_Health_Potion 30 0\n}";
-			Map<String, List<String>> mp = Parser.parse(text);
+			Map<String, List<String>> mp = ItemParser.parse(text);
 			String key = "Weapon";
 			String value = "Short_Sword 1 2 3 4";
 			testKey(mp, key);
@@ -92,8 +95,8 @@ public class ItemParserTests {
 	@org.junit.Test
 	public void test_Category_03() {
 		try {
-			String text = "Weapon";
-			Map<String, List<String>> mp = Parser.parse(text);
+			String text = "{\nWeapon\n}";
+			Map<String, List<String>> mp = ItemParser.parse(text);
 			if (mp != null) {
 				fail("Supposed to return null");
 			}
@@ -101,7 +104,126 @@ public class ItemParserTests {
 			fail("Not supposed to recieve exception.");
 		}
 	}
-
-	//TODO: Test inputs without { }.
+	
+	/**
+	 * Tests parsing in a proper map file. Any exception thrown will indicate
+	 * it's unsuccessful.
+	 */
+	@Test
+	public void testParseMap_01() {
+		String testMap = 
+    			"{ \n" +	
+    			"Weapon Short_Sword 1 2 3 4\n" +
+    			"Consumable Small_Health_Potion 30 0 \n" +
+    			"} \n" +
+    			"0 0 0\n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n";
+		try {
+			ItemParser.parse(testMap);
+		} catch (Exception e) {
+			fail("fix me");
+		}
+	}
+	
+	/**
+	 * Tests invalid input (no opening brace found)
+	 */
+	@Test
+	public void testParseMap_02() {
+		String testMap = 
+    			"\n" +	
+    			"Weapon Short_Sword 1 2 3 4\n" +
+    			"Consumable Small_Health_Potion 30 0 \n" +
+    			"} \n" +
+    			"0 0 0\n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n";
+		try {
+			ItemParser.parse(testMap);
+		} catch (IllegalArgumentException | ParserException e) {
+			//good, exception is successfully thrown
+		}
+	}
+	
+	/**
+	 * Tests invalid input (no closing brace found)
+	 */
+	@Test
+	public void testParseMap_03() {
+		String testMap = 
+    			"{ \n" +	
+    			"Weapon Short_Sword 1 2 3 4\n" +
+    			"Consumable Small_Health_Potion 30 0 \n" +
+    			"\n" +
+    			"0 0 0\n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n";
+		try {
+			ItemParser.parse(testMap);
+		} catch (IllegalArgumentException | ParserException e) {
+			//good, exception is successfully thrown
+		}
+	}
 
 }

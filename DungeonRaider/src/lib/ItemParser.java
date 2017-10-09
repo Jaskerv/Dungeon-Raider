@@ -64,10 +64,12 @@ public class ItemParser {
 			throw new IllegalArgumentException("No opening brace found (to"
 						+ " indicate it is item contents)");
 		}
+		boolean closingBraceFound = false;
 		while (sc.hasNext()) {
 			String line = sc.nextLine();
 			//reached the end
 			if (line.contains("}")) {
+				closingBraceFound = true;
 				break;
 			}
 			//splits each element into an array of chars
@@ -101,6 +103,11 @@ public class ItemParser {
 					mc.put(category, newList);
 				}
 			}
+			category = null;
+			item = null;
+		}
+		if (!closingBraceFound) {
+			throw new IllegalArgumentException("Closing brace was never found");
 		}
 		return mc;
 
@@ -112,7 +119,7 @@ public class ItemParser {
 	 * @author Jono Yan
 	 *
 	 */
-	private static class ParserException extends Exception {
+	protected static class ParserException extends Exception {
 		public ParserException(String msg) {
 			super(msg);
 		}
