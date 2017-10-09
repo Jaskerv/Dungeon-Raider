@@ -182,7 +182,7 @@ public class Player implements Character, GameObject {
 			System.out.println("Attack");
 			System.out.println(mx);
 			System.out.println(my);
-			//attack(mx, my);
+			attack(mx, my, engine);
 		}
 		
 		this.updateCamera(engine.getRenderer().getCamera());
@@ -190,6 +190,10 @@ public class Player implements Character, GameObject {
 			int damage = damageQueue.poll();
 			this.hp += damage;
 		}
+	}
+	
+	public void attack(int mx, int my, Engine engine) {
+		
 	}
 
 /*	*//**
