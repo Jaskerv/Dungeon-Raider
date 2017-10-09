@@ -156,6 +156,8 @@ public class StartGame extends Canvas implements KeyListener, MouseListener, Gam
 		if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_W) {
 			if (index > 0) {
 				index--;
+				Clip clip = engine.getSoundLibrary().getSoundlibrary().get("cursorMove");
+				clip.start();
 			}
 		} else if (keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_S) {
 			if (index < 2) {

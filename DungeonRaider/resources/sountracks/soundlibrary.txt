@@ -1,0 +1,1 @@
+cursorMove	resources/sountracks/fx/ff_cursorMove.wav

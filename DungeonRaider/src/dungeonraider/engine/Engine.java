@@ -81,7 +81,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 		this.menu = true;
 		this.tk = this.getToolkit();
 		this.object = new GameObject[1];
-		this.soundLibrary = new SoundMap("");
+		this.soundLibrary = new SoundMap("resources/sountracks/soundlibrary.txt");
 		/** Sets name of JFrame window */
 		setTitle("Dungeon Raider");
 		/** Close program on exit */
@@ -333,6 +333,13 @@ public class Engine extends JFrame implements Runnable, Observer {
 	 */
 	public void setMenu(boolean menu) {
 		this.menu = menu;
+	}
+
+	/**
+	 * @return the soundLibrary
+	 */
+	public SoundMap getSoundLibrary() {
+		return soundLibrary;
 	}
 
 }
