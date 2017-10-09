@@ -4,8 +4,8 @@ public abstract class Consumables extends Item {
 	/** Item consume time */
 	protected int consumeTime;
 
-	public Consumables(int cost, int consumeTime) {
-		super(cost);
+	public Consumables(int x, int y, int consumeTime, int map) {
+		super(x, y, map);
 		this.consumeTime = consumeTime;
 	}
 

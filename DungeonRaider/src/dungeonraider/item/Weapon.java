@@ -17,9 +17,8 @@ public class Weapon extends Equipment implements Upgradable {
 	 * @param critChance in percentage
 	 *
 	 */
-	public Weapon(String name, int cost, int damage, int critChance) {
-		super(cost);
-
+	public Weapon(String name, int x, int y, int map, int damage, int critChance) {
+		super(x, y, map);
 		this.name = name;
 		this.cost = cost;
 		this.damage = damage;

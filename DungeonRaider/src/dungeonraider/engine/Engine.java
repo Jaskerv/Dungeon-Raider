@@ -22,6 +22,7 @@ import dungeonraider.UI.IngameInterface;
 import dungeonraider.character.Player;
 import dungeonraider.controller.KeyController;
 import dungeonraider.controller.MouseController;
+import dungeonraider.item.Item;
 import dungeonraider.map.Map;
 import dungeonraider.sound.SoundMap;
 import dungeonraider.sprite.Sprite;
@@ -340,6 +341,10 @@ public class Engine extends JFrame implements Runnable, Observer {
 	 */
 	public SoundMap getSoundLibrary() {
 		return soundLibrary;
+	}
+
+	public MouseController getMouseListener() {
+		return mouseListener;
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 import dungeonraider.controller.KeyController;
+import dungeonraider.controller.MouseController;
 import dungeonraider.engine.Engine;
 import dungeonraider.engine.GameObject;
 import dungeonraider.engine.Renderer;
@@ -132,6 +133,118 @@ public class Player implements Character, GameObject {
 
 	}
 
+	/**
+	 * Renders the players current position
+	 */
+	@Override
+	public void render(Renderer renderer, int xZoom, int yZoom) {
+		renderer.renderArray(spriteImage.getPixels(), spriteImage.getWidth(), spriteImage.getWidth(), x, y, zoom, zoom);
+	}
+
+	/**
+	 * Updates the player dependant on the key and mouse controllers in the engine and what booleans have been activated
+	 * via the user pushing keys / the mouse.
+	 */
+	@Override
+	public void update(Engine engine) {
+		KeyController keyBinds = engine.getKeyBinds();
+		Map currentMap = engine.getCurrentMap();
+		MouseController mouseActions = engine.getMouseListener();
+	
+		int width = spriteImage.getHeight() * zoom;
+		int right = x + width;
+
+
+		/** Player */
+		//Checking movement agaisnt walls
+		if (keyBinds.isUp()) {
+			if(checkBoundry(currentMap, x + width/2, y - speed + ((this.spriteImage.getHeight()*zoom)/2)))	walkUp();
+		}
+		if (keyBinds.isDown()) {
+			if(checkBoundry(currentMap, x + width/2, y + (this.spriteImage.getHeight()*zoom) + speed))	walkDown();
+		}
+		if (keyBinds.isLeft()) {
+			if(checkBoundry(currentMap, x - speed, y + ((this.spriteImage.getHeight()*zoom)/2)))	walkLeft();
+		}
+		if (keyBinds.isRight()) {
+			if(checkBoundry(currentMap, right + speed, y + ((this.spriteImage.getHeight()*zoom)/2)))	walkRight();
+		}
+		
+		//Checking if player is attempting to pick up and whether there is anything to pick up
+		if(keyBinds.isPickUp()) {
+			//need to check if any of the items locations 
+			
+		}
+		
+		if(mouseActions.isAttack()) {
+			int mx = mouseActions.getMx();
+			int my = mouseActions.getMy();
+			System.out.println("Attack");
+			System.out.println(mx);
+			System.out.println(my);
+			//attack(mx, my);
+		}
+		
+		this.updateCamera(engine.getRenderer().getCamera());
+		if (!damageQueue.isEmpty()) {
+			int damage = damageQueue.poll();
+			this.hp += damage;
+		}
+	}
+
+/*	*//**
+	 * Checks the engine to return the size of the map and then checks if the player is moving out of the map
+	 * @param engine the engine of the game
+	 * @param newX the new X coordinate that will be set after movement
+	 * @param newY the new Y coordinate that will be set after movement
+	 * @return returns whether the player is moving out of the map
+	 */
+	public boolean checkBoundry(Map currentMap, int newX, int newY) {
+		return currentMap.onWall(newX, newY);
+	}
+
+	/**
+	 * Updates the camera's position to center the player
+	 *
+	 * @param camera
+	 */
+	private void updateCamera(Box camera) {
+		camera.setX(x - (camera.getWidth() / 2) + (this.spriteImage.getWidth() * zoom / 2));
+		camera.setY(y - (camera.getHeight() / 2) + (this.spriteImage.getHeight() * zoom / 2));
+	}
+
+	
+	/**
+	 * Getters and setters for the player class
+	 */
+	
+	/**
+	 * @return the hp
+	 */
+	public int getHp() {
+		return hp;
+	}
+
+	/**
+	 * @return the hpMax
+	 */
+	public int getHpMax() {
+		return hpMax;
+	}
+
+	/**
+	 * Damages player with positive numbers, heals player with negative numbers
+	 *
+	 * @param i
+	 */
+	public void damage(int i) {
+		this.damageQueue.offer(-i);
+	}
+
+	public Queue<Integer> getDamageQueue() {
+		return damageQueue;
+	}
+
 	public int getGoldTotal() {
 		return gold;
 	}
@@ -168,131 +281,8 @@ public class Player implements Character, GameObject {
 		return speed;
 	}
 
-	/**
-	 * @return the zoom
-	 */
 	public int getZoom() {
 		return zoom;
-	}
-
-	@Override
-
-	public void render(Renderer renderer, int xZoom, int yZoom) {
-		renderer.renderArray(spriteImage.getPixels(), spriteImage.getWidth(), spriteImage.getWidth(), x, y, zoom, zoom);
-
-	}
-
-	@Override
-	public void update(Engine engine) {
-		KeyController keyBinds = engine.getKeyBinds();
-		Map currentMap = engine.getCurrentMap();
-
-		int width = spriteImage.getHeight() * zoom;
-		int right = x + width;
-
-
-		/** Player */
-		//Checking movement agaisnt walls
-		if (keyBinds.isUp()) {
-			if(checkBoundry(currentMap, x + width/2, y - speed + ((this.spriteImage.getHeight()*zoom)/2)))	walkUp();
-		}
-		if (keyBinds.isDown()) {
-			if(checkBoundry(currentMap, x + width/2, y + (this.spriteImage.getHeight()*zoom) + speed))	walkDown();
-		}
-		if (keyBinds.isLeft()) {
-			if(checkBoundry(currentMap, x - speed, y + ((this.spriteImage.getHeight()*zoom)/2)))	walkLeft();
-		}
-		if (keyBinds.isRight()) {
-			if(checkBoundry(currentMap, right + speed, y + ((this.spriteImage.getHeight()*zoom)/2)))	walkRight();
-		}
-		
-		//Checking if player is attempting to pick up and whether there is anything to pick up
-		if(keyBinds.isPickUp()) {
-			//need to check if any of the items locations 
-		}
-		
-		this.updateCamera(engine.getRenderer().getCamera());
-		if (!damageQueue.isEmpty()) {
-			int damage = damageQueue.poll();
-			this.hp += damage;
-		}
-		// /** Player */
-		// Camera camera = renderer.getCamera();
-		// if (keyBinds.isUp()) {
-		// if (player.getY() >= TOP_WALL) {
-		// camera.moveCamera(0, -player.getSpeed());
-		// player.walkUp();
-		// }
-		// }
-		// if (keyBinds.isDown()) {
-		// if (player.getY() <= BOTTOM_WALL) {
-		// camera.moveCamera(0, player.getSpeed());
-		// player.walkDown();
-		// }
-		// }
-		// if (keyBinds.isLeft()) {
-		// if (player.getX() >= LEFT_WALL) {
-		// camera.moveCamera(-player.getSpeed(), 0);
-		// player.walkLeft();
-		// }
-		// }
-		// if (keyBinds.isRight()) {
-		// if (player.getX() <= RIGHT_WALL) {
-		// camera.moveCamera(player.getSpeed(), 0);
-		// player.walkRight();
-		// }
-		// }
-	}
-
-/*	*//**
-	 * Checks the engine to return the size of the map and then checks if the player is moving out of the map
-	 * @param engine the engine of the game
-	 * @param newX the new X coordinate that will be set after movement
-	 * @param newY the new Y coordinate that will be set after movement
-	 * @return returns whether the player is moving out of the map
-	 */
-	public boolean checkBoundry(Map currentMap, int newX, int newY) {
-		return currentMap.onWall(newX, newY);
-	}
-
-	/**
-	 * Updates the camera's position to center the player
-	 *
-	 * @param camera
-	 */
-	private void updateCamera(Box camera) {
-		camera.setX(x - (camera.getWidth() / 2) + (this.spriteImage.getWidth() * zoom / 2));
-		camera.setY(y - (camera.getHeight() / 2) + (this.spriteImage.getHeight() * zoom / 2));
-	}
-
-	/**
-	 * @return the hp
-	 */
-	public int getHp() {
-		return hp;
-	}
-
-	/**
-	 * @return the hpMax
-	 */
-	public int getHpMax() {
-		return hpMax;
-	}
-
-	/**
-	 * Damages player with positive numbers, heals player with negative numbers
-	 *
-	 * @param i
-	 */
-	public void damage(int i) {
-		this.damageQueue.offer(-i);
-	}
-
-	/**
-	 * @return the damageQueue
-	 */
-	public Queue<Integer> getDamageQueue() {
-		return damageQueue;
 	}
 
 

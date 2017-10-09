@@ -2,8 +2,8 @@ package dungeonraider.item;
 
 public abstract class Equipment extends Item {
 
-	public Equipment(int cost) {
-		super(cost);
+	public Equipment(int x, int y, int map) {
+		super(x, y, map);
 	}
 
 	public boolean isEqiupment() {
