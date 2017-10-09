@@ -50,7 +50,7 @@ public class ItemParserTests {
 	@org.junit.Test
 	public void test_Category_01() {
 		try {
-			String text = "Weapon Short_Sword 1 2 3 4";
+			String text = "{\nWeapon Short_Sword 1 2 3 4\n}";
 			Map<String, List<String>> mp = Parser.parse(text);
 			String key = "Weapon";
 			String value = "Short_Sword 1 2 3 4";
@@ -68,8 +68,8 @@ public class ItemParserTests {
 	@org.junit.Test
 	public void test_Category_02() {
 		try {
-			String text = "Weapon Short_Sword 1 2 3 4\n"
-					+ "Consumable Small_Health_Potion 30 0";
+			String text = "{\nWeapon Short_Sword 1 2 3 4\n"
+					+ "Consumable Small_Health_Potion 30 0\n}";
 			Map<String, List<String>> mp = Parser.parse(text);
 			String key = "Weapon";
 			String value = "Short_Sword 1 2 3 4";
@@ -101,5 +101,7 @@ public class ItemParserTests {
 			fail("Not supposed to recieve exception.");
 		}
 	}
+
+	//TODO: Test inputs without { }.
 
 }

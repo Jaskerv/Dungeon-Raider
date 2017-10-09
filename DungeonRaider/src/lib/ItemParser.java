@@ -27,7 +27,7 @@ public class ItemParser {
 	 * @throws ParserException
 	 */
 	public static Map<String, List<String>> parse(String text)
-			throws ParserException {
+			throws ParserException, IllegalArgumentException {
 		if (text.isEmpty()) {
 			throw new ParserException("Input is empty or null.");
 		}
@@ -48,42 +48,59 @@ public class ItemParser {
 	/**
 	 * This method does the scanning.
 	 *
-	 * Format is type of <item, item + attributes>
+	 * Format is type of category + itemName + <attributes>
+	 * Examples:
+	 * 		Weapon Short_Sword 1 2 3 4
+	 * 		Consumable Small_Health_Potion 30 0
 	 *
 	 * @param sc
-	 * @return
+	 * @return A map of a string to a list of strings, (category to attributes).
 	 */
-	private static Map<String, List<String>> scan(Scanner sc) {
+	private static Map<String, List<String>> scan(Scanner sc)
+			throws IllegalArgumentException {
 		Map<String, List<String>> mc = new HashMap<>();
+		String openingBrace = sc.next();
+		if (!openingBrace.equals("{")) {
+			throw new IllegalArgumentException("No opening brace found (to"
+						+ " indicate it is item contents)");
+		}
 		while (sc.hasNext()) {
 			String line = sc.nextLine();
+			//reached the end
+			if (line.contains("}")) {
+				break;
+			}
+			//splits each element into an array of chars
 			String[] split = line.split("\\s");
-			String type = null;
+			String category = null;
 			String item = null;
 			for (int i = 0; i < split.length; i++) {
-				if (type == null) {
-					type = split[i];
+				//First element will be the item category type
+				if (category == null) {
+					category = split[i];
 					continue;
 				}
+				//Second element is the item name
 				if (item == null) {
 					item = split[i];
 					continue;
 				}
+				//Adds all of the item attributes separated by spaces
 				if (i < split.length) {
 					item += " " + split[i];
 				}
 			}
-			if (mc.containsKey(type)) {
-				mc.get(type).add(item);
-			} else {
+			//adds item to category
+			if (mc.containsKey(category)) {
+				mc.get(category).add(item);
+			}
+			else {
 				if (item != null) {
 					List<String> newList = new ArrayList<>();
 					newList.add(item);
-					mc.put(type, newList);
+					mc.put(category, newList);
 				}
 			}
-			type = null;
-			item = null;
 		}
 		return mc;
 
