@@ -2,7 +2,6 @@ package dungeonraider.map;
 
 import java.io.File;
 
-import dungeonraider.engine.Engine;
 import lib.MapParser;
 
 /**
@@ -14,7 +13,7 @@ import lib.MapParser;
 public class Map {
 	private static final int WIDTH = 22;
 	private static final int LENGTH = 22;
-	private static final int TILE_SIZE = findTileSize();
+	private static final int TILE_SIZE = 96;
 	/** Fixed size dungeon 2D array containing each individual tile */
 	private Tile[][] map = new Tile[WIDTH][LENGTH];
 	/** 0 for tutorial map, 1 for dungeon map, 2 for safe room, etc. */
@@ -69,10 +68,6 @@ public class Map {
 			}
 		}
 		return true;
-	}
-
-	public static int findTileSize() {
-		return 96;
 	}
 
 	public Tile[][] getMap() { return map; }

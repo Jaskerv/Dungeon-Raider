@@ -21,7 +21,7 @@ public class MapParser {
     private static final int LENGTH = 22;
     private static final int NUM_STATES = 3;
     /** Shows map state information e.g. no. of monsters */
-    private static int[] mapStates = new int[3];
+    private static int[] mapStates = new int[NUM_STATES];
 
     /**
      * This method will read a file and covert it to a map (2D array of chars).

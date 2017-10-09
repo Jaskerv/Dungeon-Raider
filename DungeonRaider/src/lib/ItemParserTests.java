@@ -41,7 +41,7 @@ public class ItemParserTests {
 	public void test_Exception_01() {
 		try {
 			String text = "";
-			Map<String, List<String>> mp = ItemParser.parse(text);
+			ItemParser.parse(text);
 		} catch (Exception e) {
 			assertTrue(e.getMessage().equals("Input is empty or null."));
 		}

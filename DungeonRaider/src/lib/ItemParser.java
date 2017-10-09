@@ -1,8 +1,5 @@
 package lib;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -120,6 +117,8 @@ public class ItemParser {
 	 *
 	 */
 	protected static class ParserException extends Exception {
+		private static final long serialVersionUID = 1L;
+
 		public ParserException(String msg) {
 			super(msg);
 		}

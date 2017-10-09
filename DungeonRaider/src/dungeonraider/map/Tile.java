@@ -113,14 +113,8 @@ public class Tile {
 
 	public void setY(int y) { this.y = y; }
 
-	public boolean isBoundary() {
-		return boundary;
-	}
+	public boolean isBoundary() { return boundary; }
 
-	public void setBoundary(boolean boundary) {
-		this.boundary = boundary;
-	}
-
-
+	public void setBoundary(boolean boundary) { this.boundary = boundary; }
 
 }
