@@ -18,6 +18,7 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 	private boolean right;
 	private boolean hurtPlayer;
 	private Player player;
+	private boolean pickUp;
 	private Engine engine;
 
 	public KeyController(Player player, Engine engine) {
@@ -27,6 +28,7 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 		this.right = false;
 		this.hurtPlayer = false;
 		this.player = player;
+		this.pickUp = false;
 		this.engine = engine;
 	}
 
@@ -61,6 +63,9 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 			break;
 		case KeyEvent.VK_I:
 			// myModel.displayInventory()...
+			break;
+		case KeyEvent.VK_F:
+			this.pickUp = true;
 			break;
 		// case KeyEvent.VK_P:
 		// hurtPlayer = true;
@@ -97,42 +102,43 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 		case KeyEvent.VK_I:
 			// myModel.displayInventory()...
 			break;
+		case KeyEvent.VK_F:
+			this.pickUp = false;
+			break;
 		case KeyEvent.VK_P:
 			this.player.damage(10);
 		}
 	}
 
 	public boolean isUp() {
-		if (!engine.isMenu())
-			return up;
-		return false;
+		return up;
 	}
 
 	public boolean isDown() {
-		if (!engine.isMenu())
-			return down;
-		return false;
+		return down;
 	}
 
 	public boolean isLeft() {
-		if (!engine.isMenu())
-			return left;
-		return false;
+		return left;
 	}
 
 	public boolean isRight() {
-		if (!engine.isMenu())
-			return right;
-		return false;
+		return right;
+	}
+
+	public boolean isPickUp() {
+		return pickUp;
+	}
+
+	public void setPickUp(boolean pickUp) {
+		this.pickUp = pickUp;
 	}
 
 	/**
 	 * @return the hurtPlayer
 	 */
 	public boolean isHurtPlayer() {
-		if (!engine.isMenu())
-			return hurtPlayer;
-		return false;
+		return hurtPlayer;
 	}
 
 	@Override

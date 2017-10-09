@@ -35,6 +35,8 @@ public class Player implements Character, GameObject {
 	private Shield armour;
 	private Inventory inventory;
 	private Sprite spriteImage;
+	private Box playerBoundBox;
+	private Box pickUpRadius;
 
 	private static final int MAX_CAPACITY = 20;
 	private static final int SPRINT_MODIFIER = 2;
@@ -47,7 +49,10 @@ public class Player implements Character, GameObject {
 		this.zoom = zoom;
 		this.spriteImage = sprite;
 		this.stamina = stamina;
-	}
+		this.playerBoundBox = new Box(x, y, sprite.getWidth()*zoom, sprite.getHeight()*zoom);
+		//Pick up radius of the player starts half of the players width to the left of the player and extends to twice the players width meaning the pick up radius is twice the size of the player
+		this.pickUpRadius	= new Box(x-((sprite.getWidth()*zoom)/2), y-((sprite.getHeight()*zoom)/2), (sprite.getWidth()*zoom)*2, (sprite.getHeight()*zoom)*2);
+		}
 
 	public Player(Position center, int stamina, Sprite playerSprite, int zoom, int hp, int hpMax) {
 		this.damageQueue = new PriorityQueue<>();
@@ -187,18 +192,25 @@ public class Player implements Character, GameObject {
 
 
 		/** Player */
+		//Checking movement agaisnt walls
 		if (keyBinds.isUp()) {
-			if(checkBoundry(currentMap, x + width/2, y - speed))	walkUp();
+			if(checkBoundry(currentMap, x + width/2, y - speed + ((this.spriteImage.getHeight()*zoom)/2)))	walkUp();
 		}
 		if (keyBinds.isDown()) {
-			if(checkBoundry(currentMap, x + width/2, y + speed))	walkDown();
+			if(checkBoundry(currentMap, x + width/2, y + (this.spriteImage.getHeight()*zoom) + speed))	walkDown();
 		}
 		if (keyBinds.isLeft()) {
-			if(checkBoundry(currentMap, x - speed, y))	walkLeft();
+			if(checkBoundry(currentMap, x - speed, y + ((this.spriteImage.getHeight()*zoom)/2)))	walkLeft();
 		}
 		if (keyBinds.isRight()) {
-			if(checkBoundry(currentMap, right + speed, y))	walkRight();
+			if(checkBoundry(currentMap, right + speed, y + ((this.spriteImage.getHeight()*zoom)/2)))	walkRight();
 		}
+		
+		//Checking if player is attempting to pick up and whether there is anything to pick up
+		if(keyBinds.isPickUp()) {
+			//need to check if any of the items locations 
+		}
+		
 		this.updateCamera(engine.getRenderer().getCamera());
 		if (!damageQueue.isEmpty()) {
 			int damage = damageQueue.poll();
