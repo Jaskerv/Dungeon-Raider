@@ -48,7 +48,7 @@ import javazoom.jl.player.Player;
  *      /i_have_released_my_1363_songs_free_under_creative/ "rollwithit.mp3" -
  *      Music
  * 
- * @author harry
+ * @author Jono Yan, Harry Nguon
  *
  */
 public class StartGame extends Canvas implements KeyListener, MouseListener, GameObject {
