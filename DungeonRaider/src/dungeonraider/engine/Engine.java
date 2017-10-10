@@ -68,6 +68,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 	private SpriteSheet testSpriteSheet;
 	private SpriteSheet dungeonTiles = new SpriteSheet(loadImage("resources/tiles/DungeonTileset1.png"));
 	private GameObject[] object;
+	private Sprite weaponTestSprite;
 	/** Tutorial map wall boundaries */
 	private static final int LEFT_WALL = 60;
 	private static final int TOP_WALL = 100;
@@ -110,6 +111,12 @@ public class Engine extends JFrame implements Runnable, Observer {
 		testSpriteSheet.loadSprites(16, 16);
 		dungeonTiles.loadSprites(16, 16);
 		this.playerSprite = dungeonTiles.getSprite(4, 6);
+
+		/**
+		 * Testing melee
+		 */
+		weaponTestSprite = dungeonTiles.getSprite(10, 1);
+
 
 		/**
 		 * Initiating the players

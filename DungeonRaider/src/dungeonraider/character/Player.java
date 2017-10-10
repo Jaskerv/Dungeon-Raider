@@ -150,7 +150,7 @@ public class Player implements Character, GameObject {
 		KeyController keyBinds = engine.getKeyBinds();
 		Map currentMap = engine.getCurrentMap();
 		MouseController mouseActions = engine.getMouseListener();
-	
+
 		int width = spriteImage.getHeight() * zoom;
 		int right = x + width;
 
@@ -169,14 +169,15 @@ public class Player implements Character, GameObject {
 		if (keyBinds.isRight()) {
 			if(checkBoundry(currentMap, right + speed, y + ((this.spriteImage.getHeight()*zoom)/2)))	walkRight();
 		}
-		
+
 		//Checking if player is attempting to pick up and whether there is anything to pick up
 		if(keyBinds.isPickUp()) {
-			//need to check if any of the items locations 
-			
+			//need to check if any of the items locations
+
 		}
-		
-		if(mouseActions.isAttack()) {
+
+		if(mouseActions.getAttacks() > 0) {
+			mouseActions.setAttacks(mouseActions.getAttacks() - 1);
 			int mx = mouseActions.getMx();
 			int my = mouseActions.getMy();
 			System.out.println("Attack");
@@ -184,16 +185,16 @@ public class Player implements Character, GameObject {
 			System.out.println(my);
 			attack(mx, my, engine);
 		}
-		
+
 		this.updateCamera(engine.getRenderer().getCamera());
 		if (!damageQueue.isEmpty()) {
 			int damage = damageQueue.poll();
 			this.hp += damage;
 		}
 	}
-	
+
 	public void attack(int mx, int my, Engine engine) {
-		
+
 	}
 
 /*	*//**
@@ -217,11 +218,11 @@ public class Player implements Character, GameObject {
 		camera.setY(y - (camera.getHeight() / 2) + (this.spriteImage.getHeight() * zoom / 2));
 	}
 
-	
+
 	/**
 	 * Getters and setters for the player class
 	 */
-	
+
 	/**
 	 * @return the hp
 	 */
