@@ -29,6 +29,7 @@ public class Tile {
 	private static final SpriteSheet SPRITE_SHEET_2 =
 			new SpriteSheet(Engine.loadImage(SPRITE_SHEET_2_PATH));
 	private Box boundingBox;
+	//private Sprite bottomLayer (12,11) potion
 
 	/**
 	 * This initialises the tile instance. Each tile instance is contained

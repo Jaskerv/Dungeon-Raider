@@ -35,8 +35,7 @@ public class Map {
 	 */
 	public void initialiseMap(String mapName) {
 		String path = "resources/maps/"+mapName+".txt";
-		File file = new File(path);
-		char[][] map = MapParser.parseFileToMapArray(file);
+		char[][] map = MapParser.parseFileToMapArray(path);
 		initialiseFields();
 		for (int y = 0; y < LENGTH; y++) {
 			for (int x = 0; x < WIDTH; x++) {

@@ -17,7 +17,7 @@ import org.junit.Test;
  * @author harry
  */
 public class MapParserTests {
-	
+
 	/**
 	 * This method will create a file to test out the map strings created
 	 * in the tests. The strings being created in the tests will be parsed
@@ -26,24 +26,27 @@ public class MapParserTests {
 	 * @param fileName  name of the temp file being created
 	 * @param contents  the string (map string) that will be written to the file
 	 * @return  the temp file that will be tested
+	 * @return  the path to the temp file (new version with streams)
 	 */
-	public File createTestFile(String fileName, String contents) {
+	public String createTestFile (String fileName, String contents) {
 		try {
 			File file = File.createTempFile(fileName, ".txt");
+			String path = file.getPath();
+			System.out.println(path);
 			BufferedWriter bWriter = new BufferedWriter(new FileWriter(file));
 			for (int i = 0; i < contents.length(); i++) {
 				bWriter.append(contents.charAt(i));
 				bWriter.append(" ");
 			}
 			bWriter.close();
-			return file;
+			return path;
 		}
 		catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Gets rid of all whitespaces, \n's, etc. This makes it easier to work with
 	 * the new string.
@@ -85,7 +88,7 @@ public class MapParserTests {
     			"O W W W W W W W W W W W W W W W W W W W W D \n";
     	tutMap = formStructure(tutMap);
         try {
-        	File testFile = createTestFile("testFile", tutMap);
+        	String testFile = createTestFile("testFile", tutMap);
             char[][] map = MapParser.parseFileToMapArray(testFile);
 	        assertTrue(map[0][0]  ==  'G');
 	        assertTrue(map[21][0] ==  'O');
@@ -128,7 +131,7 @@ public class MapParserTests {
 	    			"WOKQVNQDIEAFDSGETKUYAF\n" +
 	    			"DFJTSQXKNQUFRLEVFGHXPE\n";
     	randomMap = formStructure(randomMap);
-    	File testFile = createTestFile("testFile", randomMap);
+    	String testFile = createTestFile("testFile", randomMap);
         char[][] map = MapParser.parseFileToMapArray(testFile);
     	int index = 3; //First three indexes are the map states, so start at 3
     	for (int y = 0; y < map[0].length; y++) {
@@ -172,7 +175,7 @@ public class MapParserTests {
     			"W W W W W W W W W W W W W W W W W W W W W W \n";
     	tutMap = formStructure(tutMap);
         try {
-        	File testFile = createTestFile("testFile", tutMap);
+        	String testFile = createTestFile("testFile", tutMap);
             MapParser.parseFileToMapArray(testFile);
         }
         catch (IllegalArgumentException e) {
@@ -215,22 +218,22 @@ public class MapParserTests {
     			"W W W W W W W W W W W W W W W W W W W W W W W \n";
     	testMap = formStructure(testMap);
         try {
-        	File testFile = createTestFile("testFile", testMap);
+        	String testFile = createTestFile("testFile", testMap);
             MapParser.parseFileToMapArray(testFile);
         }
         catch (IllegalArgumentException e) {
         	//good
         }
     }
-    
+
     /**
      * With the introduction of items being inside the map files, this method
      * tests to ensure that the map is still being generated correctly.
      */
     @Test
     public void testStringToMap_05() {
-    	String testMap = 
-    			"{ \n" +	
+    	String testMap =
+    			"{ \n" +
     			"Chest1 4 3 \n" +
     			"Weapon-Chest1 ShortSword 0 2 10 \n" +
     			"} \n" +
@@ -259,11 +262,34 @@ public class MapParserTests {
     			"W W W W W W W W W W W W W W W W W W W W W W \n";
     	testMap = formStructure(testMap);
         try {
-        	File testFile = createTestFile("testFile", testMap);
+        	String testFile = createTestFile("testFile", testMap);
             MapParser.parseFileToMapArray(testFile);
         }
         catch (IllegalArgumentException e) {
         	fail("Nothing bad was supposed to happen");
+        }
+    }
+
+    /**
+     * Tests parsing in an uneven map (not a square)
+     */
+    @Test
+    public void testStringToMap_06() {
+    	String testMap =
+    			"{ \n" +
+    			"Chest1 4 3 \n" +
+    			"Weapon-Chest1 ShortSword 0 2 10 \n" +
+    			"} \n" +
+    			"0 0 0\n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W \n";
+    	testMap = formStructure(testMap);
+        try {
+        	String testFile = createTestFile("testFile", testMap);
+            MapParser.parseFileToMapArray(testFile);
+        }
+        catch (StringIndexOutOfBoundsException e) {
+        	//good, this exception was meant to be thrown
         }
     }
 

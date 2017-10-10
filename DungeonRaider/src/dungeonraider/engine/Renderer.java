@@ -106,7 +106,7 @@ public class Renderer {
 
 	/**
 	 * This method renders the map by rendering each tile's pixels.
-	 * 
+	 *
 	 * @param map
 	 *            this is the current map that will be displayed
 	 */
@@ -146,7 +146,7 @@ public class Renderer {
 
 	/**
 	 * Renders the overlay of the GUI
-	 * 
+	 *
 	 * @param sprite
 	 */
 	public void renderGUI(Sprite sprite) {
