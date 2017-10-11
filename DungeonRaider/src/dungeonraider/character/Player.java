@@ -17,6 +17,14 @@ import dungeonraider.util.Camera;
 import dungeonraider.util.Position;
 import dungeonraider.util.Rectangle;
 
+
+/**
+ * Need to implement equiping of weapon then test if attacking works because right now null pointer exeception
+ * when trying to find weapon range
+ * @author Gabriel Tennent
+ *
+ */
+
 public class Player implements Character, GameObject {
 
 	private int lives;
@@ -27,8 +35,12 @@ public class Player implements Character, GameObject {
 	private int currentCapacity;
 	private int x;
 	private int y;
-
-	private Position position;
+	
+	/**
+	 * Item and bounding box variables
+	 */
+	private boolean primaryEquipped;
+	private boolean secondaryEquipped;
 	private Weapon primaryWeapon;
 	private Weapon secondaryWeapon;
 	private Shield armour;
@@ -49,11 +61,12 @@ public class Player implements Character, GameObject {
 		this.zoom = zoom;
 		this.spriteImage = sprite;
 		this.stamina = stamina;
+		this.primaryEquipped = false;
+		this.secondaryEquipped = false;
 		this.playerBoundBox = new Box(x, y, sprite.getWidth()*zoom, sprite.getHeight()*zoom);
 		//Pick up radius of the player starts half of the players width to the left of the player and extends to twice the players width meaning the pick up radius is twice the size of the player
 		this.pickUpRadius	= new Box(x-((sprite.getWidth()*zoom)/2), y-((sprite.getHeight()*zoom)/2), (sprite.getWidth()*zoom)*2, (sprite.getHeight()*zoom)*2);
 	}
-
 	public Player(Position center, int stamina, Sprite playerSprite, int zoom, int hp, int hpMax) {
 		this.damageQueue = new PriorityQueue<>();
 		this.spriteImage = playerSprite;
@@ -214,25 +227,61 @@ public class Player implements Character, GameObject {
 
 		}
 
-		if(mouseActions.getAttacks() > 0) {
-			mouseActions.setAttacks(mouseActions.getAttacks() - 1);
-			int mx = mouseActions.getMx();
-			int my = mouseActions.getMy();
-			System.out.println("Attack");
-			System.out.println(mx);
-			System.out.println(my);
-			attack(mx, my, engine);
+		/**
+		 * Returns left clicks and their co-ordinates to tell where for the character to attack
+		 */
+		while(!mouseActions.getAttackPositions().isEmpty()) {
+			//Gets the attack position from the mouse controller
+			Position attackPos = mouseActions.getAttackPos();
+			
+			int mx = attackPos.getX();
+			int my = attackPos.getY();
+			if(primaryEquipped)	attack(mx, my, engine);
 		}
-
-		this.updateCamera(engine.getRenderer().getCamera());
+		
+		/**
+		 * Updates the players hpbar if they have taken damage
+		 */
 		if (!damageQueue.isEmpty()) {
 			int damage = damageQueue.poll();
 			this.hp += damage;
 		}
+		
+		
+		/**
+		 * Updates camera
+		 */
+		this.updateCamera(engine.getRenderer().getCamera());
+		
 	}
 
+	/**
+	 * 
+	 * @param mx
+	 * @param my
+	 * @param engine
+	 */
 	public void attack(int mx, int my, Engine engine) {
-
+		int width = spriteImage.getWidth() * zoom;
+		int height = spriteImage.getHeight() * zoom;
+		Position center = engine.getRenderer().getCamera().getCenter();
+		//right attack calculated from the position of the camera
+		if(mx > center.getX()) {
+			//right side bounding box = to range of weapon and half player height
+			Box rightPrimaryAttackRad = new Box(x + width, y, primaryWeapon.getRange(), height/2);
+			//attackRight();
+			System.out.println("x: " + x);
+			System.out.println("attack right");
+			
+		}
+		//left attack calculated from the position of the camera
+		if(mx < center.getX()) {
+			//left side bounding box = to range of weapon and half player height
+			Box leftPrimaryAttackRad = new Box(x-primaryWeapon.getRange(), y, primaryWeapon.getRange(), height/2);
+			//attackLeft();
+			System.out.println("x: " + x);
+			System.out.println("attack left");
+		}
 	}
 
 	/*	*//**

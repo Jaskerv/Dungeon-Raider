@@ -3,8 +3,10 @@ package dungeonraider.controller;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.Stack;
 
 import dungeonraider.engine.Engine;
+import dungeonraider.util.Position;
 
 public class MouseController implements MouseListener, MouseMotionListener {
 	private Engine engine;
@@ -12,6 +14,7 @@ public class MouseController implements MouseListener, MouseMotionListener {
 	private int mx;
 	private int my;
 	private int attacks;
+	private Stack<Position> attackPositions;
 
 	public MouseController(Engine engine) {
 		this.engine = engine;
@@ -19,15 +22,20 @@ public class MouseController implements MouseListener, MouseMotionListener {
 		this.mx = 0;
 		this.my = 0;
 		this.attacks = 0;
+		this.attackPositions = new Stack<>();
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		mx = e.getX();
+		mx = e.getX();	
 		my = e.getY();
-		attacks += 1;
+		Position attackPos = new Position(mx, my);
+		attackPositions.push(attackPos);
+		//attacks += 1;
 		//attack = true;
+		
+		//creat positions and store them in array then take them out as your attacks are computed
 	}
 
 	@Override
@@ -84,5 +92,14 @@ public class MouseController implements MouseListener, MouseMotionListener {
 		return my;
 	}
 
+	public Position getAttackPos() {
+		return attackPositions.pop();
+	}
+	
+	public Stack<Position> getAttackPositions() {
+		return this.attackPositions;
+	}
+
+	
 
 }

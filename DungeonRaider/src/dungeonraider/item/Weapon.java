@@ -7,8 +7,9 @@ public class Weapon extends Equipment implements Upgradable {
 	private int cost;
 	private int damage;
 	private double critChance;
+	private int range;
 	private int numberOfUpgrades = 0;
-
+	
 	/**
 	 * @param type weapon or shield
 	 * @param name
@@ -17,12 +18,13 @@ public class Weapon extends Equipment implements Upgradable {
 	 * @param critChance in percentage
 	 *
 	 */
-	public Weapon(String name, int x, int y, int map, int damage, int critChance) {
+	public Weapon(String name, int x, int y, int map, int damage, int range, int critChance) {
 		super(x, y, map);
 		this.name = name;
 		this.cost = cost;
 		this.damage = damage;
 		this.critChance = critChance;
+		this.range = range;
 
 	}
 
@@ -76,8 +78,12 @@ public class Weapon extends Equipment implements Upgradable {
 		this.numberOfUpgrades = numberOfUpgrades;
 	}
 
+	public int getRange() {
+		return range;
+	}
 
-
-
+	public void setRange(int range) {
+		this.range = range;
+	}
 
 }
