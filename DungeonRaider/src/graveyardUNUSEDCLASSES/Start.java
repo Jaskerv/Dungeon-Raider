@@ -206,7 +206,9 @@ public class Start extends JFrame implements KeyListener, MouseListener {
 			}
 			// 'Info' button - unimplemented
 			else if (index == 1) {
-				JOptionPane.showMessageDialog(this, "--Unimplemented--");
+				JOptionPane.showMessageDialog(this, "Dungeon Raider is a top down, two dimensional, free moving, \ndungeon crawler that "
+						+ "requires the player to progress through\ndepths of dungeon, kill monsters to obtain in game currerncy\nto upgrades "
+						+ "weapons and shield with the goal of saving the\nPrincess.");
 			}
 			// 'Quit' button
 			else if (index == 2) {
