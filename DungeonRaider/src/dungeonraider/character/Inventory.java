@@ -5,6 +5,12 @@ import java.util.List;
 
 import dungeonraider.item.Item;
 
+/**
+ * Inventory for any object that can contain multiple items
+ * 
+ * @author Jono Yan
+ *
+ */
 public class Inventory {
 	private List<Item> inventory;
 	private int currentCapacity;
