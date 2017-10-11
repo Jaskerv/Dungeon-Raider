@@ -132,7 +132,7 @@ public class StartGame extends Canvas implements KeyListener, MouseListener, Gam
 				}
 			});
 			clip.open(stream);
-			clip.loop(100);
+			clip.loop(Clip.LOOP_CONTINUOUSLY);
 			clip.start();
 		} catch (Exception e) {
 
