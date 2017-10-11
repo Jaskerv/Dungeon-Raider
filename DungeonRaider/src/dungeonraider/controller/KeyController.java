@@ -12,13 +12,18 @@ import dungeonraider.util.Camera;
 
 public class KeyController extends Observable implements KeyListener, FocusListener {
 
+	/**
+	 * Control Booleans for player and other key events
+	 */
 	private boolean up;
 	private boolean down;
 	private boolean left;
 	private boolean right;
 	private boolean hurtPlayer;
-	private Player player;
 	private boolean pickUp;
+	private boolean run;
+	
+	private Player player;
 	private Engine engine;
 
 	public KeyController(Player player, Engine engine) {
@@ -30,6 +35,7 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 		this.player = player;
 		this.pickUp = false;
 		this.engine = engine;
+		this.run = false;
 	}
 
 	@Override
@@ -66,6 +72,9 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 			break;
 		case KeyEvent.VK_F:
 			this.pickUp = true;
+			break;
+		case KeyEvent.VK_V:
+			this.run = true;
 			break;
 		// case KeyEvent.VK_P:
 		// hurtPlayer = true;
@@ -106,6 +115,9 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 		case KeyEvent.VK_F:
 			this.pickUp = false;
 			break;
+		case KeyEvent.VK_V:
+			this.run = false;
+			break;
 		case KeyEvent.VK_P:
 			this.player.damage(10);
 		}
@@ -129,6 +141,10 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 
 	public boolean isPickUp() {
 		return pickUp;
+	}
+	
+	public boolean isRun() {
+		return run;
 	}
 
 	public void setPickUp(boolean pickUp) {
