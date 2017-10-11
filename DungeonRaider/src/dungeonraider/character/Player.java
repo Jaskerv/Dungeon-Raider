@@ -24,11 +24,9 @@ public class Player implements Character, GameObject {
 	private int hpMax;
 	private int gold;
 	private int stamina;
-	private boolean sprint;
 	private int currentCapacity;
 	private int x;
 	private int y;
-	public static final int speed = 7;
 
 	private Position position;
 	private Weapon primaryWeapon;
@@ -40,7 +38,8 @@ public class Player implements Character, GameObject {
 	private Box pickUpRadius;
 
 	private static final int MAX_CAPACITY = 20;
-	private static final int SPRINT_MODIFIER = 2;
+	public static final int SPEED = 2;
+	public static final int SPRINT = 7;
 	private int zoom;
 	private Queue<Integer> damageQueue;
 
@@ -53,7 +52,7 @@ public class Player implements Character, GameObject {
 		this.playerBoundBox = new Box(x, y, sprite.getWidth()*zoom, sprite.getHeight()*zoom);
 		//Pick up radius of the player starts half of the players width to the left of the player and extends to twice the players width meaning the pick up radius is twice the size of the player
 		this.pickUpRadius	= new Box(x-((sprite.getWidth()*zoom)/2), y-((sprite.getHeight()*zoom)/2), (sprite.getWidth()*zoom)*2, (sprite.getHeight()*zoom)*2);
-		}
+	}
 
 	public Player(Position center, int stamina, Sprite playerSprite, int zoom, int hp, int hpMax) {
 		this.damageQueue = new PriorityQueue<>();
@@ -81,52 +80,52 @@ public class Player implements Character, GameObject {
 	public void walkLeft() {
 		// TODO Auto-generated method stub
 		//if(checkBoundry(this.x - speed, this.y))
-		this.x -= speed;
+		this.x -= SPEED;
 	}
 
 	@Override
 	public void walkRight() {
 		// TODO Auto-generated method stub
 		//if(checkBoundry(this.x + speed, this.y))
-		this.x += speed;
+		this.x += SPEED;
 	}
 
 	@Override
 	public void walkUp() {
 		// TODO Auto-generated method stub
 		//if(checkBoundry(this.x, this.y-speed))
-		this.y -= speed;
+		this.y -= SPEED;
 	}
 
 	@Override
 	public void walkDown() {
 		// TODO Auto-generated method stub
 		//if(checkBoundry(this.x, this.y+speed))
-		this.y += speed;
+		this.y += SPEED;
 	}
 
 	@Override
 	public void runLeft() {
 		// TODO Auto-generated method stub
-		this.x -= speed * SPRINT_MODIFIER;
+		this.x -= SPRINT;
 	}
 
 	@Override
 	public void runRight() {
 		// TODO Auto-generated method stub
-		this.x += speed * SPRINT_MODIFIER;
+		this.x += SPRINT;
 	}
 
 	@Override
 	public void runUp() {
 		// TODO Auto-generated method stub
-		this.y += speed * SPRINT_MODIFIER;
+		this.y -= SPRINT;
 	}
 
 	@Override
 	public void runDown() {
 		// TODO Auto-generated method stub
-		this.y -= speed * SPRINT_MODIFIER;
+		this.y += SPRINT;
 	}
 
 	public void interact() {
@@ -151,23 +150,62 @@ public class Player implements Character, GameObject {
 		Map currentMap = engine.getCurrentMap();
 		MouseController mouseActions = engine.getMouseListener();
 
-		int width = spriteImage.getHeight() * zoom;
-		int right = x + width;
+		int width = spriteImage.getWidth() * zoom;
+		int height = spriteImage.getHeight() * zoom;
 
 
-		/** Player */
-		//Checking movement agaisnt walls
-		if (keyBinds.isUp()) {
-			if(checkBoundry(currentMap, x + width/2, y - speed + ((this.spriteImage.getHeight()*zoom)/2)))	walkUp();
+		/**
+		 * Player walking connection with key controller:
+		 * Also checks for player connection with walls
+		 */
+		if(!keyBinds.isRun()) {
+			if (keyBinds.isUp()) {
+				if(checkBoundry(currentMap, x + width, y - SPEED + height/2))	
+					if(checkBoundry(currentMap, x, y - SPEED + height/2))
+						walkUp();
+			}
+			if (keyBinds.isDown()) {
+				if(checkBoundry(currentMap, x + width, y + height + SPEED))
+					if(checkBoundry(currentMap, x, y + height + SPEED))
+						walkDown();
+			}
+			if (keyBinds.isLeft()) {
+				if(checkBoundry(currentMap, x - SPEED, y + height/2))	
+					if(checkBoundry(currentMap, x - SPEED, y + height))
+						walkLeft();
+			}
+			if (keyBinds.isRight()) {
+				if(checkBoundry(currentMap, x + width + SPEED, y + height/2))
+					if(checkBoundry(currentMap, x + width + SPEED, y + height))
+						walkRight();
+			}
 		}
-		if (keyBinds.isDown()) {
-			if(checkBoundry(currentMap, x + width/2, y + (this.spriteImage.getHeight()*zoom) + speed))	walkDown();
-		}
-		if (keyBinds.isLeft()) {
-			if(checkBoundry(currentMap, x - speed, y + ((this.spriteImage.getHeight()*zoom)/2)))	walkLeft();
-		}
-		if (keyBinds.isRight()) {
-			if(checkBoundry(currentMap, right + speed, y + ((this.spriteImage.getHeight()*zoom)/2)))	walkRight();
+
+		/**
+		 * Player running connection with key controller:
+		 * Also checks for player connection with walls
+		 */
+		if(keyBinds.isRun()) {
+			if (keyBinds.isUp()) {
+				if(checkBoundry(currentMap, x + width, y - SPRINT + height/2))	
+					if(checkBoundry(currentMap, x, y - SPRINT + height/2))
+						runUp();
+			}
+			if (keyBinds.isDown()) {
+				if(checkBoundry(currentMap, x + width, y + height + SPRINT))
+					if(checkBoundry(currentMap, x, y + height + SPRINT))
+						runDown();
+			}
+			if (keyBinds.isLeft()) {
+				if(checkBoundry(currentMap, x - SPRINT, y + height/2))	
+					if(checkBoundry(currentMap, x - SPRINT, y + height))
+						runLeft();
+			}
+			if (keyBinds.isRight()) {
+				if(checkBoundry(currentMap, x + width + SPRINT, y + height/2))
+					if(checkBoundry(currentMap, x + width + SPRINT, y + height))
+						runRight();
+			}
 		}
 
 		//Checking if player is attempting to pick up and whether there is anything to pick up
@@ -197,7 +235,7 @@ public class Player implements Character, GameObject {
 
 	}
 
-/*	*//**
+	/*	*//**
 	 * Checks the engine to return the size of the map and then checks if the player is moving out of the map
 	 * @param engine the engine of the game
 	 * @param newX the new X coordinate that will be set after movement
@@ -283,7 +321,7 @@ public class Player implements Character, GameObject {
 	}
 
 	public int getSpeed() {
-		return speed;
+		return SPEED;
 	}
 
 	public int getZoom() {
