@@ -2,7 +2,7 @@ package lib;
 
 import java.io.Serializable;
 
-public class DataSave implements Serializable {
+public class SaveGameData implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
