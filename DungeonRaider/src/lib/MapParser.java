@@ -50,7 +50,6 @@ public class MapParser {
 			e.printStackTrace();
 		} finally {
         	contentStream.close();
-        	System.out.println(contents);
         }
 		//If it detects a '{' (item contents of the map), then it skips over it
 		//and skips all of the contents contained inside it until it finds a
@@ -90,6 +89,11 @@ public class MapParser {
 		try {
 	        for (int y = 0; y < LENGTH; y++) {
 	        	for (int x = 0; x < WIDTH; x++) {
+	        		if (!Character.isDigit(contents.charAt(index+1)) &&
+	        				!Character.isLetter(contents.charAt(index+1))) {
+	        			throw new IllegalArgumentException("Tiles must be a"
+	        					+ " letter or a number");
+	        		}
 	        		map[x][y] = contents.charAt(++index);
 	        	}
 	        }

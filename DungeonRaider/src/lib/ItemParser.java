@@ -1,6 +1,7 @@
 package lib;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,9 @@ import java.util.Scanner;
  *
  */
 public class ItemParser {
+
+	private static List<String> listOfCategories = Arrays.asList("Weapon",
+			"Shield", "Consumable");
 
 	/**
 	 * Parses a text file to generate a map of items
@@ -77,6 +81,10 @@ public class ItemParser {
 				//First element will be the item category type
 				if (category == null) {
 					category = split[i];
+					System.out.println(category);
+					if (!listOfCategories.contains(category)) {
+						throw new IllegalArgumentException();
+					}
 					continue;
 				}
 				//Second element is the item name
