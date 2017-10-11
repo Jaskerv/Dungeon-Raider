@@ -53,7 +53,7 @@ public class ItemParserTests {
 	@org.junit.Test
 	public void test_Category_01() {
 		try {
-			String text = "{\nWeapon Short_Sword 1 2 3 4\n}";
+			String text = "{ \nWeapon Short_Sword 1 2 3 4\n}";
 			Map<String, List<String>> mp = ItemParser.parse(text);
 			String key = "Weapon";
 			String value = "Short_Sword 1 2 3 4";
@@ -71,8 +71,9 @@ public class ItemParserTests {
 	@org.junit.Test
 	public void test_Category_02() {
 		try {
-			String text = "{\nWeapon Short_Sword 1 2 3 4\n"
-					+ "Consumable Small_Health_Potion 30 0\n}";
+			String text = "{ \nWeapon Short_Sword 1 2 3 4\n"
+					+ "Consumable Small_Health_Potion 30 0 \n}";
+
 			Map<String, List<String>> mp = ItemParser.parse(text);
 			String key = "Weapon";
 			String value = "Short_Sword 1 2 3 4";
@@ -95,7 +96,7 @@ public class ItemParserTests {
 	@org.junit.Test
 	public void test_Category_03() {
 		try {
-			String text = "{\nWeapon\n}";
+			String text = "{ \nWeapon\n}";
 			Map<String, List<String>> mp = ItemParser.parse(text);
 			if (mp != null) {
 				fail("Supposed to return null");
@@ -104,15 +105,15 @@ public class ItemParserTests {
 			fail("Not supposed to recieve exception.");
 		}
 	}
-	
+
 	/**
 	 * Tests parsing in a proper map file. Any exception thrown will indicate
 	 * it's unsuccessful.
 	 */
 	@Test
 	public void testParseMap_01() {
-		String testMap = 
-    			"{ \n" +	
+		String testMap =
+    			"{ \n" +
     			"Weapon Short_Sword 1 2 3 4\n" +
     			"Consumable Small_Health_Potion 30 0 \n" +
     			"} \n" +
@@ -145,14 +146,15 @@ public class ItemParserTests {
 			fail("fix me");
 		}
 	}
-	
+
+
 	/**
 	 * Tests invalid input (no opening brace found)
 	 */
 	@Test
 	public void testParseMap_02() {
-		String testMap = 
-    			"\n" +	
+		String testMap =
+    			"\n" +
     			"Weapon Short_Sword 1 2 3 4\n" +
     			"Consumable Small_Health_Potion 30 0 \n" +
     			"} \n" +
@@ -185,14 +187,14 @@ public class ItemParserTests {
 			//good, exception is successfully thrown
 		}
 	}
-	
+
 	/**
 	 * Tests invalid input (no closing brace found)
 	 */
 	@Test
 	public void testParseMap_03() {
-		String testMap = 
-    			"{ \n" +	
+		String testMap =
+    			"{ \n" +
     			"Weapon Short_Sword 1 2 3 4\n" +
     			"Consumable Small_Health_Potion 30 0 \n" +
     			"\n" +
@@ -226,4 +228,14 @@ public class ItemParserTests {
 		}
 	}
 
+	//invalid inputs for map object creation
+	@org.junit.Test
+	public void test_Category_04() {
+		try {
+			String text = "{\nDog Short_Sword x # y d\n}";
+			Map<String, List<String>> mp = ItemParser.parse(text);
+		} catch (IllegalArgumentException | ParserException e) {
+			System.out.println("Good");
+		}
+	}
 }

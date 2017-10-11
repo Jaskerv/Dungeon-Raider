@@ -293,6 +293,48 @@ public class MapParserTests {
         }
     }
 
+
+    //Checks for special characters
+    public void testStringToMap_07() {
+       	String testMap =
+    			"{ \n" +
+    			"Chest1 4 3 \n" +
+    			"Weapon-Chest1 ShortSword 0 2 10 \n" +
+    			"} \n" +
+    			"0 0 0\n" +
+    			"W W W W W W W W $ # % ^ W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n" +
+    			"W W W W W W W W W W W W W W W W W W W W W W \n";
+    	testMap = formStructure(testMap);
+        try {
+        	String testFile = createTestFile("testFile", testMap);
+            MapParser.parseFileToMapArray(testFile);
+        }
+        catch (IllegalArgumentException e) {
+        	System.out.println("good");
+        }
+    }
+
+
     /**
      * This tests out the functionality of the MapLibrary.generateMonsters()
      * method. The method ensures that the returned value (rval) 1 < x < 10.
