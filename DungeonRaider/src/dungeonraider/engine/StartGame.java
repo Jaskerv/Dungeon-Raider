@@ -117,7 +117,9 @@ public class StartGame extends Canvas implements KeyListener, MouseListener, Gam
 	 * This method plays the music when the user is in the main menu
 	 */
 	public void playMusic() {
-		engine.getSoundLibrary().playClipLoop("titleScreen", Clip.LOOP_CONTINUOUSLY);
+		clip = engine.getSoundLibrary().getClip("titleScreen");
+		clip.loop(Clip.LOOP_CONTINUOUSLY);
+		clip.start();
 	}
 
 	/**
@@ -142,6 +144,7 @@ public class StartGame extends Canvas implements KeyListener, MouseListener, Gam
 		} else if (keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_S) {
 			if (index < 2) {
 				index++;
+				engine.getSoundLibrary().playClip("cursorMove");
 			}
 		} else if (keyCode == KeyEvent.VK_ENTER) {
 			// starts the game (new Engine instance)
