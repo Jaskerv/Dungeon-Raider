@@ -33,6 +33,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import dungeonraider.engine.Engine;
+import dungeonraider.sound.SoundMap;
 import dungeonraider.sprite.Sprite;
 import dungeonraider.util.FontImporter;
 import javazoom.jl.decoder.JavaLayerException;
@@ -139,12 +140,12 @@ public class StartGame extends Canvas implements KeyListener, MouseListener, Gam
 		if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_W) {
 			if (index > 0) {
 				index--;
-				engine.getSoundLibrary().playClip("cursorMove");
+				engine.getSoundLibrary().playClip("cursorMove", -10f);
 			}
 		} else if (keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_S) {
 			if (index < 2) {
 				index++;
-				engine.getSoundLibrary().playClip("cursorMove");
+				engine.getSoundLibrary().playClip("cursorMove", -10f);
 			}
 		} else if (keyCode == KeyEvent.VK_ENTER) {
 			// starts the game (new Engine instance)

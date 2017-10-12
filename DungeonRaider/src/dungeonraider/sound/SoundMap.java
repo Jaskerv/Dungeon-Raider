@@ -10,6 +10,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
+import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.Mixer;
 import javax.sound.sampled.Mixer.Info;
 
@@ -22,6 +23,10 @@ import javax.sound.sampled.Mixer.Info;
 public class SoundMap {
 	private Map<String, String> soundLibrary;
 	private Mixer mixer;
+	/**
+	 * If clip wants to be played at normal db
+	 */
+	public final static float DEFAULTDB = -1000000000;
 
 	/**
 	 * Needs the path of the file that contains the sound
@@ -55,6 +60,12 @@ public class SoundMap {
 
 	}
 
+	/**
+	 * Creates a clip with the correct path
+	 * 
+	 * @param path
+	 * @return
+	 */
 	public Clip createClip(String path) {
 		Clip clip = null;
 		Mixer.Info[] mixInfos = AudioSystem.getMixerInfo();
@@ -75,6 +86,12 @@ public class SoundMap {
 		return clip;
 	}
 
+	/**
+	 * Returns a clip from the library
+	 * 
+	 * @param clipName
+	 * @return
+	 */
 	public Clip getClip(String clipName) {
 		if (soundLibrary.containsKey(clipName)) {
 			return createClip(soundLibrary.get(clipName));
@@ -82,22 +99,76 @@ public class SoundMap {
 		return null;
 	}
 
-	public void playClip(Clip clip) {
+	/**
+	 * Plays clip once with the sound db f
+	 * 
+	 * @param clip
+	 * @param f
+	 *            f has to be between -80f and 10f or DEFAULTDB otherwise will be
+	 *            played at normal clip db
+	 */
+	public void playClip(Clip clip, float f) {
+		if (f != DEFAULTDB && (f >= -80f && f <= 10f)) {
+			FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+			gainControl.setValue(f);
+		}
 		clip.start();
 	}
 
-	public void playClip(String s) {
+	/**
+	 * Plays clip once with the sound db f
+	 * 
+	 * @param s
+	 * @param f
+	 *            f has to be between -80f and 10f or DEFAULTDB otherwise will be
+	 *            played at normal clip db
+	 */
+	public void playClip(String s, float f) {
 		Clip clip = getClip(s);
+		if (f != DEFAULTDB && (f >= -80f && f <= 10f)) {
+			FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+			gainControl.setValue(f);
+		}
 		clip.start();
 	}
 
-	public void playClipLoop(Clip clip, int loop) {
+	/**
+	 * Plays clip with the sound db f at loop times
+	 * 
+	 * @param clip
+	 * @param loop
+	 *            Loop can be looped as many times as needed, if want to repeat
+	 *            forever, use Clip.LOOP_CONTINUOUSLY
+	 * @param f
+	 *            has to be between -80f and 10f or DEFAULTDB otherwise will be
+	 *            played at normal clip db
+	 */
+	public void playClipLoop(Clip clip, int loop, float f) {
+		if (f != DEFAULTDB && (f >= -80f && f <= 10f)) {
+			FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+			gainControl.setValue(f);
+		}
 		clip.loop(loop);
 		clip.start();
 	}
 
-	public void playClipLoop(String s, int loop) {
+	/**
+	 * Plays clip with the sound db f at loop times
+	 * 
+	 * @param s
+	 * @param loop
+	 *            Loop can be looped as many times as needed, if want to repeat
+	 *            forever, use Clip.LOOP_CONTINUOUSLY
+	 * @param f
+	 *            has to be between -80f and 10f or DEFAULTDB otherwise will be
+	 *            played at normal clip db
+	 */
+	public void playClipLoop(String s, int loop, float f) {
 		Clip clip = getClip(s);
+		if (f != DEFAULTDB && (f >= -80f && f <= 10f)) {
+			FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+			gainControl.setValue(f);
+		}
 		clip.loop(loop);
 		clip.start();
 	}
