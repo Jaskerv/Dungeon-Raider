@@ -1,1 +1,2 @@
 cursorMove	resources/sountracks/fx/ff_cursorMove.wav
+titleScreen resources/sountracks/Born To Do This - RuneScape Soundtrack.wav

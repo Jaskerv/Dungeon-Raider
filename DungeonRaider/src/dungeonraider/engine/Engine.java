@@ -79,11 +79,11 @@ public class Engine extends JFrame implements Runnable, Observer {
 
 	public Engine() {
 		// this.canvas = new Canvas();
+		this.soundLibrary = new SoundMap("resources/sountracks/soundlibrary.txt");
 		this.startGame = new StartGame(this);
 		this.menu = true;
 		this.tk = this.getToolkit();
 		this.object = new GameObject[1];
-		this.soundLibrary = new SoundMap("resources/sountracks/soundlibrary.txt");
 		/** Sets name of JFrame window */
 		setTitle("Dungeon Raider");
 		/** Close program on exit */

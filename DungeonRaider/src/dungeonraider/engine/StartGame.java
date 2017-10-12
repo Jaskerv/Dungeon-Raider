@@ -117,26 +117,7 @@ public class StartGame extends Canvas implements KeyListener, MouseListener, Gam
 	 * This method plays the music when the user is in the main menu
 	 */
 	public void playMusic() {
-		try {
-			File file = new File("resources/sountracks/Born To Do This - RuneScape Soundtrack.wav");
-			AudioInputStream stream;
-			AudioFormat format;
-			DataLine.Info info;
-			stream = AudioSystem.getAudioInputStream(file);
-			format = stream.getFormat();
-			info = new DataLine.Info(Clip.class, format);
-			clip = (Clip) AudioSystem.getLine(info);
-			clip.addLineListener(e -> {
-				if (e.getType() == LineEvent.Type.STOP) {
-					clip.close();
-				}
-			});
-			clip.open(stream);
-			clip.loop(Clip.LOOP_CONTINUOUSLY);
-			clip.start();
-		} catch (Exception e) {
-
-		}
+		engine.getSoundLibrary().playClipLoop("titleScreen", Clip.LOOP_CONTINUOUSLY);
 	}
 
 	/**
