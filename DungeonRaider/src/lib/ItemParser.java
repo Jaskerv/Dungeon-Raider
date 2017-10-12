@@ -17,8 +17,8 @@ import java.util.Scanner;
  */
 public class ItemParser {
 
-	private static List<String> listOfCategories = Arrays.asList("Weapon",
-			"Shield", "Consumable");
+	private static List<String> listOfCategories = Arrays.asList("Weapon", 
+				"Shield", "Consumable");
 
 	/**
 	 * Parses a text file to generate a map of items
@@ -57,7 +57,7 @@ public class ItemParser {
 	 * @param sc
 	 * @return A map of a string to a list of strings, (category to attributes).
 	 */
-	private static Map<String, List<String>> scan(Scanner sc)
+	public static Map<String, List<String>> scan(Scanner sc)
 			throws IllegalArgumentException {
 		Map<String, List<String>> mc = new HashMap<>();
 		String openingBrace = sc.next();
@@ -81,7 +81,6 @@ public class ItemParser {
 				//First element will be the item category type
 				if (category == null) {
 					category = split[i];
-					System.out.println(category);
 					if (!listOfCategories.contains(category)) {
 						throw new IllegalArgumentException();
 					}
