@@ -225,6 +225,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 	 * This method will run at a specified speed.
 	 */
 	public void update() {
+		soundLibrary.autoClipClose();
 		if (menu) {
 			startGame.update(this);
 		} else {

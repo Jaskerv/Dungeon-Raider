@@ -2,9 +2,12 @@ package dungeonraider.sound;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -15,7 +18,10 @@ import javax.sound.sampled.Mixer;
 import javax.sound.sampled.Mixer.Info;
 
 /**
- * This will make a sound library where it makes waves
+ * This will make a sound library where inputs a text file formated with Format:
+ * clipName\\spathname
+ * 
+ * everytime a clip is played, a new instance of the clip is used
  * 
  * @author Jono Yan
  *
@@ -23,6 +29,7 @@ import javax.sound.sampled.Mixer.Info;
 public class SoundMap {
 	private Map<String, String> soundLibrary;
 	private Mixer mixer;
+	private Set<Clip> clipCloser;
 	/**
 	 * If clip wants to be played at normal db
 	 */
@@ -32,12 +39,13 @@ public class SoundMap {
 	 * Needs the path of the file that contains the sound
 	 * 
 	 * 
-	 * Format: clipName\\tpathname
+	 * Format: clipName\\spathname
 	 * 
 	 * @param path
 	 */
 	public SoundMap(String path) {
 		this.soundLibrary = new HashMap<>();
+		this.clipCloser = new HashSet<>();
 		try {
 			File file = new File(path);
 			parse(file);
@@ -80,6 +88,7 @@ public class SoundMap {
 			AudioInputStream stream = AudioSystem.getAudioInputStream(f);
 			clip = (Clip) AudioSystem.getLine(dataInfo);
 			clip.open(stream);
+			this.clipCloser.add(clip);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -94,7 +103,9 @@ public class SoundMap {
 	 */
 	public Clip getClip(String clipName) {
 		if (soundLibrary.containsKey(clipName)) {
-			return createClip(soundLibrary.get(clipName));
+			Clip clip = createClip(soundLibrary.get(clipName));
+			this.clipCloser.add(clip);
+			return clip;
 		}
 		return null;
 	}
@@ -171,5 +182,22 @@ public class SoundMap {
 		}
 		clip.loop(loop);
 		clip.start();
+	}
+
+	/**
+	 * Checks if clip is still active, if not this method will close it
+	 * automatically
+	 */
+	public void autoClipClose() {
+		if (!clipCloser.isEmpty()) {
+			Iterator<Clip> iter = clipCloser.iterator();
+			while (iter.hasNext()) {
+				Clip clip = iter.next();
+				if (!clip.isActive()) {
+					clip.close();
+					iter.remove();
+				}
+			}
+		}
 	}
 }

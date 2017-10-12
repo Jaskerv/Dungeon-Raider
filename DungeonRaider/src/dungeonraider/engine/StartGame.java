@@ -229,6 +229,9 @@ public class StartGame extends Canvas implements KeyListener, MouseListener, Gam
 		return yZoom;
 	}
 
+	/**
+	 * 
+	 */
 	public void stopMusic() {
 		clip.stop();
 	}
