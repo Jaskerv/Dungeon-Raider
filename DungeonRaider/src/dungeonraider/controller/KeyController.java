@@ -22,7 +22,7 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 	private boolean hurtPlayer;
 	private boolean pickUp;
 	private boolean run;
-	
+
 	private Player player;
 	private Engine engine;
 
@@ -73,7 +73,7 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 		case KeyEvent.VK_F:
 			this.pickUp = true;
 			break;
-		case KeyEvent.VK_V:
+		case KeyEvent.VK_SHIFT:
 			this.run = true;
 			break;
 		// case KeyEvent.VK_P:
@@ -81,7 +81,6 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 		// break;
 		}
 
-		
 	}
 
 	@Override
@@ -115,7 +114,7 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 		case KeyEvent.VK_F:
 			this.pickUp = false;
 			break;
-		case KeyEvent.VK_V:
+		case KeyEvent.VK_SHIFT:
 			this.run = false;
 			break;
 		case KeyEvent.VK_P:
@@ -142,7 +141,7 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 	public boolean isPickUp() {
 		return pickUp;
 	}
-	
+
 	public boolean isRun() {
 		return run;
 	}
