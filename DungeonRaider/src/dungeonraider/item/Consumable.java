@@ -1,15 +1,21 @@
 package dungeonraider.item;
 
+import dungeonraider.sprite.Sprite;
+
 /**
  * Potions
  */
 public class Consumable extends Item {
+	
+	private String name;
 	/** Item consume time */
 	protected int consumeTime;
 
-	public Consumable(int x, int y, int consumeTime, int map) {
-		super(x, y, map);
+	public Consumable(String name, int x, int y, int consumeTime, int map,
+			Sprite sprite) {
+		super(x, y, map, sprite);
 		this.consumeTime = consumeTime;
+		this.name = name;
 	}
 
 	/**
@@ -19,6 +25,14 @@ public class Consumable extends Item {
 	 */
 	public int getConsumeTime() {
 		return consumeTime;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

@@ -1,16 +1,20 @@
 package dungeonraider.item;
 
+import dungeonraider.sprite.Sprite;
 import dungeonraider.util.Position;
 
 public abstract class Item {
+	
 	protected Position position;
 	protected Boolean pickedUp;
 	protected int map;
+	private Sprite sprite;
 	
-	public Item(int x, int y, int map) {
+	public Item(int x, int y, int map, Sprite sprite) {
 		this.position = new Position(x, y);
 		pickedUp = false; 
-		this.map = 0;
+		this.map = map;
+		this.sprite = sprite;
 	}
 
 	public Boolean getPickedUp() {
@@ -29,6 +33,12 @@ public abstract class Item {
 		this.position = position;
 	}
 
-	
+	public Sprite getSprite() {
+		return sprite;
+	}
 
+	public void setSprite(Sprite sprite) {
+		this.sprite = sprite;
+	}
+	
 }

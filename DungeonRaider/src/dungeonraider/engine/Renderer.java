@@ -3,11 +3,14 @@ package dungeonraider.engine;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.util.List;
 
+import dungeonraider.item.Item;
 import dungeonraider.map.Map;
 import dungeonraider.map.Tile;
 import dungeonraider.sprite.Sprite;
 import dungeonraider.util.Camera;
+import dungeonraider.util.Position;
 import dungeonraider.util.Rectangle;
 
 /**
@@ -111,12 +114,26 @@ public class Renderer {
 	 *            this is the current map that will be displayed
 	 */
 	public void renderMap(Map map) {
+		//map (bottom layer)
 		for (int y = 0; y < 22; y++) {
 			for (int x = 0; x < 22; x++) {
 				Tile tile = map.getMap()[x][y];
 				Sprite tileSprite = tile.getSprite();
 				renderArray(tileSprite.getPixels(), tileSprite.getWidth(), tileSprite.getHeight(), tile.getX(),
 						tile.getY(), 6, 6);
+
+			}
+		}
+		//items
+		for (int y = 0; y < 22; y++) {
+			for (int x = 0; x < 22; x++) {
+				Tile tile = map.getMap()[x][y];
+				if (tile.getItem() != null) {
+					Item item = tile.getItem();
+					Sprite sprite = item.getSprite();
+					renderArray(sprite.getPixels(), sprite.getWidth(), sprite.getHeight(),
+							item.getPosition().getX(), item.getPosition().getY(), 6, 6);
+				}
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 package dungeonraider.map;
 
 import dungeonraider.engine.Engine;
+import dungeonraider.item.Item;
 import dungeonraider.sprite.Sprite;
 import dungeonraider.sprite.SpriteSheet;
 import dungeonraider.util.Box;
@@ -29,7 +30,8 @@ public class Tile {
 	private static final SpriteSheet SPRITE_SHEET_2 =
 			new SpriteSheet(Engine.loadImage(SPRITE_SHEET_2_PATH));
 	private Box boundingBox;
-	//private Sprite bottomLayer (12,11) potion
+	/** If item is on top of this tile */
+	private Item item = null;
 
 	/**
 	 * This initialises the tile instance. Each tile instance is contained
@@ -97,6 +99,19 @@ public class Tile {
 	public boolean checkWall(Tile tile) {
 		return tile.isBoundary();
 	}
+	
+	/**
+	 * Returns a sprite associated with the name
+	 * @param name
+	 * @return
+	 */
+	public static Sprite findSprite(String name) {
+		if (name.equals("Small_Health_Potion")
+				|| name.equals("Big_Health_Potion")) {
+			return SPRITE_SHEET_2.getSprite(12, 11);
+		}
+		return null;
+	}
 
 	public int getWidth() { return width; }
 
@@ -117,5 +132,9 @@ public class Tile {
 	public boolean isBoundary() { return boundary; }
 
 	public void setBoundary(boolean boundary) { this.boundary = boundary; }
+
+	public Item getItem() { return item; }
+	
+	public void setItem(Item item) { this.item = item; }
 
 }

@@ -1,7 +1,7 @@
 { 
 Weapon Short_Sword 0 2 10
-Consumable Small_Health_Potion 50 50 3 0
-Consumable Big_Health_Potion 100 50 3 0
+Consumable Small_Health_Potion 500 90 3 0
+Consumable Big_Health_Potion 300 150 3 0
 }
 
 0 0 0

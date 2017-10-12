@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 import dungeonraider.item.Consumable;
 import dungeonraider.item.Item;
+import dungeonraider.util.Position;
 import lib.ItemParser;
 import lib.MapParser;
 
@@ -115,25 +116,34 @@ public class Map {
 							}
 							parameters[index++] = Integer.parseInt(value);
 							value = "";
-							j = z < items.get(i).length()-1 ? z : z;
+							j = z;
 						}
 					}
 				}
-				System.out.println(name);
-				for (int x0 = 0; x0 < parameters.length; x0++) {
-					System.out.println(parameters[x0]);
-				}
-				Item item = new Consumable(parameters[0], parameters[1],
-						parameters[2], parameters[3]);
+				Item item = new Consumable(name, parameters[0], parameters[1],
+						parameters[2], parameters[3], Tile.findSprite(name));
+				associateItemToTile(item, parameters[0], parameters[1]);
 				this.items.add(item);
 				name = "";
 				index = 0;
+				parameters = new int[4];
 			}
-			System.out.println("List of items: " + this.items);
 			break;
 		case "Shield":
 			//Let Shield be finalised
 			break;
+		}
+	}
+	
+	private void associateItemToTile(Item item, int x, int y) {
+		for (int row = 0; row < LENGTH; row++) {
+			for (int col = 0; col < WIDTH; col++) {
+				Tile t = this.map[col][row];
+				if (t.contains(x, y)) {
+					t.setItem(item);
+					System.out.println(t.getItem());
+				}
+			}
 		}
 	}
 
