@@ -25,6 +25,11 @@ public class Sprite {
 		pixels = new int[width * height];
 		image.getRGB(0, 0, width, height, pixels, 0, width);
 	}
+	
+	//a default constructor
+	public Sprite() { 
+		
+	}
 
 	/**
 	 * @return the width
