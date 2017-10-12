@@ -131,6 +131,7 @@ public class StartGame extends Canvas implements KeyListener, MouseListener, Gam
 		// Gets rid of the 'press any key to continue' string, and displays
 		// the main menu buttons
 		if (firstKeyPress) {
+			engine.getSoundLibrary().playClip("cursorReady", -15f);
 			active = true;
 			firstKeyPress = false;
 			return;
@@ -150,6 +151,7 @@ public class StartGame extends Canvas implements KeyListener, MouseListener, Gam
 		} else if (keyCode == KeyEvent.VK_ENTER) {
 			// starts the game (new Engine instance)
 			if (index == 0) {
+				engine.getSoundLibrary().playClip("cursorReady", -15f);
 				engine.switchCanvas();
 			}
 			// 'Info' button - unimplemented
