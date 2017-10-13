@@ -13,25 +13,17 @@ import dungeonraider.item.Item;
  */
 public class Inventory {
 	private List<Item> inventory;
-	private int currentCapacity;
 
 	public Inventory(int currentCapacity) {
 		this.inventory = new ArrayList<>();
-		this.currentCapacity = currentCapacity;
 	}
 
 	public void add(Item e) {
-		if (e != null && currentCapacity < 20) {
-			this.inventory.add(e);
-			this.currentCapacity++;
-		}
+		this.inventory.add(e);
 	}
 
 	public void remove(Item e) {
-		if (e != null) {
-			this.inventory.remove(e);
-			this.currentCapacity--;
-		}
+		this.inventory.remove(e);
 	}
 
 	public boolean contains(Item e) {
@@ -39,5 +31,20 @@ public class Inventory {
 			return true;
 		}
 		return false;
+	}
+
+	public void removeItem() {
+		for(Item item : inventory) {
+			inventory.remove(item);
+			break;
+		}
+	}
+
+	public List<Item> getInventory() {
+		return inventory;
+	}
+
+	public void setInventory(List<Item> inventory) {
+		this.inventory = inventory;
 	}
 }

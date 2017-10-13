@@ -22,6 +22,7 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 	private boolean hurtPlayer;
 	private boolean pickUp;
 	private boolean run;
+	private boolean useItem;
 
 	private Player player;
 	private Engine engine;
@@ -36,6 +37,7 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 		this.pickUp = false;
 		this.engine = engine;
 		this.run = false;
+		this.useItem = false;
 	}
 
 	@Override
@@ -75,6 +77,13 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 			break;
 		case KeyEvent.VK_SHIFT:
 			this.run = true;
+			break;
+		case KeyEvent.VK_G:
+			this.useItem = true;
+			break;
+		//Deals 10 damage to player when pushing "p" for testing purposes
+		case KeyEvent.VK_P:
+			this.player.damage(10);
 			break;
 		// case KeyEvent.VK_P:
 		// hurtPlayer = true;
@@ -117,8 +126,9 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 		case KeyEvent.VK_SHIFT:
 			this.run = false;
 			break;
-		case KeyEvent.VK_P:
-			this.player.damage(10);
+		case KeyEvent.VK_G:
+			this.useItem = false;
+			break;
 		}
 	}
 
@@ -152,6 +162,14 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 
 	public void setRun(boolean run) {
 		this.run = run;
+	}
+
+	public boolean isUseItem() {
+		return useItem;
+	}
+
+	public void setUseItem(boolean useItem) {
+		this.useItem = useItem;
 	}
 
 	/**

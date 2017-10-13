@@ -229,12 +229,13 @@ public class Player implements Character, GameObject {
 			for(Item item : itemsOnMap) {
 				Position itemPos = item.getPosition();
 				if(pickUpRadius.contains(itemPos.getX(), itemPos.getY())){
-					inventory.add(item);
+					this.inventory.add(item);
 					item.setPickedUp(true);
 					itemsOnMap.remove(item);
 					break;
 				}
 			}
+			System.out.println(this.inventory.getInventory().isEmpty());
 		}
 
 		/**
@@ -255,11 +256,20 @@ public class Player implements Character, GameObject {
 		/**
 		 * Updates the players hpbar if they have taken damage
 		 */
-		if (!damageQueue.isEmpty()) {
+		if(!damageQueue.isEmpty()) {
 			int damage = damageQueue.poll();
 			this.hp += damage;
 		}
 
+		/**
+		 * Attempts to use a players item to heal the player
+		 */
+		if(keyBinds.isUseItem()) {
+			if(!this.inventory.getInventory().isEmpty()) {
+			this.hp += 10;
+			this.inventory.removeItem();
+			}
+		}
 
 		/**
 		 * Updates camera
