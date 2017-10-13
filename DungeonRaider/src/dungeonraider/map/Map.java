@@ -10,8 +10,8 @@ import java.util.Scanner;
 import dungeonraider.item.Consumable;
 import dungeonraider.item.Item;
 import dungeonraider.util.Position;
-import lib.ItemParser;
-import lib.MapParser;
+import library1.ItemParser;
+import library2.MapParser;
 
 /**
  * Map instances store everything about each map, including what tiles

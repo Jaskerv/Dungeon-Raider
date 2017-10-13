@@ -17,12 +17,14 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.Mixer;
 import javax.sound.sampled.Mixer.Info;
 
+import library1.Parser;
+
 /**
  * This will make a sound library where inputs a text file formated with Format:
  * clipName\\spathname
- * 
+ *
  * everytime a clip is played, a new instance of the clip is used
- * 
+ *
  * @author Jono Yan
  *
  */
@@ -37,10 +39,10 @@ public class SoundMap {
 
 	/**
 	 * Needs the path of the file that contains the sound
-	 * 
-	 * 
+	 *
+	 *
 	 * Format: clipName\\spathname
-	 * 
+	 *
 	 * @param path
 	 */
 	public SoundMap(String path) {
@@ -58,7 +60,7 @@ public class SoundMap {
 	private void parse(File file) {
 		try {
 			String content = new Scanner(file).useDelimiter("\\Z").next();
-			Map<String, List<String>> lib = object.parse.Parser.parse(content);
+			Map<String, List<String>> lib = Parser.parse(content);
 			for (Map.Entry<String, List<String>> e : lib.entrySet()) {
 				soundLibrary.put(e.getKey(), e.getValue().get(0));
 			}
@@ -70,7 +72,7 @@ public class SoundMap {
 
 	/**
 	 * Creates a clip with the correct path
-	 * 
+	 *
 	 * @param path
 	 * @return
 	 */
@@ -97,7 +99,7 @@ public class SoundMap {
 
 	/**
 	 * Returns a clip from the library
-	 * 
+	 *
 	 * @param clipName
 	 * @return
 	 */
@@ -112,7 +114,7 @@ public class SoundMap {
 
 	/**
 	 * Plays clip once with the sound db f
-	 * 
+	 *
 	 * @param clip
 	 * @param f
 	 *            f has to be between -80f and 10f or DEFAULTDB otherwise will be
@@ -128,7 +130,7 @@ public class SoundMap {
 
 	/**
 	 * Plays clip once with the sound db f
-	 * 
+	 *
 	 * @param s
 	 * @param f
 	 *            f has to be between -80f and 10f or DEFAULTDB otherwise will be
@@ -145,7 +147,7 @@ public class SoundMap {
 
 	/**
 	 * Plays clip with the sound db f at loop times
-	 * 
+	 *
 	 * @param clip
 	 * @param loop
 	 *            Loop can be looped as many times as needed, if want to repeat
@@ -165,7 +167,7 @@ public class SoundMap {
 
 	/**
 	 * Plays clip with the sound db f at loop times
-	 * 
+	 *
 	 * @param s
 	 * @param loop
 	 *            Loop can be looped as many times as needed, if want to repeat

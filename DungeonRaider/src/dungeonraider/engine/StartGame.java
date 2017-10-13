@@ -1,54 +1,33 @@
 package dungeonraider.engine;
 
-import java.awt.BasicStroke;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.LineEvent;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
 
-import dungeonraider.engine.Engine;
-import dungeonraider.sound.SoundMap;
 import dungeonraider.sprite.Sprite;
 import dungeonraider.util.FontImporter;
-import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.Player;
 
 /**
  * Mockup main menu. Contains: Firey background image Dungeon Raider logo
  * created on the internet DRM-Free main menu music
- * 
+ *
  * @see https://www.escapemotions.com/experiments/flame/ - Background image
  * @see http://flamingtext.com/ "Blackbird" - Title
  * @see https://www.reddit.com/r/gamedev/comments/6y699a
  *      /i_have_released_my_1363_songs_free_under_creative/ "rollwithit.mp3" -
  *      Music
- * 
+ *
  * @author Jono Yan, Harry Nguon
  *
  */
@@ -81,7 +60,7 @@ public class StartGame extends Canvas implements KeyListener, MouseListener, Gam
 	/**
 	 * Initialises the main menu frame, reads the resources and adds the key
 	 * listener
-	 * 
+	 *
 	 * @param _title
 	 */
 	public StartGame(Engine engine) {
@@ -231,7 +210,7 @@ public class StartGame extends Canvas implements KeyListener, MouseListener, Gam
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void stopMusic() {
 		clip.stop();
