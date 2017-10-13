@@ -3,7 +3,6 @@ package dungeonraider.engine;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -19,18 +18,16 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import dungeonraider.UI.IngameInterface;
+import dungeonraider.character.Monster;
 import dungeonraider.character.Player;
 import dungeonraider.controller.KeyController;
 import dungeonraider.controller.MouseController;
-import dungeonraider.item.Item;
 import dungeonraider.map.Map;
 import dungeonraider.sound.SoundMap;
 import dungeonraider.sprite.Sprite;
 import dungeonraider.sprite.SpriteSheet;
-import dungeonraider.util.Camera;
 import dungeonraider.util.PatternInt;
 import dungeonraider.util.Position;
-import dungeonraider.util.Rectangle;
 
 /**
  * The main engine class which implements runnable and also contains the main
@@ -54,6 +51,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 	private KeyController keyBinds;
 	private MouseController mouseListener;
 	private Player player;
+	private Monster monster01;
 	/**
 	 *
 	 */
@@ -65,9 +63,10 @@ public class Engine extends JFrame implements Runnable, Observer {
 	private Map currentMap = mapList.get(0);
 	/** Test Objects */
 	private Sprite playerSprite;
+	private Sprite monsterSprite;
 	private SpriteSheet testSpriteSheet;
 	private SpriteSheet dungeonTiles = new SpriteSheet(loadImage("resources/tiles/DungeonTileset1.png"));
-	private GameObject[] object;
+	private List<GameObject> object;
 	private Sprite weaponTestSprite;
 	/** Tutorial map wall boundaries */
 	private static final int LEFT_WALL = 60;
@@ -83,7 +82,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 		this.startGame = new StartGame(this);
 		this.menu = true;
 		this.tk = this.getToolkit();
-		this.object = new GameObject[1];
+		this.object = new ArrayList<GameObject>();
 		
 		/** Sets name of JFrame window */
 		setTitle("Dungeon Raider");
@@ -116,10 +115,12 @@ public class Engine extends JFrame implements Runnable, Observer {
 		 * Testing Objects
 		 */
 		BufferedImage sheet = loadImage("resources/tiles/Tiles1.png");
+		
 		testSpriteSheet = new SpriteSheet(sheet);
 		testSpriteSheet.loadSprites(16, 16);
 		dungeonTiles.loadSprites(16, 16);
 		this.playerSprite = dungeonTiles.getSprite(4, 6);
+		this.monsterSprite = dungeonTiles.getSprite(3, 6);
 
 		/**
 		 * Testing melee
@@ -130,7 +131,9 @@ public class Engine extends JFrame implements Runnable, Observer {
 		 * Initiating the players
 		 */
 		this.player = new Player(new Position(200, 200), 100, playerSprite, 5, 100, 300);
-		this.object[0] = player;
+		this.monster01 = new Monster("TestMonster", 500, 400, monsterSprite, 3);
+		this.object.add(player);
+		this.object.add(monster01);
 		/** GUI */
 		this.GUI = new IngameInterface(player, WIDTH, HEIGHT);
 
