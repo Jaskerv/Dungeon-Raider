@@ -7,7 +7,7 @@ import dungeonraider.sprite.Sprite;
 /**
  * This class imports a BufferedImage which it can sub image into different
  * sprites.
- * 
+ *
  * @author Jono Yan
  *
  */
@@ -59,6 +59,10 @@ public class SpriteSheet {
 			System.out.println("SpriteSheet could not get a sprite with no loaded sprites.");
 
 		return null;
+	}
+
+	public Sprite[] getLoadedSprites() {
+		return loadedSprites;
 	}
 
 	/**
