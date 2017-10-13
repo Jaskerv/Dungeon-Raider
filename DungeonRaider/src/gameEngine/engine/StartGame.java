@@ -110,7 +110,7 @@ public class StartGame extends Canvas implements KeyListener, MouseListener, Gam
 		// Gets rid of the 'press any key to continue' string, and displays
 		// the main menu buttons
 		if (firstKeyPress) {
-
+			engine.getSoundLibrary().playClip("cursorReady", -15f);
 			active = true;
 			firstKeyPress = false;
 			return;
