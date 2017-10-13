@@ -83,39 +83,39 @@ public class Engine extends JFrame implements Runnable, Observer {
 		this.menu = true;
 		this.tk = this.getToolkit();
 		this.object = new ArrayList<GameObject>();
-		
+
 		/** Sets name of JFrame window */
 		setTitle("Dungeon Raider");
-		
+
 		/** Close program on exit */
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		/** Set location of JFrame window and size */
 		setBounds(0, 0, WIDTH, HEIGHT);
-		
+
 		/** Sets window to center */
 		setLocationRelativeTo(null);
-		
+
 		// /** Adds canvas to JFrame */
 		// add(canvas);
 		add(startGame);
-		
+
 		/** Disable Resizeable */
 		setResizable(false);
-		
+
 		/** Sets JFrame to visible */
 		setVisible(true);
-		
+
 		/** Component listener to see if JFrame is resized */
 		/** Creates 2 buffer renderer */
 		this.startGame.createBufferStrategy(3);
 		this.renderer = new Renderer(getWidth(), getHeight());
-		
+
 		/**
 		 * Testing Objects
 		 */
 		BufferedImage sheet = loadImage("resources/tiles/Tiles1.png");
-		
+
 		testSpriteSheet = new SpriteSheet(sheet);
 		testSpriteSheet.loadSprites(16, 16);
 		dungeonTiles.loadSprites(16, 16);
@@ -212,12 +212,6 @@ public class Engine extends JFrame implements Runnable, Observer {
 	 */
 	public void updateFrame() {
 		this.renderer.updateSize(WIDTH, HEIGHT);
-	}
-
-	public static void main(String[] args) {
-		Engine game = new Engine();
-		Thread thread = new Thread(game);
-		thread.start();
 	}
 
 	/**
