@@ -84,25 +84,34 @@ public class Engine extends JFrame implements Runnable, Observer {
 		this.menu = true;
 		this.tk = this.getToolkit();
 		this.object = new GameObject[1];
+		
 		/** Sets name of JFrame window */
 		setTitle("Dungeon Raider");
+		
 		/** Close program on exit */
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		/** Set location of JFrame window and size */
 		setBounds(0, 0, WIDTH, HEIGHT);
+		
 		/** Sets window to center */
 		setLocationRelativeTo(null);
+		
 		// /** Adds canvas to JFrame */
 		// add(canvas);
 		add(startGame);
+		
 		/** Disable Resizeable */
 		setResizable(false);
+		
 		/** Sets JFrame to visible */
 		setVisible(true);
+		
 		/** Component listener to see if JFrame is resized */
 		/** Creates 2 buffer renderer */
 		this.startGame.createBufferStrategy(3);
 		this.renderer = new Renderer(getWidth(), getHeight());
+		
 		/**
 		 * Testing Objects
 		 */
@@ -117,7 +126,6 @@ public class Engine extends JFrame implements Runnable, Observer {
 		 */
 		weaponTestSprite = dungeonTiles.getSprite(10, 1);
 
-
 		/**
 		 * Initiating the players
 		 */
@@ -131,7 +139,6 @@ public class Engine extends JFrame implements Runnable, Observer {
 		 */
 		this.keyBinds = new KeyController(player, this);
 		this.mouseListener = new MouseController(this);
-
 		this.addKeyListener(keyBinds);
 		this.addFocusListener(keyBinds);
 		this.addMouseListener(mouseListener);

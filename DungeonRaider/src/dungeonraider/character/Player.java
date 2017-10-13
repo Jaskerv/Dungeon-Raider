@@ -1,5 +1,6 @@
 package dungeonraider.character;
 
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -8,6 +9,7 @@ import dungeonraider.controller.MouseController;
 import dungeonraider.engine.Engine;
 import dungeonraider.engine.GameObject;
 import dungeonraider.engine.Renderer;
+import dungeonraider.item.Item;
 import dungeonraider.item.Shield;
 import dungeonraider.item.Weapon;
 import dungeonraider.map.Map;
@@ -35,7 +37,7 @@ public class Player implements Character, GameObject {
 	private int currentCapacity;
 	private int x;
 	private int y;
-	
+
 	/**
 	 * Item and bounding box variables
 	 */
@@ -55,18 +57,7 @@ public class Player implements Character, GameObject {
 	private int zoom;
 	private Queue<Integer> damageQueue;
 
-	public Player(int x, int y, int stamina, Sprite sprite, int zoom, int hp, int hpMax) {
-		this.x = x;
-		this.y = y;
-		this.zoom = zoom;
-		this.spriteImage = sprite;
-		this.stamina = stamina;
-		this.primaryEquipped = false;
-		this.secondaryEquipped = false;
-		this.playerBoundBox = new Box(x, y, sprite.getWidth()*zoom, sprite.getHeight()*zoom);
-		//Pick up radius of the player starts half of the players width to the left of the player and extends to twice the players width meaning the pick up radius is twice the size of the player
-		this.pickUpRadius	= new Box(x-((sprite.getWidth()*zoom)/2), y-((sprite.getHeight()*zoom)/2), (sprite.getWidth()*zoom)*2, (sprite.getHeight()*zoom)*2);
-	}
+
 	public Player(Position center, int stamina, Sprite playerSprite, int zoom, int hp, int hpMax) {
 		this.damageQueue = new PriorityQueue<>();
 		this.spriteImage = playerSprite;
@@ -75,6 +66,14 @@ public class Player implements Character, GameObject {
 		this.y = center.getY() - (playerSprite.getHeight() / 2 * zoom);
 		this.hp = hp;
 		this.hpMax = hpMax;
+		this.playerBoundBox = new Box(x, y, playerSprite.getWidth()*zoom, playerSprite.getHeight()*zoom);
+		//Pick up radius of the player starts half of the players width to the left of the player and
+		//extends to twice the players width meaning the pick up radius is twice the size of the player
+		this.pickUpRadius	= new Box(x-((playerSprite.getWidth()*zoom)), y-((playerSprite.getHeight()*zoom)),
+				(playerSprite.getWidth()*zoom)*4, (playerSprite.getHeight()*zoom)*4);
+		this.inventory = new Inventory(20);
+		this.primaryEquipped = false;
+		this.secondaryEquipped = false;
 	}
 
 	@Override
@@ -173,7 +172,7 @@ public class Player implements Character, GameObject {
 		 */
 		if(!keyBinds.isRun()) {
 			if (keyBinds.isUp()) {
-				if(checkBoundry(currentMap, x + width, y - SPEED + height/2))	
+				if(checkBoundry(currentMap, x + width, y - SPEED + height/2))
 					if(checkBoundry(currentMap, x, y - SPEED + height/2))
 						walkUp();
 			}
@@ -183,7 +182,7 @@ public class Player implements Character, GameObject {
 						walkDown();
 			}
 			if (keyBinds.isLeft()) {
-				if(checkBoundry(currentMap, x - SPEED, y + height/2))	
+				if(checkBoundry(currentMap, x - SPEED, y + height/2))
 					if(checkBoundry(currentMap, x - SPEED, y + height))
 						walkLeft();
 			}
@@ -200,7 +199,7 @@ public class Player implements Character, GameObject {
 		 */
 		if(keyBinds.isRun()) {
 			if (keyBinds.isUp()) {
-				if(checkBoundry(currentMap, x + width, y - SPRINT + height/2))	
+				if(checkBoundry(currentMap, x + width, y - SPRINT + height/2))
 					if(checkBoundry(currentMap, x, y - SPRINT + height/2))
 						runUp();
 			}
@@ -210,7 +209,7 @@ public class Player implements Character, GameObject {
 						runDown();
 			}
 			if (keyBinds.isLeft()) {
-				if(checkBoundry(currentMap, x - SPRINT, y + height/2))	
+				if(checkBoundry(currentMap, x - SPRINT, y + height/2))
 					if(checkBoundry(currentMap, x - SPRINT, y + height))
 						runLeft();
 			}
@@ -223,8 +222,19 @@ public class Player implements Character, GameObject {
 
 		//Checking if player is attempting to pick up and whether there is anything to pick up
 		if(keyBinds.isPickUp()) {
+			this.pickUpRadius	= new Box(x, y,
+					(spriteImage.getWidth()*zoom), (spriteImage.getHeight()*zoom));
 			//need to check if any of the items locations
-
+			List<Item> itemsOnMap = engine.getCurrentMap().getItems();
+			for(Item item : itemsOnMap) {
+				Position itemPos = item.getPosition();
+				if(pickUpRadius.contains(itemPos.getX(), itemPos.getY())){
+					inventory.add(item);
+					item.setPickedUp(true);
+					itemsOnMap.remove(item);
+					break;
+				}
+			}
 		}
 
 		/**
@@ -233,12 +243,15 @@ public class Player implements Character, GameObject {
 		while(!mouseActions.getAttackPositions().isEmpty()) {
 			//Gets the attack position from the mouse controller
 			Position attackPos = mouseActions.getAttackPos();
-			
+
+			//Prevents player from being able to run and attack at the same time
+			keyBinds.setRun(false);
+
 			int mx = attackPos.getX();
 			int my = attackPos.getY();
 			if(primaryEquipped)	attack(mx, my, engine);
 		}
-		
+
 		/**
 		 * Updates the players hpbar if they have taken damage
 		 */
@@ -246,17 +259,17 @@ public class Player implements Character, GameObject {
 			int damage = damageQueue.poll();
 			this.hp += damage;
 		}
-		
-		
+
+
 		/**
 		 * Updates camera
 		 */
 		this.updateCamera(engine.getRenderer().getCamera());
-		
+
 	}
 
 	/**
-	 * 
+	 *
 	 * @param mx
 	 * @param my
 	 * @param engine
@@ -272,7 +285,7 @@ public class Player implements Character, GameObject {
 			//attackRight();
 			System.out.println("x: " + x);
 			System.out.println("attack right");
-			
+
 		}
 		//left attack calculated from the position of the camera
 		if(mx < center.getX()) {

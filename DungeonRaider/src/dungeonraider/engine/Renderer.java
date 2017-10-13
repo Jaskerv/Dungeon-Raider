@@ -25,6 +25,8 @@ public class Renderer {
 	/** The camera that the player sees from */
 	private Camera camera;
 
+	public static final int ZOOM = 6;
+
 	public Renderer(int width, int height) {
 		/** Creates view */
 		this.view = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -120,7 +122,7 @@ public class Renderer {
 				Tile tile = map.getMap()[x][y];
 				Sprite tileSprite = tile.getSprite();
 				renderArray(tileSprite.getPixels(), tileSprite.getWidth(), tileSprite.getHeight(), tile.getX(),
-						tile.getY(), 6, 6);
+						tile.getY(), ZOOM, ZOOM);
 
 			}
 		}
@@ -130,9 +132,11 @@ public class Renderer {
 				Tile tile = map.getMap()[x][y];
 				if (tile.getItem() != null) {
 					Item item = tile.getItem();
-					Sprite sprite = item.getSprite();
-					renderArray(sprite.getPixels(), sprite.getWidth(), sprite.getHeight(),
-							item.getPosition().getX(), item.getPosition().getY(), 6, 6);
+					if (!item.getPickedUp()) {
+						Sprite sprite = item.getSprite();
+						renderArray(sprite.getPixels(), sprite.getWidth(), sprite.getHeight(),
+								item.getPosition().getX(), item.getPosition().getY(), ZOOM, ZOOM);
+					}
 				}
 			}
 		}

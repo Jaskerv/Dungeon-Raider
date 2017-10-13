@@ -7,7 +7,7 @@ import dungeonraider.item.Item;
 
 /**
  * Inventory for any object that can contain multiple items
- * 
+ *
  * @author Jono Yan
  *
  */

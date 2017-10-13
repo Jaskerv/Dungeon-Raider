@@ -150,6 +150,10 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 		this.pickUp = pickUp;
 	}
 
+	public void setRun(boolean run) {
+		this.run = run;
+	}
+
 	/**
 	 * @return the hurtPlayer
 	 */
