@@ -84,6 +84,7 @@ public class Player implements Character, GameObject {
 		if(sprite != null && sprite instanceof AnimatedSprite) {
 			this.animatedSprite = (AnimatedSprite) playerSprite;
 		}
+		updateDirection();
 	}
 
 	private void updateDirection() {
@@ -191,7 +192,7 @@ public class Player implements Character, GameObject {
 
 		//for the player animated sprites
 		boolean didMove = false;
-		int newDirection = 0 ;
+		int newDirection = direction ;
 		
 		/**
 		 * Player walking connection with key controller:
@@ -201,7 +202,7 @@ public class Player implements Character, GameObject {
 			if (keyBinds.isUp()) {
 				if(checkBoundry(currentMap, x + width, y - SPEED + height/2))
 					if(checkBoundry(currentMap, x, y - SPEED + height/2)) {
-						direction = 2;
+						newDirection = 2;
 						didMove = true;
 						walkUp();
 					}
@@ -209,7 +210,7 @@ public class Player implements Character, GameObject {
 			if (keyBinds.isDown()) {
 				if(checkBoundry(currentMap, x + width, y + height + SPEED))
 					if(checkBoundry(currentMap, x, y + height + SPEED)) {
-						direction = 3;
+						newDirection = 3;
 						didMove = true;
 						walkDown();
 					}
@@ -217,7 +218,7 @@ public class Player implements Character, GameObject {
 			if (keyBinds.isLeft()) {
 				if(checkBoundry(currentMap, x - SPEED, y + height/2))
 					if(checkBoundry(currentMap, x - SPEED, y + height)) {
-						direction = 1;
+						newDirection = 1;
 						didMove = true;
 						walkLeft();
 					}
@@ -225,7 +226,7 @@ public class Player implements Character, GameObject {
 			if (keyBinds.isRight()) {
 				if(checkBoundry(currentMap, x + width + SPEED, y + height/2))
 					if(checkBoundry(currentMap, x + width + SPEED, y + height)) {
-						direction = 0;
+						newDirection = 0;
 						didMove = true;
 						walkRight();
 					}
@@ -240,7 +241,7 @@ public class Player implements Character, GameObject {
 			if (keyBinds.isUp()) {
 				if(checkBoundry(currentMap, x + width, y - SPRINT + height/2))
 					if(checkBoundry(currentMap, x, y - SPRINT + height/2)) {
-						direction = 2;
+						newDirection = 2;
 						didMove = true;
 						runUp();
 					}
@@ -248,7 +249,7 @@ public class Player implements Character, GameObject {
 			if (keyBinds.isDown()) {
 				if(checkBoundry(currentMap, x + width, y + height + SPRINT))
 					if(checkBoundry(currentMap, x, y + height + SPRINT)) {
-						direction = 3;
+						newDirection = 3;
 						didMove = true;
 						runDown();
 					}
@@ -256,7 +257,7 @@ public class Player implements Character, GameObject {
 			if (keyBinds.isLeft()) {
 				if(checkBoundry(currentMap, x - SPRINT, y + height/2))
 					if(checkBoundry(currentMap, x - SPRINT, y + height)) {
-						direction = 1;
+						newDirection = 1;
 						didMove = true;
 						runLeft();
 					}
@@ -264,7 +265,7 @@ public class Player implements Character, GameObject {
 			if (keyBinds.isRight()) {
 				if(checkBoundry(currentMap, x + width + SPRINT, y + height/2))
 					if(checkBoundry(currentMap, x + width + SPRINT, y + height)) {
-						direction = 0;
+						newDirection = 0;
 						didMove = true;
 						runRight();
 					}
@@ -311,7 +312,7 @@ public class Player implements Character, GameObject {
 			int damage = damageQueue.poll();
 			this.hp += damage;
 		}
-
+		
 		/**
 		 * Attempts to use a players item to heal the player
 		 */
@@ -325,12 +326,23 @@ public class Player implements Character, GameObject {
 		/**
 		 * Updates camera
 		 */
-		updateDirection();
+		//only update the direction if the player moves in a different direction
+		if(newDirection != direction) {
+			direction = newDirection;
+			updateDirection();
+		}
+		
+		if(!didMove) {
+			//makes sure that the sprite doesnt stop mid movement
+			animatedSprite.reset();
+		}
+		
 		this.updateCamera(engine.getRenderer().getCamera());
 		
 		//update the counter 
-		if(didMove)
-		animatedSprite.update(engine);
+		if(didMove) {
+			animatedSprite.update(engine);
+		}
 	}
 
 	/**

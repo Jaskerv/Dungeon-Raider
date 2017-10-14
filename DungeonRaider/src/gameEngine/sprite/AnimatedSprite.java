@@ -61,6 +61,11 @@ public class AnimatedSprite extends Sprite implements GameObject{
 	public void render(Renderer renderer, int xZoom, int yZoom) {
 
 	}
+	
+	public void reset() {
+		counter =0 ;
+		currentSprite = startSprite;
+	}
 
 
 	@Override
@@ -86,6 +91,7 @@ public class AnimatedSprite extends Sprite implements GameObject{
 	public void setAnimationRange(int startSprite, int endSprite) {
 		this.startSprite = startSprite;
 		this.endSprite = endSprite;
+		reset();
 	}
 
 
