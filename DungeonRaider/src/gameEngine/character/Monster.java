@@ -3,6 +3,7 @@ package gameEngine.character;
 import gameEngine.engine.Engine;
 import gameEngine.engine.GameObject;
 import gameEngine.engine.Renderer;
+import gameEngine.map.Map;
 import gameEngine.sprite.Sprite;
 import gameEngine.sprite.SpriteSheet;
 
@@ -21,6 +22,8 @@ public class Monster implements Character, GameObject {
 			"resources/tiles/DungeonTileset4.png";
 	private static final SpriteSheet SPRITE_SHEET_2 =
 			new SpriteSheet(Engine.loadImage(SPRITE_SHEET_2_PATH));
+	private int height;
+	private int width;
 
 	/**
 	 * Monster
@@ -32,6 +35,8 @@ public class Monster implements Character, GameObject {
 		this.y = y;
 		this.spriteImage = spriteImage;
 		this.speed = speed;
+		this.height = spriteImage.getHeight()*ZOOM;
+		this.width = spriteImage.getWidth()*ZOOM;
 	}
 
 
@@ -118,21 +123,30 @@ public class Monster implements Character, GameObject {
 
 	@Override
 	public void update(Engine engine) {
+		Map currentMap = engine.getCurrentMap();
 		int playerX = engine.getPlayer().getX();
 		int playerY = engine.getPlayer().getY();
 		//player is to the left of this monster
 		if (playerX < this.x) {
-			walkLeft();
+			if(checkBoundry(currentMap, x - speed, y + height/2))
+				if(checkBoundry(currentMap, x - speed, y + height))
+					walkLeft();
 		}
 		if (playerX > this.x) {
-			walkRight();
+			if(checkBoundry(currentMap, x + width + speed, y + height/2))
+				if(checkBoundry(currentMap, x + width + speed, y + height))
+					walkRight();
 		}
 		//player is to the bottom of this monster
 		if (playerY > this.y) {
-			walkDown();
+			if(checkBoundry(currentMap, x + width, y + height + speed))
+				if(checkBoundry(currentMap, x, y + height + speed))
+					walkDown();
 		}
 		if (playerY < this.y) {
-			walkUp();
+			if(checkBoundry(currentMap, x + width, y - speed + height/2))
+				if(checkBoundry(currentMap, x, y - speed + height/2))
+					walkUp();
 		}
 	}
 
