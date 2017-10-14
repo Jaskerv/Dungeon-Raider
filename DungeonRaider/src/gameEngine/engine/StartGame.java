@@ -15,6 +15,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.Clip;
 
+import gameEngine.sound.SoundMap;
 import gameEngine.sprite.Sprite;
 import gameEngine.util.FontImporter;
 
@@ -120,15 +121,15 @@ public class StartGame extends Canvas implements KeyListener, MouseListener, Gam
 		if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_W) {
 			if (index > 0) {
 				index--;
-				engine.getSoundLibrary().playClip("cursorMove", -15f);
+				engine.getSoundLibrary().playClip("cursorMove", -10f);
 			}
 		} else if (keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_S) {
 			if (index < 2) {
 				index++;
-				engine.getSoundLibrary().playClip("cursorMove", -15f);
+				engine.getSoundLibrary().playClip("cursorMove", -10f);
 			}
 		} else if (keyCode == KeyEvent.VK_ENTER) {
-			engine.getSoundLibrary().playClip("cursorReady", -15f);
+			engine.getSoundLibrary().playClip("cursorReady", -10f);
 			if (index == 0) {
 				engine.switchCanvas();
 			}
