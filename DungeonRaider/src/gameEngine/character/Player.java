@@ -13,6 +13,7 @@ import gameEngine.item.Item;
 import gameEngine.item.Shield;
 import gameEngine.item.Weapon;
 import gameEngine.map.Map;
+import gameEngine.sprite.AnimatedSprite;
 import gameEngine.sprite.Sprite;
 import gameEngine.util.Box;
 import gameEngine.util.Position;
@@ -54,6 +55,11 @@ public class Player implements Character, GameObject {
 	public static final int SPRINT = 7;
 	private int zoom;
 	private Queue<Integer> damageQueue;
+	
+	private Sprite sprite;
+	private AnimatedSprite animatedSprite = null;
+	//0 == right, 1 == left, 2 == up, 3 == down. This is based off the Player.png
+	private int direction = 0;
 
 
 	public Player(Position center, int stamina, Sprite playerSprite, int zoom, int hp, int hpMax) {
@@ -72,8 +78,20 @@ public class Player implements Character, GameObject {
 		this.inventory = new Inventory(20);
 		this.primaryEquipped = false;
 		this.secondaryEquipped = false;
+		
+		
+		this.sprite = playerSprite;
+		if(sprite != null && sprite instanceof AnimatedSprite) {
+			this.animatedSprite = (AnimatedSprite) playerSprite;
+		}
 	}
 
+	private void updateDirection() {
+		if(animatedSprite != null) {
+			animatedSprite.setAnimationRange( direction*8, direction * 8 + 7 );
+		} 
+	}
+	
 	@Override
 	public int lightAttack() {
 		// TODO Auto-generated method stub
@@ -147,7 +165,15 @@ public class Player implements Character, GameObject {
 	 */
 	@Override
 	public void render(Renderer renderer, int xZoom, int yZoom) {
-		renderer.renderArray(spriteImage.getPixels(), spriteImage.getWidth(), spriteImage.getWidth(), x, y, zoom, zoom);
+		//renderer.renderArray(spriteImage.getPixels(), spriteImage.getWidth(), spriteImage.getWidth(), x, y, zoom, zoom);
+		
+		//introducing the animated sprite here. initially rendering a static sprite.
+		if(animatedSprite != null)
+			renderer.renderSprite(animatedSprite, playerBoundBox.getX(), playerBoundBox.getY(), xZoom, yZoom);
+		else if(sprite != null)
+			renderer.renderSprite(sprite, playerBoundBox.getX(), playerBoundBox.getY(), xZoom, yZoom);
+		else
+			renderer.renderArray(spriteImage.getPixels(), spriteImage.getWidth(), spriteImage.getWidth(), x, y, zoom, zoom);
 	}
 
 	/**
@@ -163,7 +189,10 @@ public class Player implements Character, GameObject {
 		int width = spriteImage.getWidth() * zoom;
 		int height = spriteImage.getHeight() * zoom;
 
-
+		//for the player animated sprites
+		boolean didMove = false;
+		int newDirection = 0 ;
+		
 		/**
 		 * Player walking connection with key controller:
 		 * Also checks for player connection with walls
@@ -171,23 +200,35 @@ public class Player implements Character, GameObject {
 		if(!keyBinds.isRun()) {
 			if (keyBinds.isUp()) {
 				if(checkBoundry(currentMap, x + width, y - SPEED + height/2))
-					if(checkBoundry(currentMap, x, y - SPEED + height/2))
+					if(checkBoundry(currentMap, x, y - SPEED + height/2)) {
+						direction = 2;
+						didMove = true;
 						walkUp();
+					}
 			}
 			if (keyBinds.isDown()) {
 				if(checkBoundry(currentMap, x + width, y + height + SPEED))
-					if(checkBoundry(currentMap, x, y + height + SPEED))
+					if(checkBoundry(currentMap, x, y + height + SPEED)) {
+						direction = 3;
+						didMove = true;
 						walkDown();
+					}
 			}
 			if (keyBinds.isLeft()) {
 				if(checkBoundry(currentMap, x - SPEED, y + height/2))
-					if(checkBoundry(currentMap, x - SPEED, y + height))
+					if(checkBoundry(currentMap, x - SPEED, y + height)) {
+						direction = 1;
+						didMove = true;
 						walkLeft();
+					}
 			}
 			if (keyBinds.isRight()) {
 				if(checkBoundry(currentMap, x + width + SPEED, y + height/2))
-					if(checkBoundry(currentMap, x + width + SPEED, y + height))
+					if(checkBoundry(currentMap, x + width + SPEED, y + height)) {
+						direction = 0;
+						didMove = true;
 						walkRight();
+					}
 			}
 		}
 
@@ -198,23 +239,35 @@ public class Player implements Character, GameObject {
 		if(keyBinds.isRun()) {
 			if (keyBinds.isUp()) {
 				if(checkBoundry(currentMap, x + width, y - SPRINT + height/2))
-					if(checkBoundry(currentMap, x, y - SPRINT + height/2))
+					if(checkBoundry(currentMap, x, y - SPRINT + height/2)) {
+						direction = 2;
+						didMove = true;
 						runUp();
+					}
 			}
 			if (keyBinds.isDown()) {
 				if(checkBoundry(currentMap, x + width, y + height + SPRINT))
-					if(checkBoundry(currentMap, x, y + height + SPRINT))
+					if(checkBoundry(currentMap, x, y + height + SPRINT)) {
+						direction = 3;
+						didMove = true;
 						runDown();
+					}
 			}
 			if (keyBinds.isLeft()) {
 				if(checkBoundry(currentMap, x - SPRINT, y + height/2))
-					if(checkBoundry(currentMap, x - SPRINT, y + height))
+					if(checkBoundry(currentMap, x - SPRINT, y + height)) {
+						direction = 1;
+						didMove = true;
 						runLeft();
+					}
 			}
 			if (keyBinds.isRight()) {
 				if(checkBoundry(currentMap, x + width + SPRINT, y + height/2))
-					if(checkBoundry(currentMap, x + width + SPRINT, y + height))
+					if(checkBoundry(currentMap, x + width + SPRINT, y + height)) {
+						direction = 0;
+						didMove = true;
 						runRight();
+					}
 			}
 		}
 
@@ -272,8 +325,12 @@ public class Player implements Character, GameObject {
 		/**
 		 * Updates camera
 		 */
+		updateDirection();
 		this.updateCamera(engine.getRenderer().getCamera());
-
+		
+		//update the counter 
+		if(didMove)
+		animatedSprite.update(engine);
 	}
 
 	/**

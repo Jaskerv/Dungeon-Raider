@@ -19,7 +19,7 @@ public class AnimatedSprite extends Sprite implements GameObject{
 	private Sprite[] sprites;
 	private int currentSprite = 0;
 	private int speed;
-	private int counter=0;
+	private int counter = 0;
 	private int startSprite= 0;
 	private int endSprite = 0;
 
@@ -83,7 +83,7 @@ public class AnimatedSprite extends Sprite implements GameObject{
 		}
 	}
 
-	public void setAnimationrange(int startSprite, int endSprite) {
+	public void setAnimationRange(int startSprite, int endSprite) {
 		this.startSprite = startSprite;
 		this.endSprite = endSprite;
 	}

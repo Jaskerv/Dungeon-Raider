@@ -24,6 +24,7 @@ import gameEngine.controller.KeyController;
 import gameEngine.controller.MouseController;
 import gameEngine.map.Map;
 import gameEngine.sound.SoundMap;
+import gameEngine.sprite.AnimatedSprite;
 import gameEngine.sprite.Sprite;
 import gameEngine.sprite.SpriteSheet;
 import gameEngine.util.PatternInt;
@@ -121,7 +122,15 @@ public class Engine extends JFrame implements Runnable, Observer {
 		dungeonTiles.loadSprites(16, 16);
 		this.playerSprite = dungeonTiles.getSprite(4, 6);
 		this.monsterSprite = dungeonTiles.getSprite(3, 6);
-
+		
+		//Testing the animated sprites for the player
+		BufferedImage playerSheetImage = loadImage("resources/images/Player.png");
+		SpriteSheet playerSheet = new SpriteSheet(playerSheetImage);
+		playerSheet.loadSprites(20,26);
+		
+		AnimatedSprite playerAnimations = new AnimatedSprite(playerSheet, 5); 
+		
+		
 		/**
 		 * Testing melee
 		 */
@@ -130,7 +139,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 		/**
 		 * Initiating the players
 		 */
-		this.player = new Player(new Position(200, 200), 100, playerSprite, 5, 100, 300);
+		this.player = new Player(new Position(200, 200), 100, playerAnimations, 5, 100, 300);
 		this.monster01 = new Monster("TestMonster", 500, 400, monsterSprite, 3);
 		this.object.add(player);
 		this.object.add(monster01);
