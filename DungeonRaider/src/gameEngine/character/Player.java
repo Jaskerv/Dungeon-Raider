@@ -110,6 +110,7 @@ public class Player implements Character, GameObject {
 		// TODO Auto-generated method stub
 		//if(checkBoundry(this.x - speed, this.y))
 		this.x -= SPEED;
+		this.playerBoundBox.setX(this.x-=SPEED);
 	}
 
 	@Override
@@ -117,6 +118,7 @@ public class Player implements Character, GameObject {
 		// TODO Auto-generated method stub
 		//if(checkBoundry(this.x + speed, this.y))
 		this.x += SPEED;
+		this.playerBoundBox.setX(this.x+=SPEED);
 	}
 
 	@Override
@@ -124,6 +126,7 @@ public class Player implements Character, GameObject {
 		// TODO Auto-generated method stub
 		//if(checkBoundry(this.x, this.y-speed))
 		this.y -= SPEED;
+		this.playerBoundBox.setY(this.y-=SPEED);
 	}
 
 	@Override
@@ -131,30 +134,35 @@ public class Player implements Character, GameObject {
 		// TODO Auto-generated method stub
 		//if(checkBoundry(this.x, this.y+speed))
 		this.y += SPEED;
+		this.playerBoundBox.setY(this.y+=SPEED);
 	}
 
 	@Override
 	public void runLeft() {
 		// TODO Auto-generated method stub
 		this.x -= SPRINT;
+		this.playerBoundBox.setX(this.x-=SPRINT);
 	}
 
 	@Override
 	public void runRight() {
 		// TODO Auto-generated method stub
 		this.x += SPRINT;
+		this.playerBoundBox.setX(this.x += SPRINT);
 	}
 
 	@Override
 	public void runUp() {
 		// TODO Auto-generated method stub
 		this.y -= SPRINT;
+		this.playerBoundBox.setY(this.y -= SPRINT);
 	}
 
 	@Override
 	public void runDown() {
 		// TODO Auto-generated method stub
 		this.y += SPRINT;
+		this.playerBoundBox.setY(this.y += SPRINT);
 	}
 
 	public void interact() {
