@@ -282,6 +282,7 @@ public class Player implements Character, GameObject {
 	 * @param my
 	 * @param engine
 	 */
+	@Override
 	public void attack(int mx, int my, Engine engine) {
 		int width = spriteImage.getWidth() * zoom;
 		int height = spriteImage.getHeight() * zoom;

@@ -1,11 +1,16 @@
 package gameEngine.character;
 
+import java.util.PriorityQueue;
+import java.util.Queue;
+
 import gameEngine.engine.Engine;
 import gameEngine.engine.GameObject;
 import gameEngine.engine.Renderer;
 import gameEngine.map.Map;
 import gameEngine.sprite.Sprite;
 import gameEngine.sprite.SpriteSheet;
+import gameEngine.util.Box;
+import gameEngine.util.Position;
 
 /**
  * Monster class
@@ -24,6 +29,9 @@ public class Monster implements Character, GameObject {
 			new SpriteSheet(Engine.loadImage(SPRITE_SHEET_2_PATH));
 	private int height;
 	private int width;
+	private Queue<Integer> damageQueue;
+	private Box attackRange;
+	private int attackTimer;
 
 	/**
 	 * Monster
@@ -37,6 +45,9 @@ public class Monster implements Character, GameObject {
 		this.speed = speed;
 		this.height = spriteImage.getHeight()*ZOOM;
 		this.width = spriteImage.getWidth()*ZOOM;
+		this.damageQueue = new PriorityQueue<>();
+		this.attackRange = new Box(this.x, this.y, this.width, this.height);
+		this.attackTimer = 0;
 	}
 
 
@@ -62,7 +73,7 @@ public class Monster implements Character, GameObject {
 	@Override
 	public int heavyAttack() {
 		// TODO Auto-generated method stub
-		return 0;
+		return 1;
 	}
 
 	@Override
@@ -123,9 +134,34 @@ public class Monster implements Character, GameObject {
 
 	@Override
 	public void update(Engine engine) {
+		//Gets player Position
+		Player player = engine.getPlayer();
+		Position playerPos = new Position(player.getX()+((player.getSpriteImage().getWidth()*player.getZoom())/2)
+						, player.getY()+((player.getSpriteImage().getWidth()*player.getZoom()/2)));
+			
+				
 		Map currentMap = engine.getCurrentMap();
-		int playerX = engine.getPlayer().getX();
-		int playerY = engine.getPlayer().getY();
+		int playerX = player.getX()+((player.getSpriteImage().getWidth()*player.getZoom())/2);
+		int playerY = player.getY()+((player.getSpriteImage().getWidth()*player.getZoom()/2));
+		
+		
+		//Keeps track of how many updates have passed inbetween each attack so monster cant
+		//attack to quickly
+		if(this.attackTimer < 10) {
+			//cant attack yet
+			attackTimer++;
+		} else {
+			//attacks now
+			if(attackRange.contains(playerX, playerY)) {
+				attackTimer = 0;
+				player.damage(heavyAttack());
+			}
+		}
+		
+		//Updating monster attack range
+		this.attackRange = new Box(this.x, this.y, this.width, this.height);
+		
+		
 		//player is to the left of this monster
 		if (playerX < this.x) {
 			if(checkBoundry(currentMap, x - speed, y + height/2))
@@ -148,7 +184,25 @@ public class Monster implements Character, GameObject {
 				if(checkBoundry(currentMap, x, y - speed + height/2))
 					walkUp();
 		}
+		
 	}
 
+
+
+	@Override
+	public void attack(int mx, int my, Engine engine) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+
+	/**
+	 * Damages monster with positive numbers, heals monster with negative numbers
+	 *
+	 * @param i
+	 */
+	public void damage(int i) {
+		this.damageQueue.offer(-i);
+	}
 
 }

@@ -1,5 +1,6 @@
 package gameEngine.character;
 
+import gameEngine.engine.Engine;
 import gameEngine.map.Map;
 
 public interface Character {
@@ -27,5 +28,11 @@ public interface Character {
 	public default boolean checkBoundry(Map currentMap, int newX, int newY) {
 		return currentMap.onWall(newX, newY);
 	}
-
+	/**
+	 *
+	 * @param mx
+	 * @param my
+	 * @param engine
+	 */
+	public void attack(int mx, int my, Engine engine);
 }
