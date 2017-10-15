@@ -100,19 +100,6 @@ public class Tile {
 		return tile.isBoundary();
 	}
 
-	/**
-	 * Returns a sprite associated with the name
-	 * @param name
-	 * @return
-	 */
-	public static Sprite findSprite(String name) {
-		if (name.equals("Small_Health_Potion")
-				|| name.equals("Big_Health_Potion")) {
-			return SPRITE_SHEET_2.getSprite(12, 11);
-		}
-		return null;
-	}
-
 	public int getWidth() { return width; }
 
 	public int getHeight() { return height; }

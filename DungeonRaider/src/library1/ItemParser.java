@@ -18,7 +18,7 @@ import java.util.Scanner;
 public class ItemParser {
 
 	private static List<String> listOfCategories = Arrays.asList("Weapon", 
-				"Shield", "Consumable");
+				"Shield", "Consumable", "Monster");
 
 	/**
 	 * Parses a text file to generate a map of items
@@ -82,6 +82,7 @@ public class ItemParser {
 				if (category == null) {
 					category = split[i];
 					if (!listOfCategories.contains(category)) {
+						System.out.println(category);
 						throw new IllegalArgumentException();
 					}
 					continue;

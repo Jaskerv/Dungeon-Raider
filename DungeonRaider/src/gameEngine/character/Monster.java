@@ -36,13 +36,13 @@ public class Monster implements Character, GameObject {
 	/**
 	 * Monster
 	 */
-	public Monster(String name, int x, int y, Sprite spriteImage, int speed) {
+	public Monster(String name, int x, int y, int speed, Sprite sprite) {
 		SPRITE_SHEET_2.loadSprites(16, 16);
 		this.name = name;
 		this.x = x;
 		this.y = y;
-		this.spriteImage = spriteImage;
 		this.speed = speed;
+		this.spriteImage = sprite;
 		this.height = spriteImage.getHeight()*ZOOM;
 		this.width = spriteImage.getWidth()*ZOOM;
 		this.damageQueue = new PriorityQueue<>();

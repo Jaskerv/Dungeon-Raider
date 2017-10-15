@@ -52,7 +52,6 @@ public class Engine extends JFrame implements Runnable, Observer {
 	private KeyController keyBinds;
 	private MouseController mouseListener;
 	private Player player;
-	private Monster monster01;
 	/**
 	 *
 	 */
@@ -64,9 +63,10 @@ public class Engine extends JFrame implements Runnable, Observer {
 	private Map currentMap = mapList.get(0);
 	/** Test Objects */
 	private Sprite playerSprite;
-	private Sprite monsterSprite;
 	private SpriteSheet testSpriteSheet;
-	private SpriteSheet dungeonTiles = new SpriteSheet(loadImage("resources/tiles/DungeonTileset1.png"));
+	private static SpriteSheet dungeonTiles = new SpriteSheet(loadImage("resources/tiles/DungeonTileset1.png"));
+	private static final SpriteSheet SPRITE_SHEET_2 = 
+			new SpriteSheet(Engine.loadImage("resources/tiles/DungeonTileset4.png"));
 	private List<GameObject> object;
 	private Sprite weaponTestSprite;
 	/** Tutorial map wall boundaries */
@@ -119,9 +119,8 @@ public class Engine extends JFrame implements Runnable, Observer {
 
 		testSpriteSheet = new SpriteSheet(sheet);
 		testSpriteSheet.loadSprites(16, 16);
-		dungeonTiles.loadSprites(16, 16);
+		//dungeonTiles.loadSprites(16, 16);
 		this.playerSprite = dungeonTiles.getSprite(4, 6);
-		this.monsterSprite = dungeonTiles.getSprite(3, 6);
 		
 		//Testing the animated sprites for the player
 		BufferedImage playerSheetImage = loadImage("resources/images/Player.png");
@@ -140,9 +139,8 @@ public class Engine extends JFrame implements Runnable, Observer {
 		 * Initiating the players
 		 */
 		this.player = new Player(new Position(200, 200), 100, playerAnimations, 5, 100, 300);
-		this.monster01 = new Monster("TestMonster", 500, 400, monsterSprite, 3);
+		this.object = (List<GameObject>) currentMap.getMonsters();
 		this.object.add(player);
-		this.object.add(monster01);
 		/** GUI */
 		this.GUI = new IngameInterface(player, WIDTH, HEIGHT);
 
@@ -311,6 +309,22 @@ public class Engine extends JFrame implements Runnable, Observer {
 		} else {
 
 		}
+	}
+	/**
+	 * Finds sprite image based on name that is parsed in
+	 * @param name
+	 * @return
+	 */
+	public static Sprite findSprite(String name) {
+		dungeonTiles.loadSprites(16, 16);
+		SPRITE_SHEET_2.loadSprites(16, 16);
+		if (name.equals("Monster_One")) {
+			return dungeonTiles.getSprite(3, 6);
+		} else if (name.equals("Small_Health_Potion")
+				|| name.equals("Big_Health_Potion")) {
+			return SPRITE_SHEET_2.getSprite(12, 11);
+		}
+		return null;
 	}
 
 	/**

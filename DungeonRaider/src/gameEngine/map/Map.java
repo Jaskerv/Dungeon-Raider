@@ -7,8 +7,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
+import gameEngine.character.Monster;
+import gameEngine.engine.Engine;
+import gameEngine.engine.GameObject;
 import gameEngine.item.Consumable;
 import gameEngine.item.Item;
+import gameEngine.sprite.Sprite;
 import library1.ItemParser;
 import library2.MapParser;
 
@@ -34,6 +38,7 @@ public class Map {
 	/** Items */
 	private java.util.Map<String, List<String>> itemMap = new HashMap<>();
 	private List<Item> items = new ArrayList<>();
+	private List<GameObject> monsters = new ArrayList<>();
 
 	/**
 	 * Initialises the Map
@@ -79,68 +84,80 @@ public class Map {
 	/**
 	 * Initialises each item and adds to the list of items.
 	 * @param category  the name of the category of the item
-	 * @param items  the items, each parsed in as one string
+	 * @param items  the items, each parsed in as one) string
 	 */
 	public void createItem(String category, List<String> items) {
-		switch (category) {
-		case "Weapon":
-			//Let the Weapon class be finalised first
-			break;
-		case "Consumable":
-			String name = "";
-			int index = 0;
-			//x, y, consumeTime, mapNumber
-			int[] parameters = new int[4];
-			//each string
-			for (int i = 0; i < items.size(); i++) {
-				//each char
-				for (int j = 0; j < items.get(i).length(); j++) {
-					char c = items.get(i).charAt(j);
-					if (c != ' ') {
-						if (Character.isAlphabetic(c) || c == '_') {
-							name += c;
-						}
-						//reads all of the grouped ints (if there is) in a chain
-						else if (Character.isDigit(c)) {
-							String value = "";
-							int z;
-							for (z = j; items.get(i).charAt(z) != ' '; z++)
-							{
-								//System.out.println(z);
-								value += items.get(i).charAt(z);
-								//otherwise it will iterate past the string size
-								if (z + 1 == items.get(i).length()) {
-									break;
-								}
+		if (category.equals("Weapon")) {
+			return; //not implemented yet
+		}
+		String name = "";
+		int index = 0;
+		int constructor = 0;
+		if (category.equals("Consumable")) {
+			constructor = 4;
+		}
+		else if (category.equals("Monster")) {
+			constructor = 3;
+		}
+		//e.g. x y consumeTime mapNumber for item
+		int[] parameters = new int[constructor];
+		//each string
+		for (int i = 0; i < items.size(); i++) {
+			//each char
+			for (int j = 0; j < items.get(i).length(); j++) {
+				char c = items.get(i).charAt(j);
+				if (c != ' ') {
+					if (Character.isAlphabetic(c) || c == '_') {
+						name += c;
+					}
+					//reads all of the grouped ints (if there is) in a chain
+					else if (Character.isDigit(c)) {
+						String value = "";
+						int z;
+						for (z = j; items.get(i).charAt(z) != ' '; z++)
+						{
+							//System.out.println(z);
+							value += items.get(i).charAt(z);
+							//otherwise it will iterate past the string size
+							if (z + 1 == items.get(i).length()) {
+								break;
 							}
-							parameters[index++] = Integer.parseInt(value);
-							value = "";
-							j = z;
 						}
+						parameters[index++] = Integer.parseInt(value);
+						value = "";
+						j = z;
 					}
 				}
+			}
+			if (category.equals("Consumable")) {
 				Item item = new Consumable(name, parameters[0], parameters[1],
-						parameters[2], parameters[3], Tile.findSprite(name));
+						parameters[2], parameters[3], Engine.findSprite(name));
 				associateItemToTile(item, parameters[0], parameters[1]);
 				this.items.add(item);
-				name = "";
-				index = 0;
-				parameters = new int[4];
+			} else if (category.equals("Monster")) {
+				GameObject monster = new Monster(name, parameters[0],
+						parameters[1], parameters[2], Engine.findSprite(name));
+				monsters.add(monster);
 			}
-			break;
-		case "Shield":
-			//Let Shield be finalised
-			break;
+			name = "";
+			index = 0;
+			parameters = new int[constructor];
 		}
+
 	}
 
+	/**
+	 * Sets a tile to contain an item depending on where the item is placed
+	 * @param item
+	 * @param x
+	 * @param y
+	 */
 	private void associateItemToTile(Item item, int x, int y) {
 		for (int row = 0; row < LENGTH; row++) {
 			for (int col = 0; col < WIDTH; col++) {
 				Tile t = this.map[col][row];
 				if (t.contains(x, y)) {
 					t.setItem(item);
-					System.out.println(t.getItem());
 				}
 			}
 		}
@@ -184,4 +201,10 @@ public class Map {
 		this.itemMap = itemMap;
 	}
 
+	public List<GameObject> getMonsters() { return monsters; }
+
+	public void setMonsters(List<GameObject> monsters) {
+		this.monsters = monsters;
+	}
+	
 }
