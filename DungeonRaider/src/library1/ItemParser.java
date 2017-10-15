@@ -82,7 +82,6 @@ public class ItemParser {
 				if (category == null) {
 					category = split[i];
 					if (!listOfCategories.contains(category)) {
-						System.out.println(category);
 						throw new IllegalArgumentException();
 					}
 					continue;
