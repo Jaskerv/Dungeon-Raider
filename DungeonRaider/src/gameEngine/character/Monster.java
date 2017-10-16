@@ -141,8 +141,8 @@ public class Monster implements Character, GameObject {
 			
 				
 		Map currentMap = engine.getCurrentMap();
-		int playerX = player.getX()+((player.getSpriteImage().getWidth()*player.getZoom())/2);
-		int playerY = player.getY()+((player.getSpriteImage().getWidth()*player.getZoom()/2));
+		int playerX = player.getX();//+((player.getSpriteImage().getWidth()*player.getZoom())/2);
+		int playerY = player.getY();//+((player.getSpriteImage().getWidth()*player.getZoom()/2));
 		
 		
 		//Keeps track of how many updates have passed inbetween each attack so monster cant
@@ -152,7 +152,7 @@ public class Monster implements Character, GameObject {
 			attackTimer++;
 		} else {
 			//attacks now
-			if(attackRange.contains(playerX, playerY)) {
+			if(attackRange.contains(player.getPlayerBoundBox())) {
 				attackTimer = 0;
 				player.damage(heavyAttack());
 			}

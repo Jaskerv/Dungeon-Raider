@@ -66,6 +66,7 @@ public class Player implements Character, GameObject {
 		this.damageQueue = new PriorityQueue<>();
 		this.spriteImage = playerSprite;
 		this.zoom = zoom;
+		this.zoom = 3;
 		this.x = center.getX() - (playerSprite.getWidth() / 2 * zoom);
 		this.y = center.getY() - (playerSprite.getHeight() / 2 * zoom);
 		this.hp = hp;
@@ -195,8 +196,8 @@ public class Player implements Character, GameObject {
 		Map currentMap = engine.getCurrentMap();
 		MouseController mouseActions = engine.getMouseListener();
 
-		int width = spriteImage.getWidth() * zoom;
-		int height = spriteImage.getHeight() * zoom;
+		int width = spriteImage.getWidth()*zoom;
+		int height = spriteImage.getHeight()*zoom;
 
 		//for the player animated sprites
 		boolean didMove = false;
@@ -369,8 +370,7 @@ public class Player implements Character, GameObject {
 			//right side bounding box = to range of weapon and half player height
 			Box rightPrimaryAttackRad = new Box(x + width, y, primaryWeapon.getRange(), height/2);
 			//attackRight();
-			System.out.println("x: " + x);
-			System.out.println("attack right");
+
 
 		}
 		//left attack calculated from the position of the camera
@@ -465,5 +465,14 @@ public class Player implements Character, GameObject {
 		return zoom;
 	}
 
+	public Box getPlayerBoundBox() {
+		return playerBoundBox;
+	}
+
+	public void setPlayerBoundBox(Box playerBoundBox) {
+		this.playerBoundBox = playerBoundBox;
+	}
+
+	
 
 }

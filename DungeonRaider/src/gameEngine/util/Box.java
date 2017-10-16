@@ -33,6 +33,10 @@ public class Box {
 		}
 		return false;
 	}
+	
+	public boolean contains(Box box) {
+		return this.x < box.x + box.getWidth() && x + width > box.x && y < box.y + box.height && y + height > box.y;
+	}
 
 	/**
 	 * @return the x
