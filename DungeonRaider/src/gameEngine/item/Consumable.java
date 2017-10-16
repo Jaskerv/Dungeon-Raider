@@ -8,27 +8,26 @@ import gameEngine.sprite.Sprite;
 public class Consumable extends Item {
 
 	private String name;
-	/** Item consume time */
-	protected int consumeTime;
+	/** Item consume health gained */
+	protected int healingStrength;
 
-	public Consumable(String name, int x, int y, int consumeTime, int map,
+	public Consumable(String name, int x, int y, int healingStrength,
 			Sprite sprite) {
-		super(x, y, map, sprite);
-		this.consumeTime = consumeTime;
+		super(x, y, sprite);
+		this.healingStrength = healingStrength;
 		this.name = name;
-	}
-
-	/**
-	 * Return consumeTime
-	 *
-	 * @return
-	 */
-	public int getConsumeTime() {
-		return consumeTime;
 	}
 
 	public String getName() {
 		return name;
+	}
+
+	public int getHealingStrength() {
+		return healingStrength;
+	}
+
+	public void setHealingStrength(int healingStrength) {
+		this.healingStrength = healingStrength;
 	}
 
 	public void setName(String name) {

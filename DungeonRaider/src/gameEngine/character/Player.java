@@ -10,7 +10,6 @@ import gameEngine.engine.Engine;
 import gameEngine.engine.GameObject;
 import gameEngine.engine.Renderer;
 import gameEngine.item.Item;
-import gameEngine.item.Shield;
 import gameEngine.item.Weapon;
 import gameEngine.map.Map;
 import gameEngine.sprite.AnimatedSprite;
@@ -29,12 +28,9 @@ import library5.StatModifier;
 
 public class Player implements Character, GameObject {
 
-	private int lives;
 	private int hp;
 	private int hpMax;
 	private int gold;
-	private int stamina;
-	private int currentCapacity;
 	private int x;
 	private int y;
 
@@ -42,16 +38,12 @@ public class Player implements Character, GameObject {
 	 * Item and bounding box variables
 	 */
 	private boolean primaryEquipped;
-	private boolean secondaryEquipped;
 	private Weapon primaryWeapon;
-	private Weapon secondaryWeapon;
-	private Shield armour;
 	private Inventory inventory;
 	private Sprite spriteImage;
 	private Box playerBoundBox;
 	private Box pickUpRadius;
 
-	private static final int MAX_CAPACITY = 20;
 	public static final int SPEED = 2;
 	public static final int SPRINT = 7;
 	private int zoom;
@@ -78,9 +70,8 @@ public class Player implements Character, GameObject {
 		this.pickUpRadius	= new Box(x-((playerSprite.getWidth()*zoom)), y-((playerSprite.getHeight()*zoom)),
 				(playerSprite.getWidth()*zoom)*4, (playerSprite.getHeight()*zoom)*4);
 		this.inventory = new Inventory(20);
-		this.primaryEquipped = true;
-		this.secondaryEquipped = false;
-		this.primaryWeapon = new Weapon("start", 0, 0, 0, 10, 100, 10);
+		this.primaryEquipped = false;
+		//this.primaryWeapon = new Weapon("start", 0, 0, 0, 10, 100, 10);
 		this.sprite = playerSprite;
 		if(sprite != null && sprite instanceof AnimatedSprite) {
 			this.animatedSprite = (AnimatedSprite) playerSprite;
@@ -93,75 +84,51 @@ public class Player implements Character, GameObject {
 			animatedSprite.setAnimationRange( direction*8, direction * 8 + 7 );
 		} 
 	}
-	
-	@Override
-	public int lightAttack() {
-		// TODO Auto-generated method stub
-		return secondaryWeapon.getDamage();
-	}
-
 	@Override
 	public int heavyAttack() {
-		// TODO Auto-generated method stub
 		return primaryWeapon.getDamage();
 	}
 
 	@Override
 	public void walkLeft() {
-		// TODO Auto-generated method stub
-		//if(checkBoundry(this.x - speed, this.y))
 		this.x -= SPEED;
 		this.playerBoundBox.setX(this.x-=SPEED);
 	}
 
 	@Override
 	public void walkRight() {
-		// TODO Auto-generated method stub
-		//if(checkBoundry(this.x + speed, this.y))
 		this.x += SPEED;
 		this.playerBoundBox.setX(this.x+=SPEED);
 	}
 
 	@Override
 	public void walkUp() {
-		// TODO Auto-generated method stub
-		//if(checkBoundry(this.x, this.y-speed))
 		this.y -= SPEED;
 		this.playerBoundBox.setY(this.y-=SPEED);
 	}
 
 	@Override
 	public void walkDown() {
-		// TODO Auto-generated method stub
-		//if(checkBoundry(this.x, this.y+speed))
 		this.y += SPEED;
 		this.playerBoundBox.setY(this.y+=SPEED);
 	}
 
-	@Override
 	public void runLeft() {
-		// TODO Auto-generated method stub
 		this.x -= SPRINT;
 		this.playerBoundBox.setX(this.x-=SPRINT);
 	}
 
-	@Override
 	public void runRight() {
-		// TODO Auto-generated method stub
 		this.x += SPRINT;
 		this.playerBoundBox.setX(this.x += SPRINT);
 	}
 
-	@Override
 	public void runUp() {
-		// TODO Auto-generated method stub
 		this.y -= SPRINT;
 		this.playerBoundBox.setY(this.y -= SPRINT);
 	}
 
-	@Override
 	public void runDown() {
-		// TODO Auto-generated method stub
 		this.y += SPRINT;
 		this.playerBoundBox.setY(this.y += SPRINT);
 	}

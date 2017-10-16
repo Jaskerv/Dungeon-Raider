@@ -54,12 +54,6 @@ public class Monster implements Character, GameObject {
 	}
 	
 	@Override
-	public int lightAttack() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public int heavyAttack() {
 		// TODO Auto-generated method stub
 		return 1;
@@ -89,32 +83,7 @@ public class Monster implements Character, GameObject {
 		// TODO Auto-generated method stub
 		this.y += 3;
 	}
-
-	@Override
-	public void runLeft() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void runRight() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void runUp() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void runDown() {
-		// TODO Auto-generated method stub
-
-	}
-
-
+	
 	@Override
 	public void render(Renderer renderer, int xZoom, int yZoom) {
 		renderer.renderArray(spriteImage.getPixels(), spriteImage.getWidth(),
