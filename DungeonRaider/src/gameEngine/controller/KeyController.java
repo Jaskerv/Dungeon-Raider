@@ -143,6 +143,7 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 			} else {
 				this.engine.getPauseMenu().setPaused(true);
 				engine.getSoundLibrary().playClip("cursorReady", -10f);
+				this.engine.getPauseMenu().setIndex(0);
 				break;
 			}
 		case KeyEvent.VK_ENTER:

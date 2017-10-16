@@ -110,9 +110,16 @@ public class PauseMenu implements GameObject {
 		}
 	}
 
+	/**
+	 * Cursor enter at the right spot
+	 * 
+	 * @param engine
+	 */
 	public void cursorEnter(Engine engine) {
 		if (index == 0) {
 			this.paused = false;
+		} else if (index == 3) {
+			System.exit(0);
 		}
 		engine.getSoundLibrary().playClip("cursorReady", -10f);
 	}
@@ -160,6 +167,21 @@ public class PauseMenu implements GameObject {
 	 */
 	public void setEnter(boolean enter) {
 		this.enter = enter;
+	}
+
+	/**
+	 * @return the index
+	 */
+	public int getIndex() {
+		return index;
+	}
+
+	/**
+	 * @param index
+	 *            the index to set
+	 */
+	public void setIndex(int index) {
+		this.index = index;
 	}
 
 }
