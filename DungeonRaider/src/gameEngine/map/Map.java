@@ -39,7 +39,6 @@ public class Map {
 	private java.util.Map<String, List<String>> itemMap = new HashMap<>();
 	private List<Item> items = new ArrayList<>();
 	private List<GameObject> monsters = new ArrayList<>();
-	private List<Monster> realMonster = new ArrayList<>();
 
 	/**
 	 * Initialises the Map
@@ -95,7 +94,7 @@ public class Map {
 		int index = 0;
 		int constructor = 0;
 		if (category.equals("Consumable")) {
-			constructor = 4;
+			constructor = 3;
 		}
 		else if (category.equals("Monster")) {
 			constructor = 4;
@@ -139,7 +138,6 @@ public class Map {
 				GameObject monster = new Monster(name, parameters[0],
 						parameters[1], parameters[2], parameters[3],Engine.findSprite(name));
 				monsters.add(monster);
-				realMonster.add((Monster) monster);
 			}
 			name = "";
 			index = 0;
@@ -208,14 +206,5 @@ public class Map {
 	public void setMonsters(List<GameObject> monsters) {
 		this.monsters = monsters;
 	}
-
-	public List<Monster> getRealMonster() {
-		return realMonster;
-	}
-
-	public void setRealMonster(List<Monster> realMonster) {
-		this.realMonster = realMonster;
-	}
-	
 	
 }
