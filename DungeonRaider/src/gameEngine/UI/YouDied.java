@@ -4,10 +4,13 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import javax.sound.sampled.Clip;
+
 import gameEngine.character.Player;
 import gameEngine.engine.Engine;
 import gameEngine.engine.GameObject;
 import gameEngine.engine.Renderer;
+import gameEngine.sound.SoundMap;
 import gameEngine.sprite.Sprite;
 
 /**
@@ -23,10 +26,12 @@ public class YouDied implements GameObject {
 	private int index;
 	private int cursorX;
 	private final int CURSORSIZE;
+	private boolean music;
 
 	private boolean up;
 	private boolean down;
 	private boolean enter;
+	private Clip clip;
 
 	public YouDied(BufferedImage backgroundImg) {
 		this.img = backgroundImg;
@@ -40,6 +45,7 @@ public class YouDied implements GameObject {
 		this.up = false;
 		this.down = false;
 		this.enter = false;
+		this.music = false;
 	}
 
 	@Override
@@ -55,6 +61,10 @@ public class YouDied implements GameObject {
 
 	@Override
 	public void update(Engine engine) {
+		if (engine.getPlayer().isDead() && music == false) {
+			music = true;
+			playMusic(engine);
+		}
 		if (up == true) {
 			cursorUp(engine);
 			this.up = false;
@@ -164,4 +174,21 @@ public class YouDied implements GameObject {
 		this.index = index;
 	}
 
+	/**
+	 * Plays death music
+	 * 
+	 * @param engine
+	 */
+	public void playMusic(Engine engine) {
+		clip = engine.getSoundLibrary().getClip("deathMusic");
+		clip.loop(Clip.LOOP_CONTINUOUSLY);
+		clip.start();
+	}
+
+	/**
+	 * Stops death music
+	 */
+	public void stopMusic() {
+		clip.stop();
+	}
 }

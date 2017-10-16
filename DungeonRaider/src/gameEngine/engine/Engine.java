@@ -441,5 +441,5 @@ public class Engine extends JFrame implements Runnable, Observer {
 	public YouDied getYouDied() {
 		return youDied;
 	}
-	
+
 }
