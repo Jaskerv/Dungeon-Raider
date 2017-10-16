@@ -363,7 +363,13 @@ public class Engine extends JFrame implements Runnable, Observer {
 		SPRITE_SHEET_2.loadSprites(16, 16);
 		if (name.equals("Monster_One")) {
 			return dungeonTiles.getSprite(3, 6);
-		} else if (name.equals("Small_Health_Potion") || name.equals("Big_Health_Potion")) {
+		}else if (name.equals("Monster_Two")) {
+			return SPRITE_SHEET_2.getSprite(3, 10);
+		}else if (name.equals("Monster_Three")) {
+			return SPRITE_SHEET_2.getSprite(3, 12);
+		}else if (name.equals("Monster_Four")) {
+			return SPRITE_SHEET_2.getSprite(4, 11);
+		}else if (name.equals("Small_Health_Potion") || name.equals("Big_Health_Potion")) {
 			return SPRITE_SHEET_2.getSprite(12, 11);
 		}
 		return null;
