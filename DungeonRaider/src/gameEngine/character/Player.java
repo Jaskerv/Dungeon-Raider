@@ -1,6 +1,7 @@
 package gameEngine.character;
 
 import java.awt.Color;
+import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -183,7 +184,7 @@ public class Player implements Character, GameObject {
 		int newDirection = direction;
 
 		Box curBox = playerBoundBox;
-		
+
 		/**
 		 * Player walking connection with key controller: Also checks for player
 		 * connection with walls
@@ -191,8 +192,8 @@ public class Player implements Character, GameObject {
 		if (!keyBinds.isRun()) {
 			if (keyBinds.isUp()) {
 				Box up = new Box(curBox.getX(), curBox.getY(), curBox.getWidth(), curBox.getHeight());
-				up.setY(up.getY()-SPEED);
-				if(checkBoundry(currentMap, up)) {
+				up.setY(up.getY() - SPEED);
+				if (checkBoundry(currentMap, up)) {
 					newDirection = 2;
 					didMove = true;
 					walkUp();
@@ -200,8 +201,8 @@ public class Player implements Character, GameObject {
 			}
 			if (keyBinds.isDown()) {
 				Box down = new Box(curBox.getX(), curBox.getY(), curBox.getWidth(), curBox.getHeight());
-				down.setY(down.getY()+SPEED);
-				if(checkBoundry(currentMap, down)) {
+				down.setY(down.getY() + SPEED);
+				if (checkBoundry(currentMap, down)) {
 					newDirection = 3;
 					didMove = true;
 					walkDown();
@@ -209,8 +210,8 @@ public class Player implements Character, GameObject {
 			}
 			if (keyBinds.isLeft()) {
 				Box left = new Box(curBox.getX(), curBox.getY(), curBox.getWidth(), curBox.getHeight());
-				left.setX(left.getX()-SPEED);
-				if(checkBoundry(currentMap, left)) {
+				left.setX(left.getX() - SPEED);
+				if (checkBoundry(currentMap, left)) {
 					newDirection = 1;
 					didMove = true;
 					walkLeft();
@@ -218,8 +219,8 @@ public class Player implements Character, GameObject {
 			}
 			if (keyBinds.isRight()) {
 				Box right = new Box(curBox.getX(), curBox.getY(), curBox.getWidth(), curBox.getHeight());
-				right.setX(right.getX()+SPEED);
-				if(checkBoundry(currentMap, right)) {
+				right.setX(right.getX() + SPEED);
+				if (checkBoundry(currentMap, right)) {
 					newDirection = 0;
 					didMove = true;
 					walkRight();
@@ -231,11 +232,11 @@ public class Player implements Character, GameObject {
 		 * Player running connection with key controller: Also checks for player
 		 * connection with walls
 		 */
-		if (keyBinds.isRun() ) {
+		if (keyBinds.isRun()) {
 			if (keyBinds.isUp()) {
 				Box up = new Box(curBox.getX(), curBox.getY(), curBox.getWidth(), curBox.getHeight());
-				up.setY(up.getY()-SPRINT);
-				if(checkBoundry(currentMap, up)) {
+				up.setY(up.getY() - SPRINT);
+				if (checkBoundry(currentMap, up)) {
 					newDirection = 2;
 					didMove = true;
 					runUp();
@@ -243,8 +244,8 @@ public class Player implements Character, GameObject {
 			}
 			if (keyBinds.isDown()) {
 				Box down = new Box(curBox.getX(), curBox.getY(), curBox.getWidth(), curBox.getHeight());
-				down.setY(down.getY()+SPRINT);
-				if(checkBoundry(currentMap, down)) {
+				down.setY(down.getY() + SPRINT);
+				if (checkBoundry(currentMap, down)) {
 					newDirection = 3;
 					didMove = true;
 					runDown();
@@ -252,8 +253,8 @@ public class Player implements Character, GameObject {
 			}
 			if (keyBinds.isLeft()) {
 				Box left = new Box(curBox.getX(), curBox.getY(), curBox.getWidth(), curBox.getHeight());
-				left.setX(left.getX()-SPRINT);
-				if(checkBoundry(currentMap, left)) {
+				left.setX(left.getX() - SPRINT);
+				if (checkBoundry(currentMap, left)) {
 					newDirection = 1;
 					didMove = true;
 					runLeft();
@@ -261,8 +262,8 @@ public class Player implements Character, GameObject {
 			}
 			if (keyBinds.isRight()) {
 				Box right = new Box(curBox.getX(), curBox.getY(), curBox.getWidth(), curBox.getHeight());
-				right.setX(right.getX()+SPRINT);
-				if(checkBoundry(currentMap, right)) {
+				right.setX(right.getX() + SPRINT);
+				if (checkBoundry(currentMap, right)) {
 					newDirection = 0;
 					didMove = true;
 					runRight();
@@ -369,12 +370,13 @@ public class Player implements Character, GameObject {
 			// right side bounding box = to range of weapon and half player height
 			Box rightPrimaryAttackRad = new Box(x, y, primaryWeapon.getRange(), height);
 			// attackRight();
-			for (GameObject _monster : monsters) {
-				Monster monster = (Monster) _monster;
+			Iterator<GameObject> iter = monsters.iterator();
+			while (iter.hasNext()) {
+				Monster monster = (Monster) iter.next();
 				if (rightPrimaryAttackRad.contains(monster.getBoundingBox())) {
 					monster.damage(heavyAttack());
 					System.out.println(monster.getHealth());
-					checkForMonsterDeath(monster, monsters);
+					checkForMonsterDeath(monster, monsters, iter);
 				}
 			}
 		}
@@ -384,27 +386,24 @@ public class Player implements Character, GameObject {
 			Box leftPrimaryAttackRad = new Box(x - primaryWeapon.getRange(), y, primaryWeapon.getRange() + width,
 					height);
 			// attackLeft();
-			for (GameObject _monster : monsters) {
-				Monster monster = (Monster) _monster;
+			Iterator<GameObject> iter = monsters.iterator();
+			while (iter.hasNext()) {
+				Monster monster = (Monster) iter.next();
 				if (leftPrimaryAttackRad.contains(monster.getBoundingBox())) {
 					monster.damage(heavyAttack());
 					System.out.println(monster.getHealth());
-					checkForMonsterDeath(monster, monsters);
+					checkForMonsterDeath(monster, monsters, iter);
 				}
 			}
 		}
 	}
 
-	public void checkForMonsterDeath(Monster monster, List<GameObject> monsters) {
+	public void checkForMonsterDeath(Monster monster, List<GameObject> monsters, Iterator<GameObject> iter) {
 		if (monster.getHealth() <= 0) {
 			this.gold = this.gold + 1;
-			removeMonsterFromMap(monster, monsters);
+			iter.remove();
 		}
 
-	}
-
-	public void removeMonsterFromMap(Monster monster, List<GameObject> monsters) {
-		monsters.remove(monster);
 	}
 
 	/**
