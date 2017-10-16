@@ -63,6 +63,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 	/** This will contain the list of maps from start to finish */
 	private HashMap<Integer, Map> mapList = initialiseMaps();
 	private Map currentMap = mapList.get(0);
+	private int currentMapNumber = 1;
 	/** Test Objects */
 	private Sprite playerSprite;
 	private SpriteSheet testSpriteSheet;
@@ -329,6 +330,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 	public void setCurrentMap(Map currentMap) {
 		this.currentMap = currentMap;
 		this.monsters = this.currentMap.getMonsters();
+		this.currentMapNumber++;
 	}
 
 	public void switchCanvas() {
@@ -447,6 +449,14 @@ public class Engine extends JFrame implements Runnable, Observer {
 
 	public void setMapList(HashMap<Integer, Map> mapList) {
 		this.mapList = mapList;
+	}
+
+	public int getCurrentMapNumber() {
+		return currentMapNumber;
+	}
+
+	public void setCurrentMapNumber(int currentMapNumber) {
+		this.currentMapNumber = currentMapNumber;
 	}
 
 }

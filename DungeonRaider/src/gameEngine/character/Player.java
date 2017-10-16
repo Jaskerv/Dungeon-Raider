@@ -319,7 +319,7 @@ public class Player implements Character, GameObject {
 		}
 		
 		if (this.x >= 1940 && this.y <= 100) {
-			engine.setCurrentMap(engine.getMapList().get(1));
+			engine.setCurrentMap(engine.getMapList().get(engine.getCurrentMapNumber()));
 			this.x = 200;
 			this.y = 200;
 		}
