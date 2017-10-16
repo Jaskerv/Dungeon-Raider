@@ -19,6 +19,7 @@ import javax.swing.JFrame;
 
 import gameEngine.UI.IngameInterface;
 import gameEngine.UI.PauseMenu;
+import gameEngine.UI.YouDied;
 import gameEngine.character.Monster;
 import gameEngine.character.Player;
 import gameEngine.controller.KeyController;
@@ -59,6 +60,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 	private IngameInterface GUI;
 	private PauseMenu pauseMenu;
 	private StartGame startGame;
+	private YouDied youDied;
 	private boolean menu;
 	/** This will contain the list of maps from start to finish */
 	private HashMap<Integer, Map> mapList = initialiseMaps();
@@ -144,6 +146,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 		/** GUI */
 		this.GUI = new IngameInterface(player, WIDTH, HEIGHT);
 		this.pauseMenu = new PauseMenu(this.loadImage("resources/images/Pause.png"));
+		this.youDied = new YouDied(this.loadImage("resources/images/YouDied.png"));
 		/**
 		 * initiating key listener
 		 */
@@ -157,31 +160,39 @@ public class Engine extends JFrame implements Runnable, Observer {
 	 * This method will render everything onto the screen
 	 */
 	public void render() {
+		/**
+		 * if not in menu
+		 */
 		if (!menu) {
+
 			BufferStrategy b = canvas.getBufferStrategy();
 			Graphics g = b.getDrawGraphics();
 			super.paint(g);
 			this.renderer.clearArray();
-			/**
-			 * If not paused
-			 */
-			if (!pauseMenu.isPaused()) {
-				// Renders the map first (bottom layer of the image)
-				renderer.renderMap(currentMap);
-				/** Render Objects */
-				for (GameObject gameObject : object) {
-					gameObject.render(renderer, 3, 3);
-				}
-				/** Render GUI */
-				this.GUI.render(renderer, GUI.XZOOM, GUI.YZOOM);
-				/** Then render the Renderer */
+			if (player.isDead()) {
+				youDied.render(renderer, 1, 1);
+			} else {
+				/**
+				 * If not paused
+				 */
+				if (!pauseMenu.isPaused()) {
+					// Renders the map first (bottom layer of the image)
+					renderer.renderMap(currentMap);
+					/** Render Objects */
+					for (GameObject gameObject : object) {
+						gameObject.render(renderer, 3, 3);
+					}
+					/** Render GUI */
+					this.GUI.render(renderer, GUI.XZOOM, GUI.YZOOM);
+					/** Then render the Renderer */
 
-			}
-			/**
-			 * If paused
-			 */
-			else {
-				pauseMenu.render(renderer, 1, 1);
+				}
+				/**
+				 * If paused
+				 */
+				else {
+					pauseMenu.render(renderer, 1, 1);
+				}
 			}
 			renderer.render(g);
 			g.dispose();
@@ -197,7 +208,9 @@ public class Engine extends JFrame implements Runnable, Observer {
 				g.dispose();
 				b.show();
 			} catch (Exception e) {
-				System.out.println("there is error");
+				/**
+				 * Caught expected error
+				 */
 			}
 		}
 
@@ -248,25 +261,31 @@ public class Engine extends JFrame implements Runnable, Observer {
 	 */
 	public void update() {
 		soundLibrary.autoClipClose();
-		/** if in start menu */
-		if (menu) {
-			startGame.update(this);
+		/**
+		 * If player is dead
+		 */
+		if (player.isDead()) {
+			this.youDied.update(this);
 		} else {
-			/** not paused */
-			if (!this.pauseMenu.isPaused()) {
-				for (GameObject gameObject : object) {
-					gameObject.update(this);
+			/** if in start menu */
+			if (menu) {
+				startGame.update(this);
+			} else {
+				/** not paused */
+				if (!this.pauseMenu.isPaused()) {
+					for (GameObject gameObject : object) {
+						gameObject.update(this);
+					}
+					this.GUI.update(this);
 				}
-				this.GUI.update(this);
-			}
-			/**
-			 * If paused
-			 */
-			else {
-				this.pauseMenu.update(this);
+				/**
+				 * If paused
+				 */
+				else {
+					this.pauseMenu.update(this);
+				}
 			}
 		}
-
 	}
 
 	/**
@@ -415,4 +434,12 @@ public class Engine extends JFrame implements Runnable, Observer {
 	public boolean isPaused() {
 		return pauseMenu.isPaused();
 	}
+
+	/**
+	 * @return the youDied
+	 */
+	public YouDied getYouDied() {
+		return youDied;
+	}
+	
 }
