@@ -94,7 +94,7 @@ public class Map {
 		int index = 0;
 		int constructor = 0;
 		if (category.equals("Consumable")) {
-			constructor = 4;
+			constructor = 3;
 		}
 		else if (category.equals("Monster")) {
 			constructor = 4;
