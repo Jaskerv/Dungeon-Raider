@@ -1,5 +1,6 @@
 package gameEngine.character;
 
+import java.awt.Color;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -11,6 +12,7 @@ import gameEngine.sprite.Sprite;
 import gameEngine.sprite.SpriteSheet;
 import gameEngine.util.Box;
 import gameEngine.util.Position;
+import gameEngine.util.Rectangle;
 import library5.StatModifier;
 
 /**
@@ -34,6 +36,7 @@ public class Monster implements Character, GameObject {
 	private Queue<Integer> damageQueue;
 	private Box boundingBox;
 	private int attackTimer;
+	private Rectangle rect;
 
 	/**
 	 * Monster
@@ -46,11 +49,15 @@ public class Monster implements Character, GameObject {
 		this.speed = speed;
 		this.spriteImage = sprite;
 		this.health = health;
-		this.height = spriteImage.getHeight()*ZOOM;
-		this.width = spriteImage.getWidth()*ZOOM;
+		this.height = spriteImage.getHeight();
+		this.width = spriteImage.getWidth();
 		this.damageQueue = new PriorityQueue<>();
 		this.boundingBox = new Box(this.x, this.y, this.width, this.height);
 		this.attackTimer = 0;
+
+		//testing monster bounding boxes
+		this.rect = new Rectangle(this.x, this.y, this.width, this.height);
+		this.rect.generateGraphics(Color.BLUE.getRGB());
 	}
 
 	@Override
@@ -61,31 +68,32 @@ public class Monster implements Character, GameObject {
 
 	@Override
 	public void walkLeft() {
-		this.x -= 3;
+		this.x -= speed;
 
 	}
 
 	@Override
 	public void walkRight() {
 		// TODO Auto-generated method stub
-		this.x += 3;
+		this.x += speed;
 
 	}
 
 	@Override
 	public void walkUp() {
 		// TODO Auto-generated method stub
-		this.y -= 3;
+		this.y -= speed;
 	}
 
 	@Override
 	public void walkDown() {
 		// TODO Auto-generated method stub
-		this.y += 3;
+		this.y += speed;
 	}
 
 	@Override
 	public void render(Renderer renderer, int xZoom, int yZoom) {
+		renderer.renderRectangle(this.rect, ZOOM, ZOOM);
 		renderer.renderArray(spriteImage.getPixels(), spriteImage.getWidth(),
 				spriteImage.getHeight(), x, y, ZOOM, ZOOM);
 	}
@@ -100,6 +108,10 @@ public class Monster implements Character, GameObject {
 
 		//Updating monster attack range
 		this.boundingBox = new Box(this.x, this.y, this.width, this.height);
+		this.rect = new Rectangle(this.x, this.y, this.width, this.height);
+		this.rect.generateGraphics(Color.BLUE.getRGB());
+
+
 
 		//Keeps track of how many updates have passed inbetween each attack so monster cant
 		//attack to quickly
@@ -116,29 +128,33 @@ public class Monster implements Character, GameObject {
 
 		//player is to the left of this monster
 		if (playerX < this.x) {
-			if(!boundingBox.contains(player.getPlayerBoundBox()))
-				if(checkBoundry(currentMap, x - speed, y + height/2))
-					if(checkBoundry(currentMap, x - speed, y + height))
-						walkLeft();
+			if(!boundingBox.contains(player.getPlayerBoundBox())) {
+				Box left = new Box(this.x-speed, this.y, this.width, this.height);
+				if(checkBoundry(currentMap, left))
+					walkLeft();
+			}
 		}
 		if (playerX > this.x) {
-			if(!boundingBox.contains(player.getPlayerBoundBox()))
-				if(checkBoundry(currentMap, x + width + speed, y + height/2))
-					if(checkBoundry(currentMap, x + width + speed, y + height))
-						walkRight();
+			if(!boundingBox.contains(player.getPlayerBoundBox())) {
+				Box right = new Box(this.x+speed, this.y, this.width, this.height);
+				if(checkBoundry(currentMap, right))
+					walkRight();
+			}
 		}
 		//player is to the bottom of this monster
 		if (playerY > this.y) {
-			if(!boundingBox.contains(player.getPlayerBoundBox()))
-				if(checkBoundry(currentMap, x + width, y + height + speed))
-					if(checkBoundry(currentMap, x, y + height + speed))
-						walkDown();
+			if(!boundingBox.contains(player.getPlayerBoundBox())) {
+				Box down = new Box(this.x, this.y+speed, this.width, this.height);
+				if(checkBoundry(currentMap, down))
+					walkDown();
+			}
 		}
 		if (playerY < this.y) {
-			if(!boundingBox.contains(player.getPlayerBoundBox()))
-				if(checkBoundry(currentMap, x + width, y - speed + height/2))
-					if(checkBoundry(currentMap, x, y - speed + height/2))
-						walkUp();
+			if(!boundingBox.contains(player.getPlayerBoundBox())) {
+				Box up = new Box(this.x, this.y-speed, this.width, this.height);
+				if(checkBoundry(currentMap, up))
+					walkUp();
+			}
 		}
 
 		if(!damageQueue.isEmpty()) {

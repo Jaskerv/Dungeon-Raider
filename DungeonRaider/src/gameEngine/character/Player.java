@@ -168,7 +168,7 @@ public class Player implements Character, GameObject {
 
 		//for the player animated sprites
 		boolean didMove = false;
-		int newDirection = direction ;
+		int newDirection = direction;
 		
 		/**
 		 * Player walking connection with key controller:
