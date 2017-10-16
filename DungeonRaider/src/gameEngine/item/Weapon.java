@@ -1,5 +1,11 @@
 package gameEngine.item;
 
+import java.util.PrimitiveIterator.OfDouble;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import javax.swing.DefaultDesktopManager;
+import javax.xml.ws.AsyncHandler;
+
 import gameEngine.sprite.Sprite;
 
 public class Weapon extends Item implements Upgradable {
@@ -28,14 +34,14 @@ public class Weapon extends Item implements Upgradable {
 	}
 
 	/**
-	 * The cost of upgrading is exponential while the upgrade benefit is linear
+	 * Upgrade weapon by increasing its damage and crit chance. Number of upgrades capped at 5.
 	 */
 	@Override
 	public void upgrade() {
-		//damage += upgradeModifier * damage / 2;
+		
 		if(numberOfUpgrades < 5) {
-			setCritChance(critChance*1.5);
-			setDamage(damage*2);
+			setCritChance(critChance+5);
+			setDamage(damage+10);
 			numberOfUpgrades ++;
 		}
 	}

@@ -62,6 +62,7 @@ public class AnimatedSprite extends Sprite implements GameObject{
 
 	}
 	
+	// sets the current sprite to be what happened last from the previous movement.
 	public void reset() {
 		counter =0 ;
 		currentSprite = startSprite;
@@ -78,16 +79,17 @@ public class AnimatedSprite extends Sprite implements GameObject{
 		}
 	}
 
+	
 	public void incrementSprite() {
 		// TODO Auto-generated method stub
 		this.currentSprite++;
 		//re loop through the array of sprites when you reach the end.
 		if(this.currentSprite >= endSprite) {
-
 			this.currentSprite = startSprite;
 		}
 	}
 
+	//set the sprite range for the animations to be played. Each range is 8 sprites. 
 	public void setAnimationRange(int startSprite, int endSprite) {
 		this.startSprite = startSprite;
 		this.endSprite = endSprite;
