@@ -85,7 +85,6 @@ public class Sprite {
 					for (int xZoomIndex = 0; xZoomIndex < xZoom; xZoomIndex++)
 						setPixel(array[x + y * width], (x * xZoom) + xPos + xZoomIndex,
 								(y * yZoom) + yPos + yZoomIndex);
-
 	}
 
 	/**

@@ -1,11 +1,14 @@
 package gameEngine.UI;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 import gameEngine.character.Player;
 import gameEngine.engine.Engine;
 import gameEngine.engine.GameObject;
 import gameEngine.engine.Renderer;
+import gameEngine.item.Item;
 import gameEngine.sprite.Sprite;
 import gameEngine.util.Box;
 
@@ -52,6 +55,14 @@ public class IngameInterface implements GameObject {
 	@Override
 	public void render(Renderer renderer, int xZoom, int yZoom) {
 		this.ui.setPixels(pixels.clone());
+		List<Item> itemList = player.getInventory().getInventory();
+		for (int i = 0; i < itemList.size(); i++) {
+			Sprite itemSprite = itemList.get(i).getSprite();
+			if (itemList.get(i).getPickedUp()) {
+				int itemNumber = 100 + (i*50);
+				ui.drawOnSprite(itemSprite, itemNumber, 100, 3, 3);
+			}
+		}
 		int r = (int) (Math.random() * 7000000);
 		for (int y = 0; y < height; y++)
 			for (int x = 0; x < width; x++) {

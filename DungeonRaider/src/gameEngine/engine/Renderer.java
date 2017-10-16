@@ -130,10 +130,14 @@ public class Renderer {
 				Tile tile = map.getMap()[x][y];
 				if (tile.getItem() != null) {
 					Item item = tile.getItem();
+					Sprite sprite = item.getSprite();
 					if (!item.getPickedUp()) {
-						Sprite sprite = item.getSprite();
+						
 						renderArray(sprite.getPixels(), sprite.getWidth(), sprite.getHeight(),
 								item.getPosition().getX(), item.getPosition().getY(), ZOOM, ZOOM);
+					}
+					else {
+						sprite.drawOnSprite(sprite, 500, 500, 3, 3);
 					}
 				}
 			}
