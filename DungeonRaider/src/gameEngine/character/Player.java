@@ -78,8 +78,9 @@ public class Player implements Character, GameObject {
 		this.pickUpRadius	= new Box(x-((playerSprite.getWidth()*zoom)), y-((playerSprite.getHeight()*zoom)),
 				(playerSprite.getWidth()*zoom)*4, (playerSprite.getHeight()*zoom)*4);
 		this.inventory = new Inventory(20);
-		this.primaryEquipped = false;
+		this.primaryEquipped = true;
 		this.secondaryEquipped = false;
+		this.primaryWeapon = new Weapon("start", 0, 0, 0, 10, 100, 10);
 		this.sprite = playerSprite;
 		if(sprite != null && sprite instanceof AnimatedSprite) {
 			this.animatedSprite = (AnimatedSprite) playerSprite;
@@ -361,16 +362,16 @@ public class Player implements Character, GameObject {
 		int width = spriteImage.getWidth() * zoom;
 		int height = spriteImage.getHeight() * zoom;
 		Position center = engine.getRenderer().getCamera().getCenter();
-		List<GameObject> monsters = engine.getCurrentMap().getMonsters();
+		List<Monster> monsters = engine.getCurrentMap().getRealMonster();
 		//right attack calculated from the position of the camera
 		if(mx > center.getX()) {
 			//right side bounding box = to range of weapon and half player height
 			Box rightPrimaryAttackRad = new Box(x + width, y, primaryWeapon.getRange(), height/2);
 			//attackRight();
-			for(GameObject monster : monsters) {
-				Monster curMonster = (Monster) monster;
-				if(rightPrimaryAttackRad.contains(curMonster.getBoundingBox())) {
-					curMonster.damage( (int) StatModifier.calcDamage(heavyAttack(), curMonster.getHealth(), 0, primaryWeapon.getCritChance()));
+			for(Monster monster : monsters) {
+				if(rightPrimaryAttackRad.contains(monster.getBoundingBox())) {
+					monster.damage(heavyAttack());
+					System.out.println(monster.getHealth());
 				}
 			}
 		}
@@ -379,10 +380,10 @@ public class Player implements Character, GameObject {
 			//left side bounding box = to range of weapon and half player height
 			Box leftPrimaryAttackRad = new Box(x-primaryWeapon.getRange(), y, primaryWeapon.getRange(), height/2);
 			//attackLeft();
-			for(GameObject monster : monsters) {
-				Monster curMonster = (Monster) monster;
-				if(leftPrimaryAttackRad.contains(curMonster.getBoundingBox())) {
-					curMonster.damage( (int) StatModifier.calcDamage(heavyAttack(), curMonster.getHealth(), 0, primaryWeapon.getCritChance()));
+			for(Monster monster : monsters) {
+				if(leftPrimaryAttackRad.contains(monster.getBoundingBox())) {
+					monster.damage(heavyAttack());
+					System.out.println(monster.getHealth());
 				}
 			}
 		}

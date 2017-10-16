@@ -124,11 +124,7 @@ public class Monster implements Character, GameObject {
 	@Override
 	public void update(Engine engine) {
 		//Gets player Position
-		Player player = engine.getPlayer();
-		Position playerPos = new Position(player.getX()+((player.getSpriteImage().getWidth()*player.getZoom())/2)
-						, player.getY()+((player.getSpriteImage().getWidth()*player.getZoom()/2)));
-			
-				
+		Player player = engine.getPlayer();		
 		Map currentMap = engine.getCurrentMap();
 		int playerX = player.getX();//+((player.getSpriteImage().getWidth()*player.getZoom())/2);
 		int playerY = player.getY();//+((player.getSpriteImage().getWidth()*player.getZoom()/2));
@@ -170,6 +166,10 @@ public class Monster implements Character, GameObject {
 			if(checkBoundry(currentMap, x + width, y - speed + height/2))
 				if(checkBoundry(currentMap, x, y - speed + height/2))
 					walkUp();
+		}
+		
+		if(!damageQueue.isEmpty()) {
+			this.health += damageQueue.poll();
 		}
 		
 	}

@@ -4,7 +4,6 @@ public class Weapon extends Equipment implements Upgradable {
 
 
 	private String name;
-	private int cost;
 	private int damage;
 	private double critChance;
 	private int range;
@@ -21,7 +20,6 @@ public class Weapon extends Equipment implements Upgradable {
 	public Weapon(String name, int x, int y, int map, int damage, int range, int critChance) {
 		super(x, y, map);
 		this.name = name;
-		this.cost = cost;
 		this.damage = damage;
 		this.critChance = critChance;
 		this.range = range;
@@ -36,8 +34,6 @@ public class Weapon extends Equipment implements Upgradable {
 		//damage += upgradeModifier * damage / 2;
 	}
 
-
-
 	public String getName() {
 		return name;
 	}
@@ -45,15 +41,7 @@ public class Weapon extends Equipment implements Upgradable {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public int getCost() {
-		return cost;
-	}
-
-	public void setCost(int cost) {
-		this.cost = cost;
-	}
-
+	
 	public int getDamage() {
 		return damage;
 	}
