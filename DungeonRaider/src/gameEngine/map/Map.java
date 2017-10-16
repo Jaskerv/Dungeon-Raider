@@ -13,6 +13,7 @@ import gameEngine.engine.GameObject;
 import gameEngine.item.Consumable;
 import gameEngine.item.Item;
 import gameEngine.sprite.Sprite;
+import gameEngine.util.Box;
 import library1.ItemParser;
 import library2.MapParser;
 
@@ -180,6 +181,19 @@ public class Map {
 			for (int col = 0; col < WIDTH; col++) {
 				currentTile = map[col][row];
 				if(currentTile.contains(x, y)) {
+					if(currentTile.isBoundary()) return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	public boolean onWall(Box box) {
+		Tile currentTile;
+		for (int row = 0; row < LENGTH; row++) {
+			for (int col = 0; col < WIDTH; col++) {
+				currentTile = map[col][row];
+				if(currentTile.contains(box)) {
 					if(currentTile.isBoundary()) return false;
 				}
 			}
