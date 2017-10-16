@@ -4,21 +4,21 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import gameEngine.character.Player;
 import gameEngine.engine.Engine;
 import gameEngine.engine.GameObject;
 import gameEngine.engine.Renderer;
 import gameEngine.sprite.Sprite;
 
 /**
- * GUI for pause menu
+ * GUI for death screen
  * 
  * @author Jono Yan
  *
  */
-public class PauseMenu implements GameObject {
+public class YouDied implements GameObject {
 	private BufferedImage img;
 	private Sprite background;
-	private boolean paused;
 	private int[] menu;
 	private int index;
 	private int cursorX;
@@ -28,18 +28,12 @@ public class PauseMenu implements GameObject {
 	private boolean down;
 	private boolean enter;
 
-	public PauseMenu(BufferedImage backgroundImage) {
-		this.background = new Sprite(backgroundImage);
-		this.img = backgroundImage;
-		/**
-		 * Default not active
-		 */
-		this.paused = false;
-		this.menu = new int[4];
+	public YouDied(BufferedImage backgroundImg) {
+		this.img = backgroundImg;
+		this.background = new Sprite(backgroundImg);
+		this.menu = new int[2];
 		this.menu[0] = 365;
-		this.menu[1] = 435;
-		this.menu[2] = 505;
-		this.menu[3] = 635;
+		this.menu[1] = 505;
 		this.index = 0;
 		this.cursorX = 500;
 		this.CURSORSIZE = 10;
@@ -74,21 +68,6 @@ public class PauseMenu implements GameObject {
 	}
 
 	/**
-	 * @return the paused
-	 */
-	public boolean isPaused() {
-		return paused;
-	}
-
-	/**
-	 * @param paused
-	 *            the paused to set
-	 */
-	public void setPaused(boolean paused) {
-		this.paused = paused;
-	}
-
-	/**
 	 * moves cursor up
 	 * 
 	 * @param engine
@@ -106,7 +85,7 @@ public class PauseMenu implements GameObject {
 	 * @param engine
 	 */
 	public void cursorDown(Engine engine) {
-		if (index < 3) {
+		if (index < 1) {
 			index++;
 			engine.getSoundLibrary().playClip("cursorMove", -10f);
 		}
@@ -119,8 +98,7 @@ public class PauseMenu implements GameObject {
 	 */
 	public void cursorEnter(Engine engine) {
 		if (index == 0) {
-			this.paused = false;
-		} else if (index == 3) {
+		} else if (index == 1) {
 			System.exit(0);
 		}
 		engine.getSoundLibrary().playClip("cursorReady", -10f);

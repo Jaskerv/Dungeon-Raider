@@ -104,6 +104,9 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 			if (engine.isPaused()) {
 				engine.getPauseMenu().setUp(true);
 			}
+			if(player.isDead()) {
+				engine.getYouDied().setUp(true);
+			}
 			break;
 		case KeyEvent.VK_A:
 			// move left
@@ -117,6 +120,9 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 
 			if (engine.isPaused()) {
 				engine.getPauseMenu().setDown(true);
+			}
+			if(player.isDead()) {
+				engine.getYouDied().setDown(true);
 			}
 			break;
 		case KeyEvent.VK_D:
@@ -139,6 +145,7 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 		case KeyEvent.VK_ESCAPE:
 			if (this.engine.isPaused()) {
 				this.engine.getPauseMenu().setPaused(false);
+				engine.getSoundLibrary().playClip("cursorReady", -10f);
 				break;
 			} else {
 				this.engine.getPauseMenu().setPaused(true);
@@ -149,6 +156,9 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 		case KeyEvent.VK_ENTER:
 			if (engine.isPaused()) {
 				engine.getPauseMenu().setEnter(true);
+			}
+			if(player.isDead()) {
+				engine.getYouDied().setEnter(true);
 			}
 			break;
 		}
