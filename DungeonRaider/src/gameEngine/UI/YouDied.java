@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 
 import gameEngine.character.Player;
 import gameEngine.engine.Engine;
@@ -181,6 +182,8 @@ public class YouDied implements GameObject {
 	 */
 	public void playMusic(Engine engine) {
 		clip = engine.getSoundLibrary().getClip("deathMusic");
+		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+		gainControl.setValue(-5f);
 		clip.loop(Clip.LOOP_CONTINUOUSLY);
 		clip.start();
 	}
