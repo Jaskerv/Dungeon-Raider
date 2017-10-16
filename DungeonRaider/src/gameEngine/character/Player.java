@@ -338,7 +338,10 @@ public class Player implements Character, GameObject {
 			for(Monster monster : monsters) {
 				if(rightPrimaryAttackRad.contains(monster.getBoundingBox())) {
 					monster.damage(heavyAttack());
+					
 					System.out.println(monster.getHealth());
+					//checks if monster died from the attack
+					checkForMonsterDeath(monster);
 				}
 			}
 		}
@@ -351,11 +354,21 @@ public class Player implements Character, GameObject {
 				if(leftPrimaryAttackRad.contains(monster.getBoundingBox())) {
 					monster.damage(heavyAttack());
 					System.out.println(monster.getHealth());
+					//checks if monster died from the attack
+					checkForMonsterDeath(monster);
+					
 				}
 			}
 		}
 	}
-
+	
+	// check to see if the monster dies from player attack. Player gets gold if monster dies from player attack
+	public void checkForMonsterDeath(Monster monster) {
+		if(monster.getHealth()<=0) {
+			this.gold = this.gold + 100;
+		}	
+	}
+	
 	/**
 	 * Updates the camera's position to center the player
 	 *
