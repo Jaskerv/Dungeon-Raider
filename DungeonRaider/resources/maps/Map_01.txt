@@ -1,18 +1,15 @@
 { 
 Weapon Short_Sword 0 2 10
-Consumable Small_Health_Potion 500 90 30
-Consumable Big_Health_Potion 300 150 30
-Monster Monster_One 300 350 2 100
-Monster Monster_One 400 100 2 200
-Monster Monster_One 500 500 2 300
+Consumable Small_Health_Potion 870 90 30
+Monster Monster_One 300 600 2 100
 }
 
 0 0 0
 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-2 W W W W W W W W W W W W W W W W W W W N 4
-2 W W W W W W W W 2 W W W W W W W W W W W 4
-2 W W W W W W W W W W W W W W W W W W W W 4
-2 W W W W W 2 W 2 W 2 W W W W W W W W W W 4
+2 W W W W W W W W W 2 W W W 2 W W W 2 W W 4
+2 W W W W W W W 2 W 2 W 2 W 2 W 2 W 2 W 2 4
+2 W W W W W W W 2 W W W 2 W W W 2 W W W 2 4
+2 W W W W W W 2 2 2 2 2 2 2 2 2 2 2 2 2 2 4
 2 W W W W W W W W W W W W W W W W W W W W 4
 2 W W W W W W W W W W W W W W W W W W W W 4
 2 W W W W W W W W W W W W W W W W W W W W 4

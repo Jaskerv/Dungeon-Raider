@@ -85,6 +85,8 @@ public class Tile {
 				return SPRITE_SHEET_1.getSprite(0, 1);
 			case 'T':
 				return SPRITE_SHEET_2.getSprite(14, 11);
+			case 'N':
+				return SPRITE_SHEET_1.getSprite(4, 7);
 		}
 		return null;
 	}

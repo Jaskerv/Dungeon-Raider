@@ -318,10 +318,17 @@ public class Engine extends JFrame implements Runnable, Observer {
 		// Tutorial map
 		Map tutMap = new Map();
 		tutMap.initialiseMap("TutorialMap");
-		mapList.put(count, tutMap);
-		count++;
+		mapList.put(count++, tutMap);
+		Map map_01 = new Map();
+		map_01.initialiseMap("Map_01");
+		mapList.put(count++, map_01);
 		return mapList;
 
+	}
+	
+	public void setCurrentMap(Map currentMap) {
+		this.currentMap = currentMap;
+		this.monsters = this.currentMap.getMonsters();
 	}
 
 	public void switchCanvas() {
@@ -386,9 +393,6 @@ public class Engine extends JFrame implements Runnable, Observer {
 		return currentMap;
 	}
 
-	public void setCurrentMap(Map currentMap) {
-		this.currentMap = currentMap;
-	}
 
 	/**
 	 * @return the menu
@@ -435,6 +439,14 @@ public class Engine extends JFrame implements Runnable, Observer {
 	 */
 	public YouDied getYouDied() {
 		return youDied;
+	}
+
+	public HashMap<Integer, Map> getMapList() {
+		return mapList;
+	}
+
+	public void setMapList(HashMap<Integer, Map> mapList) {
+		this.mapList = mapList;
 	}
 
 }

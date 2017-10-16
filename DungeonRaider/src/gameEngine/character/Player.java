@@ -317,6 +317,12 @@ public class Player implements Character, GameObject {
 		if(didMove) {
 			animatedSprite.update(engine);
 		}
+		
+		if (this.x >= 1940 && this.y <= 100) {
+			engine.setCurrentMap(engine.getMapList().get(1));
+			this.x = 200;
+			this.y = 200;
+		}
 	}
 
 	/**
