@@ -94,6 +94,11 @@ public class Tile {
 	public boolean contains(int x, int y) {
 		return this.boundingBox.contains(x, y);
 	}
+	
+	public boolean contains(Box box) {
+		return this.boundingBox.contains(box);
+	}
+
 
 	/**
 	 * Checks if the given tile is a wall
