@@ -259,7 +259,12 @@ public class Engine extends JFrame implements Runnable, Observer {
 				}
 				this.GUI.update(this);
 			}
-
+			/**
+			 * If paused
+			 */
+			else {
+				this.pauseMenu.update(this);
+			}
 		}
 
 	}
@@ -404,4 +409,10 @@ public class Engine extends JFrame implements Runnable, Observer {
 		return pauseMenu;
 	}
 
+	/*
+	 * I pause menu is up
+	 */
+	public boolean isPaused() {
+		return pauseMenu.isPaused();
+	}
 }

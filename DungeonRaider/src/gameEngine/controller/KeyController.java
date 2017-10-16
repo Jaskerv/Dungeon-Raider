@@ -100,6 +100,10 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 			// move up
 			this.up = false;
 			// System.out.println("w releasedd");
+
+			if (engine.isPaused()) {
+				engine.getPauseMenu().setUp(true);
+			}
 			break;
 		case KeyEvent.VK_A:
 			// move left
@@ -110,6 +114,10 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 			// move down
 			this.down = false;
 			// System.out.println("s released");
+
+			if (engine.isPaused()) {
+				engine.getPauseMenu().setDown(true);
+			}
 			break;
 		case KeyEvent.VK_D:
 			// move right
@@ -129,7 +137,7 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 			this.useItem = false;
 			break;
 		case KeyEvent.VK_ESCAPE:
-			if (this.engine.getPauseMenu().isPaused()) {
+			if (this.engine.isPaused()) {
 				this.engine.getPauseMenu().setPaused(false);
 				break;
 			} else {
@@ -137,6 +145,11 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 				engine.getSoundLibrary().playClip("cursorReady", -10f);
 				break;
 			}
+		case KeyEvent.VK_ENTER:
+			if (engine.isPaused()) {
+				engine.getPauseMenu().setEnter(true);
+			}
+			break;
 		}
 	}
 
