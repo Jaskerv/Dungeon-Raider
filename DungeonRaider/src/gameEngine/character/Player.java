@@ -80,8 +80,6 @@ public class Player implements Character, GameObject {
 		this.inventory = new Inventory(20);
 		this.primaryEquipped = false;
 		this.secondaryEquipped = false;
-		
-		
 		this.sprite = playerSprite;
 		if(sprite != null && sprite instanceof AnimatedSprite) {
 			this.animatedSprite = (AnimatedSprite) playerSprite;
@@ -417,6 +415,11 @@ public class Player implements Character, GameObject {
 	 */
 	public int getHpMax() {
 		return hpMax;
+	}
+	
+	public boolean isDead() {
+		if(hp <= 0) return true;
+		else return false;
 	}
 
 	/**
