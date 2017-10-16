@@ -132,7 +132,7 @@ public class Map {
 			}
 			if (category.equals("Consumable")) {
 				Item item = new Consumable(name, parameters[0], parameters[1],
-						parameters[2], parameters[3], Engine.findSprite(name));
+						parameters[2], Engine.findSprite(name));
 				associateItemToTile(item, parameters[0], parameters[1]);
 				this.items.add(item);
 			} else if (category.equals("Monster")) {
