@@ -1,6 +1,5 @@
 package gameEngine.character;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -18,7 +17,6 @@ import gameEngine.sprite.AnimatedSprite;
 import gameEngine.sprite.Sprite;
 import gameEngine.util.Box;
 import gameEngine.util.Position;
-import library5.StatModifier;
 
 
 /**
@@ -332,13 +330,14 @@ public class Player implements Character, GameObject {
 		int width = spriteImage.getWidth() * zoom;
 		int height = spriteImage.getHeight() * zoom;
 		Position center = engine.getRenderer().getCamera().getCenter();
-		List<Monster> monsters = engine.getCurrentMap().getRealMonster();
+		List<GameObject> monsters = engine.getCurrentMap().getMonsters();
 		//right attack calculated from the position of the camera
 		if(mx > center.getX()) {
 			//right side bounding box = to range of weapon and half player height
 			Box rightPrimaryAttackRad = new Box(x + width, y, primaryWeapon.getRange(), height/2);
 			//attackRight();
-			for(Monster monster : monsters) {
+			for(GameObject _monster : monsters) {
+				Monster monster = (Monster) _monster;
 				if(rightPrimaryAttackRad.contains(monster.getBoundingBox())) {
 					monster.damage(heavyAttack());
 					System.out.println(monster.getHealth());
@@ -350,7 +349,8 @@ public class Player implements Character, GameObject {
 			//left side bounding box = to range of weapon and half player height
 			Box leftPrimaryAttackRad = new Box(x-primaryWeapon.getRange(), y, primaryWeapon.getRange(), height/2);
 			//attackLeft();
-			for(Monster monster : monsters) {
+			for(GameObject _monster : monsters) {
+				Monster monster = (Monster) _monster;
 				if(leftPrimaryAttackRad.contains(monster.getBoundingBox())) {
 					monster.damage(heavyAttack());
 					System.out.println(monster.getHealth());
