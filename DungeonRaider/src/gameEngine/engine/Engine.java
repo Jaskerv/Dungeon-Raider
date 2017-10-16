@@ -71,13 +71,9 @@ public class Engine extends JFrame implements Runnable, Observer {
 	private static SpriteSheet dungeonTiles = new SpriteSheet(loadImage("resources/tiles/DungeonTileset1.png"));
 	private static final SpriteSheet SPRITE_SHEET_2 = new SpriteSheet(
 			Engine.loadImage("resources/tiles/DungeonTileset4.png"));
-	private List<GameObject> object;
+	private List<GameObject> monsters;
 	private Sprite weaponTestSprite;
-	/** Tutorial map wall boundaries */
-	private static final int LEFT_WALL = 60;
-	private static final int TOP_WALL = 100;
-	private static final int RIGHT_WALL = 1895;
-	private static final int BOTTOM_WALL = 1850;
+
 	private SoundMap soundLibrary;
 
 	public Engine() {
@@ -86,7 +82,6 @@ public class Engine extends JFrame implements Runnable, Observer {
 		this.startGame = new StartGame(this);
 		this.menu = true;
 		this.tk = this.getToolkit();
-		this.object = new ArrayList<GameObject>();
 
 		/** Sets name of JFrame window */
 		setTitle("Dungeon Raider");
@@ -141,8 +136,8 @@ public class Engine extends JFrame implements Runnable, Observer {
 		 * Initiating the players
 		 */
 		this.player = new Player(new Position(200, 200), 100, playerAnimations, 5, 100, 300);
-		this.object = (List<GameObject>) currentMap.getMonsters();
-		this.object.add(player);
+		this.monsters = currentMap.getMonsters();
+		//this.object.add(player);
 		/** GUI */
 		this.GUI = new IngameInterface(player, WIDTH, HEIGHT);
 		this.pauseMenu = new PauseMenu(this.loadImage("resources/images/Pause.png"));
@@ -179,7 +174,8 @@ public class Engine extends JFrame implements Runnable, Observer {
 					// Renders the map first (bottom layer of the image)
 					renderer.renderMap(currentMap);
 					/** Render Objects */
-					for (GameObject gameObject : object) {
+					this.player.render(renderer, 3, 3);
+					for (GameObject gameObject : monsters) {
 						gameObject.render(renderer, 3, 3);
 					}
 					/** Render GUI */
@@ -273,7 +269,8 @@ public class Engine extends JFrame implements Runnable, Observer {
 			} else {
 				/** not paused */
 				if (!this.pauseMenu.isPaused()) {
-					for (GameObject gameObject : object) {
+					this.player.update(this);
+					for (GameObject gameObject : monsters) {
 						gameObject.update(this);
 					}
 					this.GUI.update(this);
