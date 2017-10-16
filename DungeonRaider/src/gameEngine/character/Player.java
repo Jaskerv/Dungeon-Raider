@@ -182,42 +182,48 @@ public class Player implements Character, GameObject {
 		boolean didMove = false;
 		int newDirection = direction;
 
+		Box curBox = playerBoundBox;
+		
 		/**
 		 * Player walking connection with key controller: Also checks for player
 		 * connection with walls
 		 */
 		if (!keyBinds.isRun()) {
 			if (keyBinds.isUp()) {
-				if (checkBoundry(currentMap, x + width, y - SPEED + height / 2))
-					if (checkBoundry(currentMap, x, y - SPEED + height / 2)) {
-						newDirection = 2;
-						didMove = true;
-						walkUp();
-					}
+				Box up = new Box(curBox.getX(), curBox.getY(), curBox.getWidth(), curBox.getHeight());
+				up.setY(up.getY()-SPEED);
+				if(checkBoundry(currentMap, up)) {
+					newDirection = 2;
+					didMove = true;
+					walkUp();
+				}
 			}
 			if (keyBinds.isDown()) {
-				if (checkBoundry(currentMap, x + width, y + height + SPEED))
-					if (checkBoundry(currentMap, x, y + height + SPEED)) {
-						newDirection = 3;
-						didMove = true;
-						walkDown();
-					}
+				Box down = new Box(curBox.getX(), curBox.getY(), curBox.getWidth(), curBox.getHeight());
+				down.setY(down.getY()+SPEED);
+				if(checkBoundry(currentMap, down)) {
+					newDirection = 3;
+					didMove = true;
+					walkDown();
+				}
 			}
 			if (keyBinds.isLeft()) {
-				if (checkBoundry(currentMap, x - SPEED, y + height / 2))
-					if (checkBoundry(currentMap, x - SPEED, y + height)) {
-						newDirection = 1;
-						didMove = true;
-						walkLeft();
-					}
+				Box left = new Box(curBox.getX(), curBox.getY(), curBox.getWidth(), curBox.getHeight());
+				left.setX(left.getX()-SPEED);
+				if(checkBoundry(currentMap, left)) {
+					newDirection = 1;
+					didMove = true;
+					walkLeft();
+				}
 			}
 			if (keyBinds.isRight()) {
-				if (checkBoundry(currentMap, x + width + SPEED, y + height / 2))
-					if (checkBoundry(currentMap, x + width + SPEED, y + height)) {
-						newDirection = 0;
-						didMove = true;
-						walkRight();
-					}
+				Box right = new Box(curBox.getX(), curBox.getY(), curBox.getWidth(), curBox.getHeight());
+				right.setX(right.getX()+SPEED);
+				if(checkBoundry(currentMap, right)) {
+					newDirection = 0;
+					didMove = true;
+					walkRight();
+				}
 			}
 		}
 
@@ -225,38 +231,42 @@ public class Player implements Character, GameObject {
 		 * Player running connection with key controller: Also checks for player
 		 * connection with walls
 		 */
-		if (keyBinds.isRun()) {
+		if (keyBinds.isRun() ) {
 			if (keyBinds.isUp()) {
-				if (checkBoundry(currentMap, x + width, y - SPRINT + height / 2))
-					if (checkBoundry(currentMap, x, y - SPRINT + height / 2)) {
-						newDirection = 2;
-						didMove = true;
-						runUp();
-					}
+				Box up = new Box(curBox.getX(), curBox.getY(), curBox.getWidth(), curBox.getHeight());
+				up.setY(up.getY()-SPRINT);
+				if(checkBoundry(currentMap, up)) {
+					newDirection = 2;
+					didMove = true;
+					runUp();
+				}
 			}
 			if (keyBinds.isDown()) {
-				if (checkBoundry(currentMap, x + width, y + height + SPRINT))
-					if (checkBoundry(currentMap, x, y + height + SPRINT)) {
-						newDirection = 3;
-						didMove = true;
-						runDown();
-					}
+				Box down = new Box(curBox.getX(), curBox.getY(), curBox.getWidth(), curBox.getHeight());
+				down.setY(down.getY()+SPRINT);
+				if(checkBoundry(currentMap, down)) {
+					newDirection = 3;
+					didMove = true;
+					runDown();
+				}
 			}
 			if (keyBinds.isLeft()) {
-				if (checkBoundry(currentMap, x - SPRINT, y + height / 2))
-					if (checkBoundry(currentMap, x - SPRINT, y + height)) {
-						newDirection = 1;
-						didMove = true;
-						runLeft();
-					}
+				Box left = new Box(curBox.getX(), curBox.getY(), curBox.getWidth(), curBox.getHeight());
+				left.setX(left.getX()-SPRINT);
+				if(checkBoundry(currentMap, left)) {
+					newDirection = 1;
+					didMove = true;
+					runLeft();
+				}
 			}
 			if (keyBinds.isRight()) {
-				if (checkBoundry(currentMap, x + width + SPRINT, y + height / 2))
-					if (checkBoundry(currentMap, x + width + SPRINT, y + height)) {
-						newDirection = 0;
-						didMove = true;
-						runRight();
-					}
+				Box right = new Box(curBox.getX(), curBox.getY(), curBox.getWidth(), curBox.getHeight());
+				right.setX(right.getX()+SPRINT);
+				if(checkBoundry(currentMap, right)) {
+					newDirection = 0;
+					didMove = true;
+					runRight();
+				}
 			}
 		}
 
