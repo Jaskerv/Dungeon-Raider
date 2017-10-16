@@ -367,7 +367,7 @@ public class Player implements Character, GameObject {
 		}
 	}
 	
-	public void checkForMonsterDeath(Monster monster, List<Monster> monsters) {
+	public void checkForMonsterDeath(Monster monster, List<GameObject> monsters) {
 		
 		if(monster.getHealth() <= 0 ) {
 			this.gold = this.gold + 150;
@@ -376,7 +376,7 @@ public class Player implements Character, GameObject {
 		
 	}
 	
-	public void removeMonsterFromMap(Monster monster, List<Monster> monsters) {
+	public void removeMonsterFromMap(Monster monster, List<GameObject> monsters) {
 		monsters.remove(monster);
 	}
 

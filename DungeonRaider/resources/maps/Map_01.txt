@@ -1,6 +1,6 @@
 { 
 Weapon Short_Sword 0 2 10
-Consumable Small_Health_Potion 870 90 30
+Consumable Small_Health_Potion 850 90 30
 Monster Monster_One 300 600 2 100
 }
 
