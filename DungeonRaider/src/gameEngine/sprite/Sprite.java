@@ -2,6 +2,8 @@ package gameEngine.sprite;
 
 import java.awt.image.BufferedImage;
 
+import gameEngine.engine.Engine;
+
 /**
  * This is an individual sprite
  *
@@ -26,7 +28,7 @@ public class Sprite {
 		image.getRGB(0, 0, width, height, pixels, 0, width);
 	}
 
-	//a default constructor
+	// a default constructor
 	public Sprite() {
 
 	}
@@ -53,7 +55,8 @@ public class Sprite {
 	}
 
 	/**
-	 * @param pixels the pixels to set
+	 * @param pixels
+	 *            the pixels to set
 	 */
 	public void setPixels(int[] pixels) {
 		this.pixels = pixels;
@@ -65,5 +68,37 @@ public class Sprite {
 			s.append(pixels[i]);
 		}
 		return s.toString();
+	}
+
+	/**
+	 * Draws the input sprite onto this sprite
+	 * 
+	 * @param sprite
+	 */
+	public void drawOnSprite(Sprite sprite, int xPos, int yPos, int xZoom, int yZoom) {
+		int[] array = sprite.getPixels();
+		int width = sprite.getWidth();
+		int height = sprite.getHeight();
+		for (int y = 0; y < sprite.height; y++)
+			for (int x = 0; x < sprite.width; x++)
+				for (int yZoomIndex = 0; yZoomIndex < yZoom; yZoomIndex++)
+					for (int xZoomIndex = 0; xZoomIndex < xZoom; xZoomIndex++)
+						setPixel(array[x + y * width], (x * xZoom) + xPos + xZoomIndex,
+								(y * yZoom) + yPos + yZoomIndex);
+
+	}
+
+	/**
+	 * Sets pixel in this pixels array
+	 * 
+	 * @param pixel
+	 * @param x
+	 * @param y
+	 */
+	private void setPixel(int pixel, int x, int y) {
+		int pixelIndex = x + y * width;
+		if (pixels.length > pixelIndex && !Engine.alpha.match(pixel)) {
+			pixels[pixelIndex] = pixel;
+		}
 	}
 }
