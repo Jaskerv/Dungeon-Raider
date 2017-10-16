@@ -346,6 +346,9 @@ public class Player implements Character, GameObject {
 			engine.setCurrentMap(engine.getMapList().get(engine.getCurrentMapNumber()));
 			this.x = 200;
 			this.y = 200;
+			this.playerBoundBox = new Rectangle(x + 10, y + 63, animatedSprite.getWidth(),
+					(int) (animatedSprite.getHeight() * 0.4));
+			this.playerBoundBox.generateGraphics(Color.blue.getRGB());
 		}
 	}
 
