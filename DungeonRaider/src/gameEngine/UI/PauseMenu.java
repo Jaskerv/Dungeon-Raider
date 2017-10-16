@@ -34,10 +34,10 @@ public class PauseMenu implements GameObject {
 		 */
 		this.paused = false;
 		this.menu = new int[4];
-		this.menu[0] = 370;
-		this.menu[1] = 440;
-		this.menu[2] = 510;
-		this.menu[3] = 580;
+		this.menu[0] = 365;
+		this.menu[1] = 435;
+		this.menu[2] = 505;
+		this.menu[3] = 635;
 		this.index = 0;
 		this.cursorX = 500;
 		this.CURSORSIZE = 10;
@@ -111,6 +111,9 @@ public class PauseMenu implements GameObject {
 	}
 
 	public void cursorEnter(Engine engine) {
+		if (index == 0) {
+			this.paused = false;
+		}
 		engine.getSoundLibrary().playClip("cursorReady", -10f);
 	}
 
