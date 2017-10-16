@@ -1,7 +1,8 @@
 package gameEngine.item;
 
-public class Weapon extends Equipment implements Upgradable {
+import gameEngine.sprite.Sprite;
 
+public class Weapon extends Item implements Upgradable {
 
 	private String name;
 	private int damage;
@@ -17,8 +18,8 @@ public class Weapon extends Equipment implements Upgradable {
 	 * @param critChance in percentage
 	 *
 	 */
-	public Weapon(String name, int x, int y, int map, int damage, int range, int critChance) {
-		super(x, y, map);
+	public Weapon(String name, int x, int y, int damage, int range, int critChance, Sprite sprite) {
+		super(x, y, sprite);
 		this.name = name;
 		this.damage = damage;
 		this.critChance = critChance;
@@ -32,6 +33,11 @@ public class Weapon extends Equipment implements Upgradable {
 	@Override
 	public void upgrade() {
 		//damage += upgradeModifier * damage / 2;
+		if(numberOfUpgrades < 5) {
+			setCritChance(critChance*1.5);
+			setDamage(damage*2);
+			numberOfUpgrades ++;
+		}
 	}
 
 	public String getName() {
@@ -41,7 +47,7 @@ public class Weapon extends Equipment implements Upgradable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public int getDamage() {
 		return damage;
 	}

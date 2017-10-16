@@ -8,13 +8,11 @@ public abstract class Item {
 
 	protected Position position;
 	protected Boolean pickedUp;
-	protected int map;
 	private Sprite sprite;
 
-	public Item(int x, int y, int map, Sprite sprite) {
+	public Item(int x, int y, Sprite sprite) {
 		this.position = new Position(x, y);
 		pickedUp = false;
-		this.map = map;
 		this.sprite = sprite;
 	}
 
