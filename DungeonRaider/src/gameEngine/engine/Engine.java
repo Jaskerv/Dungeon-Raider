@@ -18,6 +18,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import gameEngine.UI.IngameInterface;
+import gameEngine.UI.PauseMenu;
 import gameEngine.character.Monster;
 import gameEngine.character.Player;
 import gameEngine.controller.KeyController;
@@ -53,9 +54,10 @@ public class Engine extends JFrame implements Runnable, Observer {
 	private MouseController mouseListener;
 	private Player player;
 	/**
-	 *
+	 * GUI
 	 */
 	private IngameInterface GUI;
+	private PauseMenu pauseMenu;
 	private StartGame startGame;
 	private boolean menu;
 	/** This will contain the list of maps from start to finish */
@@ -65,8 +67,8 @@ public class Engine extends JFrame implements Runnable, Observer {
 	private Sprite playerSprite;
 	private SpriteSheet testSpriteSheet;
 	private static SpriteSheet dungeonTiles = new SpriteSheet(loadImage("resources/tiles/DungeonTileset1.png"));
-	private static final SpriteSheet SPRITE_SHEET_2 = 
-			new SpriteSheet(Engine.loadImage("resources/tiles/DungeonTileset4.png"));
+	private static final SpriteSheet SPRITE_SHEET_2 = new SpriteSheet(
+			Engine.loadImage("resources/tiles/DungeonTileset4.png"));
 	private List<GameObject> object;
 	private Sprite weaponTestSprite;
 	/** Tutorial map wall boundaries */
@@ -74,7 +76,6 @@ public class Engine extends JFrame implements Runnable, Observer {
 	private static final int TOP_WALL = 100;
 	private static final int RIGHT_WALL = 1895;
 	private static final int BOTTOM_WALL = 1850;
-
 	private SoundMap soundLibrary;
 
 	public Engine() {
@@ -119,17 +120,16 @@ public class Engine extends JFrame implements Runnable, Observer {
 
 		testSpriteSheet = new SpriteSheet(sheet);
 		testSpriteSheet.loadSprites(16, 16);
-		//dungeonTiles.loadSprites(16, 16);
+		// dungeonTiles.loadSprites(16, 16);
 		this.playerSprite = dungeonTiles.getSprite(4, 6);
-		
-		//Testing the animated sprites for the player
+
+		// Testing the animated sprites for the player
 		BufferedImage playerSheetImage = loadImage("resources/images/Player.png");
 		SpriteSheet playerSheet = new SpriteSheet(playerSheetImage);
-		playerSheet.loadSprites(20,26);
-		
-		AnimatedSprite playerAnimations = new AnimatedSprite(playerSheet, 5); 
-		
-		
+		playerSheet.loadSprites(20, 26);
+
+		AnimatedSprite playerAnimations = new AnimatedSprite(playerSheet, 5);
+
 		/**
 		 * Testing melee
 		 */
@@ -143,14 +143,13 @@ public class Engine extends JFrame implements Runnable, Observer {
 		this.object.add(player);
 		/** GUI */
 		this.GUI = new IngameInterface(player, WIDTH, HEIGHT);
-
+		this.pauseMenu = new PauseMenu(this.loadImage("resources/images/Pause.png"));
 		/**
 		 * initiating key listener
 		 */
 		this.keyBinds = new KeyController(player, this);
 		this.mouseListener = new MouseController(this);
 		this.addKeyListener(keyBinds);
-		this.addFocusListener(keyBinds);
 		this.addMouseListener(mouseListener);
 	}
 
@@ -163,15 +162,27 @@ public class Engine extends JFrame implements Runnable, Observer {
 			Graphics g = b.getDrawGraphics();
 			super.paint(g);
 			this.renderer.clearArray();
-			// Renders the map first (bottom layer of the image)
-			renderer.renderMap(currentMap);
-			/** Render Objects */
-			for (GameObject gameObject : object) {
-				gameObject.render(renderer, 3, 3);
+			/**
+			 * If not paused
+			 */
+			if (!pauseMenu.isPaused()) {
+				// Renders the map first (bottom layer of the image)
+				renderer.renderMap(currentMap);
+				/** Render Objects */
+				for (GameObject gameObject : object) {
+					gameObject.render(renderer, 3, 3);
+				}
+				/** Render GUI */
+				this.GUI.render(renderer, GUI.XZOOM, GUI.YZOOM);
+				/** Then render the Renderer */
+
 			}
-			/** Render GUI */
-			this.GUI.render(renderer, GUI.XZOOM, GUI.YZOOM);
-			/** Then render the Renderer */
+			/**
+			 * If paused
+			 */
+			else {
+				pauseMenu.render(renderer, 1, 1);
+			}
 			renderer.render(g);
 			g.dispose();
 			b.show();
@@ -237,14 +248,20 @@ public class Engine extends JFrame implements Runnable, Observer {
 	 */
 	public void update() {
 		soundLibrary.autoClipClose();
+		/** if in start menu */
 		if (menu) {
 			startGame.update(this);
 		} else {
-			for (GameObject gameObject : object) {
-				gameObject.update(this);
+			/** not paused */
+			if (!this.pauseMenu.isPaused()) {
+				for (GameObject gameObject : object) {
+					gameObject.update(this);
+				}
+				this.GUI.update(this);
 			}
-			this.GUI.update(this);
+
 		}
+
 	}
 
 	/**
@@ -298,9 +315,6 @@ public class Engine extends JFrame implements Runnable, Observer {
 				this.canvas.addKeyListener(keyBinds);
 				this.canvas.addFocusListener(keyBinds);
 				this.canvas.addMouseListener(mouseListener);
-				this.addKeyListener(keyBinds);
-				this.addFocusListener(keyBinds);
-				this.addMouseListener(mouseListener);
 				this.setFocusable(true);
 			}
 			this.menu = false;
@@ -310,8 +324,10 @@ public class Engine extends JFrame implements Runnable, Observer {
 
 		}
 	}
+
 	/**
 	 * Finds sprite image based on name that is parsed in
+	 * 
 	 * @param name
 	 * @return
 	 */
@@ -320,8 +336,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 		SPRITE_SHEET_2.loadSprites(16, 16);
 		if (name.equals("Monster_One")) {
 			return dungeonTiles.getSprite(3, 6);
-		} else if (name.equals("Small_Health_Potion")
-				|| name.equals("Big_Health_Potion")) {
+		} else if (name.equals("Small_Health_Potion") || name.equals("Big_Health_Potion")) {
 			return SPRITE_SHEET_2.getSprite(12, 11);
 		}
 		return null;
@@ -380,6 +395,13 @@ public class Engine extends JFrame implements Runnable, Observer {
 
 	public MouseController getMouseListener() {
 		return mouseListener;
+	}
+
+	/**
+	 * @return the pauseMenu
+	 */
+	public PauseMenu getPauseMenu() {
+		return pauseMenu;
 	}
 
 }

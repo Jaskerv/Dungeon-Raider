@@ -80,7 +80,7 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 		case KeyEvent.VK_G:
 			this.useItem = true;
 			break;
-		//Deals 10 damage to player when pushing "p" for testing purposes
+		// Deals 10 damage to player when pushing "p" for testing purposes
 		case KeyEvent.VK_P:
 			this.player.damage(10);
 			break;
@@ -128,6 +128,15 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 		case KeyEvent.VK_G:
 			this.useItem = false;
 			break;
+		case KeyEvent.VK_ESCAPE:
+			if (this.engine.getPauseMenu().isPaused()) {
+				this.engine.getPauseMenu().setPaused(false);
+				break;
+			} else {
+				this.engine.getPauseMenu().setPaused(true);
+				engine.getSoundLibrary().playClip("cursorReady", -10f);
+				break;
+			}
 		}
 	}
 
