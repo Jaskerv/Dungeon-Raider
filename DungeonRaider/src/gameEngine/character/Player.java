@@ -70,8 +70,8 @@ public class Player implements Character, GameObject {
 		this.pickUpRadius	= new Box(x-((playerSprite.getWidth()*zoom)), y-((playerSprite.getHeight()*zoom)),
 				(playerSprite.getWidth()*zoom)*4, (playerSprite.getHeight()*zoom)*4);
 		this.inventory = new Inventory(20);
-		this.primaryEquipped = false;
-		//this.primaryWeapon = new Weapon("start", 0, 0, 0, 10, 100, 10);
+		this.primaryEquipped = true;
+		this.primaryWeapon = new Weapon("Start", 0, 0, 10, 300, 10, playerSprite);
 		this.sprite = playerSprite;
 		if(sprite != null && sprite instanceof AnimatedSprite) {
 			this.animatedSprite = (AnimatedSprite) playerSprite;
@@ -340,7 +340,7 @@ public class Player implements Character, GameObject {
 		//right attack calculated from the position of the camera
 		if(mx > center.getX()) {
 			//right side bounding box = to range of weapon and half player height
-			Box rightPrimaryAttackRad = new Box(x + width, y, primaryWeapon.getRange(), height/2);
+			Box rightPrimaryAttackRad = new Box(x, y, primaryWeapon.getRange(), height);
 			//attackRight();
 			for(GameObject _monster : monsters) {
 				Monster monster = (Monster) _monster;
@@ -354,7 +354,7 @@ public class Player implements Character, GameObject {
 		//left attack calculated from the position of the camera
 		if(mx < center.getX()) {
 			//left side bounding box = to range of weapon and half player height
-			Box leftPrimaryAttackRad = new Box(x-primaryWeapon.getRange(), y, primaryWeapon.getRange(), height/2);
+			Box leftPrimaryAttackRad = new Box(x-primaryWeapon.getRange(), y, primaryWeapon.getRange()+width, height);
 			//attackLeft();
 			for(GameObject _monster : monsters) {
 				Monster monster = (Monster) _monster;
@@ -368,9 +368,8 @@ public class Player implements Character, GameObject {
 	}
 	
 	public void checkForMonsterDeath(Monster monster, List<GameObject> monsters) {
-		
 		if(monster.getHealth() <= 0 ) {
-			this.gold = this.gold + 150;
+			this.gold = this.gold + 1;
 			removeMonsterFromMap(monster,monsters);
 		}
 		

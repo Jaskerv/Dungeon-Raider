@@ -52,7 +52,7 @@ public class Monster implements Character, GameObject {
 		this.boundingBox = new Box(this.x, this.y, this.width, this.height);
 		this.attackTimer = 0;
 	}
-	
+
 	@Override
 	public int heavyAttack() {
 		// TODO Auto-generated method stub
@@ -83,7 +83,7 @@ public class Monster implements Character, GameObject {
 		// TODO Auto-generated method stub
 		this.y += 3;
 	}
-	
+
 	@Override
 	public void render(Renderer renderer, int xZoom, int yZoom) {
 		renderer.renderArray(spriteImage.getPixels(), spriteImage.getWidth(),
@@ -97,10 +97,10 @@ public class Monster implements Character, GameObject {
 		Map currentMap = engine.getCurrentMap();
 		int playerX = player.getX();//+((player.getSpriteImage().getWidth()*player.getZoom())/2);
 		int playerY = player.getY();//+((player.getSpriteImage().getWidth()*player.getZoom()/2));
-		
+
 		//Updating monster attack range
 		this.boundingBox = new Box(this.x, this.y, this.width, this.height);
-		
+
 		//Keeps track of how many updates have passed inbetween each attack so monster cant
 		//attack to quickly
 		if(this.attackTimer < 10) {
@@ -113,34 +113,38 @@ public class Monster implements Character, GameObject {
 				attack(x, y, engine);
 			}
 		}		
-		
+
 		//player is to the left of this monster
 		if (playerX < this.x) {
-			if(checkBoundry(currentMap, x - speed, y + height/2))
-				if(checkBoundry(currentMap, x - speed, y + height))
-					walkLeft();
+			if(!boundingBox.contains(player.getPlayerBoundBox()))
+				if(checkBoundry(currentMap, x - speed, y + height/2))
+					if(checkBoundry(currentMap, x - speed, y + height))
+						walkLeft();
 		}
 		if (playerX > this.x) {
-			if(checkBoundry(currentMap, x + width + speed, y + height/2))
-				if(checkBoundry(currentMap, x + width + speed, y + height))
-					walkRight();
+			if(!boundingBox.contains(player.getPlayerBoundBox()))
+				if(checkBoundry(currentMap, x + width + speed, y + height/2))
+					if(checkBoundry(currentMap, x + width + speed, y + height))
+						walkRight();
 		}
 		//player is to the bottom of this monster
 		if (playerY > this.y) {
-			if(checkBoundry(currentMap, x + width, y + height + speed))
-				if(checkBoundry(currentMap, x, y + height + speed))
-					walkDown();
+			if(!boundingBox.contains(player.getPlayerBoundBox()))
+				if(checkBoundry(currentMap, x + width, y + height + speed))
+					if(checkBoundry(currentMap, x, y + height + speed))
+						walkDown();
 		}
 		if (playerY < this.y) {
-			if(checkBoundry(currentMap, x + width, y - speed + height/2))
-				if(checkBoundry(currentMap, x, y - speed + height/2))
-					walkUp();
+			if(!boundingBox.contains(player.getPlayerBoundBox()))
+				if(checkBoundry(currentMap, x + width, y - speed + height/2))
+					if(checkBoundry(currentMap, x, y - speed + height/2))
+						walkUp();
 		}
-		
+
 		if(!damageQueue.isEmpty()) {
 			this.health += damageQueue.poll();
 		}
-		
+
 	}
 
 	@Override
