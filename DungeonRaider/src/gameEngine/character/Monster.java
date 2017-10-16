@@ -11,6 +11,7 @@ import gameEngine.sprite.Sprite;
 import gameEngine.sprite.SpriteSheet;
 import gameEngine.util.Box;
 import gameEngine.util.Position;
+import library5.StatModifier;
 
 /**
  * Monster class
@@ -20,6 +21,7 @@ public class Monster implements Character, GameObject {
 	private String name;
 	private int x;
 	private int y;
+	private int health;
 	private Sprite spriteImage;
 	private int speed;
 	private static final int ZOOM = 5;
@@ -30,40 +32,27 @@ public class Monster implements Character, GameObject {
 	private int height;
 	private int width;
 	private Queue<Integer> damageQueue;
-	private Box attackRange;
+	private Box boundingBox;
 	private int attackTimer;
 
 	/**
 	 * Monster
 	 */
-	public Monster(String name, int x, int y, int speed, Sprite sprite) {
+	public Monster(String name, int x, int y, int speed, int health, Sprite sprite) {
 		SPRITE_SHEET_2.loadSprites(16, 16);
 		this.name = name;
 		this.x = x;
 		this.y = y;
 		this.speed = speed;
 		this.spriteImage = sprite;
+		this.health = health;
 		this.height = spriteImage.getHeight()*ZOOM;
 		this.width = spriteImage.getWidth()*ZOOM;
 		this.damageQueue = new PriorityQueue<>();
-		this.attackRange = new Box(this.x, this.y, this.width, this.height);
+		this.boundingBox = new Box(this.x, this.y, this.width, this.height);
 		this.attackTimer = 0;
 	}
-
-
-
-	public Sprite getSpriteImage() {
-		return spriteImage;
-	}
-
-
-
-	public void setSpriteImage(Sprite spriteImage) {
-		this.spriteImage = spriteImage;
-	}
-
-
-
+	
 	@Override
 	public int lightAttack() {
 		// TODO Auto-generated method stub
@@ -144,6 +133,8 @@ public class Monster implements Character, GameObject {
 		int playerX = player.getX();//+((player.getSpriteImage().getWidth()*player.getZoom())/2);
 		int playerY = player.getY();//+((player.getSpriteImage().getWidth()*player.getZoom()/2));
 		
+		//Updating monster attack range
+		this.boundingBox = new Box(this.x, this.y, this.width, this.height);
 		
 		//Keeps track of how many updates have passed inbetween each attack so monster cant
 		//attack to quickly
@@ -152,15 +143,11 @@ public class Monster implements Character, GameObject {
 			attackTimer++;
 		} else {
 			//attacks now
-			if(attackRange.contains(player.getPlayerBoundBox())) {
+			if(boundingBox.contains(player.getPlayerBoundBox())) {
 				attackTimer = 0;
-				player.damage(heavyAttack());
+				attack(x, y, engine);
 			}
-		}
-		
-		//Updating monster attack range
-		this.attackRange = new Box(this.x, this.y, this.width, this.height);
-		
+		}		
 		
 		//player is to the left of this monster
 		if (playerX < this.x) {
@@ -187,14 +174,12 @@ public class Monster implements Character, GameObject {
 		
 	}
 
-
-
 	@Override
 	public void attack(int mx, int my, Engine engine) {
 		// TODO Auto-generated method stub
-		
+		Player player = engine.getPlayer();
+		engine.getPlayer().damage((int) StatModifier.calcDamage(heavyAttack(), player.getHp(), 0, 0));
 	}
-	
 
 	/**
 	 * Damages monster with positive numbers, heals monster with negative numbers
@@ -205,4 +190,24 @@ public class Monster implements Character, GameObject {
 		this.damageQueue.offer(-i);
 	}
 
+
+	public Sprite getSpriteImage() {
+		return spriteImage;
+	}
+
+	public void setSpriteImage(Sprite spriteImage) {
+		this.spriteImage = spriteImage;
+	}
+
+	public Box getBoundingBox() {
+		return boundingBox;
+	}
+
+	public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int health) {
+		this.health = health;
+	}
 }

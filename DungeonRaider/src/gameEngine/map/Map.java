@@ -97,7 +97,7 @@ public class Map {
 			constructor = 4;
 		}
 		else if (category.equals("Monster")) {
-			constructor = 3;
+			constructor = 4;
 		}
 		//e.g. x y consumeTime mapNumber for item
 		int[] parameters = new int[constructor];
@@ -136,7 +136,7 @@ public class Map {
 				this.items.add(item);
 			} else if (category.equals("Monster")) {
 				GameObject monster = new Monster(name, parameters[0],
-						parameters[1], parameters[2], Engine.findSprite(name));
+						parameters[1], parameters[2], parameters[3],Engine.findSprite(name));
 				monsters.add(monster);
 			}
 			name = "";
