@@ -293,6 +293,7 @@ public class Player implements Character, GameObject {
 			if(!this.inventory.getInventory().isEmpty()) {
 			this.hp += 10;
 			this.inventory.removeItem();
+			keyBinds.setUseItem(false);
 			}
 		}
 
