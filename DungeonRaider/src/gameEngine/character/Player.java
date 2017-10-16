@@ -342,6 +342,7 @@ public class Player implements Character, GameObject {
 				if(rightPrimaryAttackRad.contains(monster.getBoundingBox())) {
 					monster.damage(heavyAttack());
 					System.out.println(monster.getHealth());
+					checkForMonsterDeath(monster,monsters);
 				}
 			}
 		}
@@ -354,9 +355,23 @@ public class Player implements Character, GameObject {
 				if(leftPrimaryAttackRad.contains(monster.getBoundingBox())) {
 					monster.damage(heavyAttack());
 					System.out.println(monster.getHealth());
+					checkForMonsterDeath(monster,monsters);
 				}
 			}
 		}
+	}
+	
+	public void checkForMonsterDeath(Monster monster, List<Monster> monsters) {
+		
+		if(monster.getHealth() <= 0 ) {
+			this.gold = this.gold + 150;
+			removeMonsterFromMap(monster,monsters);
+		}
+		
+	}
+	
+	public void removeMonsterFromMap(Monster monster, List<Monster> monsters) {
+		monsters.remove(monster);
 	}
 
 	/**
