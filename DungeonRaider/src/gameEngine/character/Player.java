@@ -1,5 +1,6 @@
 package gameEngine.character;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -9,6 +10,7 @@ import gameEngine.controller.MouseController;
 import gameEngine.engine.Engine;
 import gameEngine.engine.GameObject;
 import gameEngine.engine.Renderer;
+import gameEngine.item.Consumable;
 import gameEngine.item.Item;
 import gameEngine.item.Weapon;
 import gameEngine.map.Map;
@@ -255,8 +257,8 @@ public class Player implements Character, GameObject {
 			//need to check if any of the items locations
 			List<Item> itemsOnMap = engine.getCurrentMap().getItems();
 			for(Item item : itemsOnMap) {
-				Position itemPos = item.getPosition();
-				if(pickUpRadius.contains(itemPos.getX(), itemPos.getY())){
+				Box itemPos = item.getBoundingBox();
+				if(pickUpRadius.contains(itemPos)){
 					this.inventory.add(item);
 					item.setPickedUp(true);
 					itemsOnMap.remove(item);
@@ -291,10 +293,10 @@ public class Player implements Character, GameObject {
 		 */
 		if(keyBinds.isUseItem()) {
 			if(!this.inventory.getInventory().isEmpty()) {
-			this.hp += 10;
-			this.inventory.removeItem();
-			keyBinds.setUseItem(false);
+			Consumable healthPot = (Consumable) this.inventory.returnFirstItem();
+			this.heal(healthPot.getHealingStrength());
 			}
+			keyBinds.setUseItem(false);
 		}
 
 		/**
@@ -399,6 +401,15 @@ public class Player implements Character, GameObject {
 	public void damage(int i) {
 		this.damageQueue.offer(-i);
 	}
+	
+	/**
+	 * Heals player with negative numbers
+	 *
+	 * @param i
+	 */
+	public void heal(int i ) {
+		this.damageQueue.offer(i);
+	}
 
 	public Queue<Integer> getDamageQueue() {
 		return damageQueue;
@@ -459,5 +470,6 @@ public class Player implements Character, GameObject {
 	public void setInventory(Inventory inventory) {
 		this.inventory = inventory;
 	}
+
 
 }

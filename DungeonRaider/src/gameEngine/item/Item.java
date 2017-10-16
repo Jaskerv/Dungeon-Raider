@@ -41,8 +41,14 @@ public abstract class Item {
 		Position center = new Position(position.getX() + sprite.getHeight()*Renderer.ZOOM/2, position.getY() + sprite.getHeight()*Renderer.ZOOM/2);
 		return center;
 	}
-	
-	
+
+	public Box getBoundingBox() {
+		return boundingBox;
+	}
+
+	public void setBoundingBox(Box boundingBox) {
+		this.boundingBox = boundingBox;
+	}
 
 	public Sprite getSprite() {
 		return sprite;

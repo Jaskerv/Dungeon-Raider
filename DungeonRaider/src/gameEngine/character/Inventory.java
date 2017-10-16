@@ -33,11 +33,12 @@ public class Inventory {
 		return false;
 	}
 
-	public void removeItem() {
+	public Item returnFirstItem() {
 		for(Item item : inventory) {
 			inventory.remove(item);
-			break;
+			return item;
 		}
+		return null;
 	}
 
 	public List<Item> getInventory() {
