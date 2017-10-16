@@ -136,7 +136,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 		 */
 		this.player = new Player(new Position(200, 200), 100, playerAnimations, 5, 100, 300);
 		this.monsters = currentMap.getMonsters();
-		//this.object.add(player);
+		// this.object.add(player);
 		/** GUI */
 		this.GUI = new IngameInterface(player, WIDTH, HEIGHT);
 		this.pauseMenu = new PauseMenu(this.loadImage("resources/images/Pause.png"));
@@ -173,14 +173,13 @@ public class Engine extends JFrame implements Runnable, Observer {
 					// Renders the map first (bottom layer of the image)
 					renderer.renderMap(currentMap);
 					/** Render Objects */
-					this.player.render(renderer, 3, 3);
 					for (GameObject gameObject : monsters) {
 						gameObject.render(renderer, 3, 3);
 					}
+					this.player.render(renderer, 3, 3);
 					/** Render GUI */
 					this.GUI.render(renderer, GUI.XZOOM, GUI.YZOOM);
 					/** Then render the Renderer */
-
 				}
 				/**
 				 * If paused
@@ -326,7 +325,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 		return mapList;
 
 	}
-	
+
 	public void setCurrentMap(Map currentMap) {
 		this.currentMap = currentMap;
 		this.monsters = this.currentMap.getMonsters();
@@ -394,7 +393,6 @@ public class Engine extends JFrame implements Runnable, Observer {
 	public Map getCurrentMap() {
 		return currentMap;
 	}
-
 
 	/**
 	 * @return the menu

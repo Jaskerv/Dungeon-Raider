@@ -63,7 +63,6 @@ public class Player implements Character, GameObject {
 		this.zoom = 3;
 		this.x = center.getX() - (playerSprite.getWidth() / 2 * zoom);
 		this.y = center.getY() - (playerSprite.getHeight() / 2 * zoom);
-		System.out.println(x + " " + y);
 		this.hp = hp;
 		this.hpMax = hpMax;
 
@@ -80,7 +79,8 @@ public class Player implements Character, GameObject {
 		if (sprite != null && sprite instanceof AnimatedSprite) {
 			this.animatedSprite = (AnimatedSprite) playerSprite;
 		}
-		this.playerBoundBox = new Rectangle(x+10, y+63, animatedSprite.getWidth(), (int) (animatedSprite.getHeight() * 0.4));
+		this.playerBoundBox = new Rectangle(x + 10, y + 63, animatedSprite.getWidth(),
+				(int) (animatedSprite.getHeight() * 0.4));
 		this.playerBoundBox.generateGraphics(Color.blue.getRGB());
 		updateDirection();
 	}
@@ -155,7 +155,8 @@ public class Player implements Character, GameObject {
 		// introducing the animated sprite here. initially rendering a static sprite.
 		renderer.renderRectangle(playerBoundBox, xZoom, yZoom);
 		if (animatedSprite != null)
-			renderer.renderSprite(animatedSprite, x + animatedSprite.getWidth() / 2, y + animatedSprite.getHeight()/2, xZoom, yZoom);
+			renderer.renderSprite(animatedSprite, x + animatedSprite.getWidth() / 2, y + animatedSprite.getHeight() / 2,
+					xZoom, yZoom);
 		else if (sprite != null)
 			renderer.renderSprite(sprite, x + animatedSprite.getWidth() / 2, y + animatedSprite.getHeight() / 2, xZoom,
 					yZoom);
