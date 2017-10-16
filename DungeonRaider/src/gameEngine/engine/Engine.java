@@ -134,7 +134,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 		/**
 		 * Initiating the players
 		 */
-		this.player = new Player(new Position(200, 200), 100, playerAnimations, 5, 100, 300);
+		this.player = new Player(new Position(200, 200), 100, playerAnimations, 5, 100, 100);
 		this.monsters = currentMap.getMonsters();
 		// this.object.add(player);
 		/** GUI */
