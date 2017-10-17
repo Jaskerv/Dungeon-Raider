@@ -45,8 +45,7 @@ public class Player implements Character, GameObject {
 	private Weapon primaryWeapon;
 	private Inventory inventory;
 	private Sprite spriteImage;
-	private Box playerBoundBox;
-	private Rectangle playerBoundBoxVisual;
+	private Rectangle playerBoundBox;
 	private Box pickUpRadius;
 
 	public static final int SPEED = 2;
@@ -82,8 +81,9 @@ public class Player implements Character, GameObject {
 		if (sprite != null && sprite instanceof AnimatedSprite) {
 			this.animatedSprite = (AnimatedSprite) playerSprite;
 		}
-		this.playerBoundBox = new Box(x + 10, y + 63, animatedSprite.getWidth(),
+		this.playerBoundBox = new Rectangle(x + 10, y + 63, animatedSprite.getWidth(),
 				(int) (animatedSprite.getHeight() * 0.4));
+		this.playerBoundBox.generateGraphics(Color.green.getRGB());
 		/*
 		 * this.playerBoundBoxVisual = new Rectangle(x - ((playerSprite.getWidth() *
 		 * zoom)), y - ((playerSprite.getHeight() * zoom)), (playerSprite.getWidth() *
@@ -168,6 +168,7 @@ public class Player implements Character, GameObject {
 		// spriteImage.getWidth(), x, y, zoom, zoom);
 
 		// introducing the animated sprite here. initially rendering a static sprite.
+		renderer.renderRectangle(playerBoundBox, zoom, zoom);
 		if (animatedSprite != null)
 			renderer.renderSprite(animatedSprite, x + animatedSprite.getWidth() / 2, y + animatedSprite.getHeight() / 2,
 					xZoom, yZoom);
@@ -373,7 +374,7 @@ public class Player implements Character, GameObject {
 			this.y = 200;
 			this.playerBoundBox = new Rectangle(x + 10, y + 63, animatedSprite.getWidth(),
 					(int) (animatedSprite.getHeight() * 0.4));
-			this.playerBoundBoxVisual.generateGraphics(Color.blue.getRGB());
+			this.playerBoundBox.generateGraphics(Color.blue.getRGB());
 		}
 	}
 
