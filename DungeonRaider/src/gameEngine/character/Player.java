@@ -154,7 +154,7 @@ public class Player implements Character, GameObject {
 		// spriteImage.getWidth(), x, y, zoom, zoom);
 
 		// introducing the animated sprite here. initially rendering a static sprite.
-		renderer.renderRectangle(playerBoundBox, xZoom, yZoom);
+		renderer.renderRectangle(playerBoundBox, zoom, zoom);
 		if (animatedSprite != null)
 			renderer.renderSprite(animatedSprite, x + animatedSprite.getWidth() / 2, y + animatedSprite.getHeight() / 2,
 					xZoom, yZoom);
@@ -175,58 +175,13 @@ public class Player implements Character, GameObject {
 		KeyController keyBinds = engine.getKeyBinds();
 		Map currentMap = engine.getCurrentMap();
 		MouseController mouseActions = engine.getMouseListener();
-
-		int width = spriteImage.getWidth() * zoom;
-		int height = spriteImage.getHeight() * zoom;
-
+		
 		// for the player animated sprites
 		boolean didMove = false;
 		int newDirection = direction;
+		boolean couldntRun = false;
 
-		Box curBox = playerBoundBox;
-
-		/**
-		 * Player walking connection with key controller: Also checks for player
-		 * connection with walls
-		 */
-		if (!keyBinds.isRun()) {
-			if (keyBinds.isUp()) {
-				Box up = new Box(curBox.getX(), curBox.getY(), curBox.getWidth(), curBox.getHeight());
-				up.setY(up.getY() - SPEED);
-				if (checkBoundry(currentMap, up)) {
-					newDirection = 2;
-					didMove = true;
-					walkUp();
-				}
-			}
-			if (keyBinds.isDown()) {
-				Box down = new Box(curBox.getX(), curBox.getY(), curBox.getWidth(), curBox.getHeight());
-				down.setY(down.getY() + SPEED);
-				if (checkBoundry(currentMap, down)) {
-					newDirection = 3;
-					didMove = true;
-					walkDown();
-				}
-			}
-			if (keyBinds.isLeft()) {
-				Box left = new Box(curBox.getX(), curBox.getY(), curBox.getWidth(), curBox.getHeight());
-				left.setX(left.getX() - SPEED);
-				if (checkBoundry(currentMap, left)) {
-					newDirection = 1;
-					didMove = true;
-					walkLeft();
-				}
-			}
-			if (keyBinds.isRight()) {
-				Box right = new Box(curBox.getX(), curBox.getY(), curBox.getWidth(), curBox.getHeight());
-				right.setX(right.getX() + SPEED);
-				if (checkBoundry(currentMap, right)) {
-					newDirection = 0;
-					didMove = true;
-					walkRight();
-				}
-			}
-		}
+		Box curBox = this.playerBoundBox;
 
 		/**
 		 * Player running connection with key controller: Also checks for player
@@ -234,41 +189,89 @@ public class Player implements Character, GameObject {
 		 */
 		if (keyBinds.isRun()) {
 			if (keyBinds.isUp()) {
-				Box up = new Box(curBox.getX(), curBox.getY(), curBox.getWidth(), curBox.getHeight());
+				Box up = new Box(curBox.getX(), curBox.getY(), curBox.getWidth()*zoom, curBox.getHeight()*zoom);
 				up.setY(up.getY() - SPRINT);
 				if (checkBoundry(currentMap, up)) {
 					newDirection = 2;
 					didMove = true;
 					runUp();
+				} else {
+					couldntRun = true;
 				}
 			}
 			if (keyBinds.isDown()) {
-				Box down = new Box(curBox.getX(), curBox.getY(), curBox.getWidth(), curBox.getHeight());
+				Box down = new Box(curBox.getX(), curBox.getY(), curBox.getWidth()*zoom, curBox.getHeight()*zoom);
 				down.setY(down.getY() + SPRINT);
 				if (checkBoundry(currentMap, down)) {
 					newDirection = 3;
 					didMove = true;
 					runDown();
+				} else {
+					couldntRun = true;
 				}
 			}
 			if (keyBinds.isLeft()) {
-				Box left = new Box(curBox.getX(), curBox.getY(), curBox.getWidth(), curBox.getHeight());
+				Box left = new Box(curBox.getX(), curBox.getY(), curBox.getWidth()*zoom, curBox.getHeight()*zoom);
 				left.setX(left.getX() - SPRINT);
 				if (checkBoundry(currentMap, left)) {
 					newDirection = 1;
 					didMove = true;
 					runLeft();
+				} else {
+					couldntRun = true;
 				}
 			}
 			if (keyBinds.isRight()) {
-				Box right = new Box(curBox.getX(), curBox.getY(), curBox.getWidth(), curBox.getHeight());
+				Box right = new Box(curBox.getX(), curBox.getY(), curBox.getWidth()*zoom, curBox.getHeight()*zoom);
 				right.setX(right.getX() + SPRINT);
 				if (checkBoundry(currentMap, right)) {
 					newDirection = 0;
 					didMove = true;
 					runRight();
+				} else {
+					couldntRun = true;
 				}
 			}
+		}
+		
+		/**
+		 * Player walking connection with key controller: Also checks for player
+		 * connection with walls
+		 */
+		if (!keyBinds.isRun() || couldntRun) {
+			if (keyBinds.isUp()) {
+				Box up = new Box(curBox.getX(), curBox.getY() - SPEED, curBox.getWidth()*zoom, curBox.getHeight()*zoom);
+				if (checkBoundry(currentMap, up)) {
+					newDirection = 2;
+					didMove = true;
+					walkUp();
+				}
+			}
+			if (keyBinds.isDown()) {
+				Box down = new Box(curBox.getX(), curBox.getY() + SPEED, curBox.getWidth()*zoom, curBox.getHeight()*zoom);
+				if (checkBoundry(currentMap, down)) {
+					newDirection = 3;
+					didMove = true;
+					walkDown();
+				}
+			}
+			if (keyBinds.isLeft()) {
+				Box left = new Box(curBox.getX() - SPEED, curBox.getY(), curBox.getWidth()*zoom, curBox.getHeight()*zoom);
+				if (checkBoundry(currentMap, left)) {
+					newDirection = 1;
+					didMove = true;
+					walkLeft();
+				}
+			}
+			if (keyBinds.isRight()) {
+				Box right = new Box(curBox.getX() + SPEED, curBox.getY(), curBox.getWidth()*zoom, curBox.getHeight()*zoom);
+				if (checkBoundry(currentMap, right)) {
+					newDirection = 0;
+					didMove = true;
+					walkRight();
+				}
+			}
+			couldntRun = false;
 		}
 
 		// Checking if player is attempting to pick up and whether there is anything to
