@@ -46,7 +46,7 @@ public class Player implements Character, GameObject {
 	private Inventory inventory;
 	private Sprite spriteImage;
 	private Rectangle playerBoundBox;
-
+	private Rectangle rightPrimaryAttackRad;
 	public static final int SPEED = 2;
 	public static final int SPRINT = 7;
 	private int zoom;
@@ -66,7 +66,6 @@ public class Player implements Character, GameObject {
 		this.y = center.getY() - (playerSprite.getHeight() / 2 * zoom);
 		this.hp = hp;
 		this.hpMax = hpMax;
-
 		// Pick up radius of the player starts half of the players width to the left of
 		// the player and
 		// extends to twice the players width meaning the pick up radius is twice the
@@ -79,7 +78,7 @@ public class Player implements Character, GameObject {
 			this.animatedSprite = (AnimatedSprite) playerSprite;
 		}
 		this.playerBoundBox = new Rectangle(x + 16, y + 63, (int) (animatedSprite.getWidth() * .8),
-				(int) (animatedSprite.getHeight() * 0.4)-1);
+				(int) (animatedSprite.getHeight() * 0.4) - 1);
 		this.playerBoundBox.generateGraphics(Color.green.getRGB());
 		/*
 		 * this.playerBoundBoxVisual = new Rectangle(x - ((playerSprite.getWidth() *
@@ -166,6 +165,11 @@ public class Player implements Character, GameObject {
 
 		// introducing the animated sprite here. initially rendering a static sprite.
 		renderer.renderRectangle(playerBoundBox, zoom, zoom);
+
+		if (rightPrimaryAttackRad != null) {
+			rightPrimaryAttackRad.generateGraphics(Color.red.getRGB());
+			renderer.renderRectangle(rightPrimaryAttackRad, 1, 1);
+		}
 		if (animatedSprite != null)
 			renderer.renderSprite(animatedSprite, x + animatedSprite.getWidth() / 2, y + animatedSprite.getHeight() / 2,
 					xZoom, yZoom);
@@ -391,7 +395,7 @@ public class Player implements Character, GameObject {
 		// right attack calculated from the position of the camera
 		if (mx > center.getX()) {
 			// right side bounding box = to range of weapon and half player height
-			Box rightPrimaryAttackRad = new Box(x, y, primaryWeapon.getRange(), height);
+			rightPrimaryAttackRad = new Rectangle(x, y, primaryWeapon.getRange(), height);
 			// attackRight();
 			Iterator<GameObject> iter = monsters.iterator();
 			while (iter.hasNext()) {
