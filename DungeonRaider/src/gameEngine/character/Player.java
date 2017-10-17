@@ -78,8 +78,8 @@ public class Player implements Character, GameObject {
 		if (sprite != null && sprite instanceof AnimatedSprite) {
 			this.animatedSprite = (AnimatedSprite) playerSprite;
 		}
-		this.playerBoundBox = new Rectangle(x + 10, y + 63, animatedSprite.getWidth(),
-				(int) (animatedSprite.getHeight() * 0.4));
+		this.playerBoundBox = new Rectangle(x + 16, y + 63, (int) (animatedSprite.getWidth() * .8),
+				(int) (animatedSprite.getHeight() * 0.4)-1);
 		this.playerBoundBox.generateGraphics(Color.green.getRGB());
 		/*
 		 * this.playerBoundBoxVisual = new Rectangle(x - ((playerSprite.getWidth() *
