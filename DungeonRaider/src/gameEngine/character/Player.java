@@ -46,7 +46,6 @@ public class Player implements Character, GameObject {
 	private Inventory inventory;
 	private Sprite spriteImage;
 	private Rectangle playerBoundBox;
-	private Box pickUpRadius;
 
 	public static final int SPEED = 2;
 	public static final int SPRINT = 7;
@@ -72,8 +71,6 @@ public class Player implements Character, GameObject {
 		// the player and
 		// extends to twice the players width meaning the pick up radius is twice the
 		// size of the player
-		this.pickUpRadius = new Box(x - ((playerSprite.getWidth() * zoom)), y - ((playerSprite.getHeight() * zoom)),
-				(playerSprite.getWidth() * zoom) * 4, (playerSprite.getHeight() * zoom) * 4);
 		this.inventory = new Inventory(20);
 		this.primaryEquipped = true;
 		this.primaryWeapon = new Weapon("Start", 0, 0, 10, 300, 10, playerSprite);
@@ -299,12 +296,13 @@ public class Player implements Character, GameObject {
 		// Checking if player is attempting to pick up and whether there is anything to
 		// pick up
 		if (keyBinds.isPickUp()) {
-			this.pickUpRadius = new Box(x, y, (spriteImage.getWidth() * zoom), (spriteImage.getHeight() * zoom));
+			// this.pickUpRadius = new Rectangle(x, y, (spriteImage.getWidth() * zoom),
+			// (spriteImage.getHeight() * zoom));
 			// need to check if any of the items locations
 			List<Item> itemsOnMap = engine.getCurrentMap().getItems();
 			for (Item item : itemsOnMap) {
 				Box itemPos = item.getBoundingBox();
-				if (pickUpRadius.contains(itemPos)) {
+				if (this.playerBoundBox.contains(itemPos)) {
 					this.inventory.add(item);
 					item.setPickedUp(true);
 					itemsOnMap.remove(item);
