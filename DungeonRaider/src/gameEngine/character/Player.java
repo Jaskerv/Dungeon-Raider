@@ -84,11 +84,13 @@ public class Player implements Character, GameObject {
 		}
 		this.playerBoundBox = new Box(x + 10, y + 63, animatedSprite.getWidth(),
 				(int) (animatedSprite.getHeight() * 0.4));
-		/*this.playerBoundBoxVisual = new Rectangle(x - ((playerSprite.getWidth() * zoom)), y - ((playerSprite.getHeight() * zoom)),
-				(playerSprite.getWidth() * zoom) * 4, (playerSprite.getHeight() * zoom) * 4);
-		this.playerBoundBoxVisual.generateGraphics(Color.blue.getRGB());
-		updateDirection();
-*/	}
+		/*
+		 * this.playerBoundBoxVisual = new Rectangle(x - ((playerSprite.getWidth() *
+		 * zoom)), y - ((playerSprite.getHeight() * zoom)), (playerSprite.getWidth() *
+		 * zoom) * 4, (playerSprite.getHeight() * zoom) * 4);
+		 * this.playerBoundBoxVisual.generateGraphics(Color.blue.getRGB());
+		 * updateDirection();
+		 */ }
 
 	private void updateDirection() {
 		if (animatedSprite != null) {
@@ -104,53 +106,53 @@ public class Player implements Character, GameObject {
 	@Override
 	public void walkLeft() {
 		this.x -= SPEED;
-		//this.playerBoundBox.setX(this.playerBoundBox.getX() - SPEED);
-		this.playerBoundBox.setX(  Movement.walkLeft(this.playerBoundBox.getX())  );
+		// this.playerBoundBox.setX(this.playerBoundBox.getX() - SPEED);
+		this.playerBoundBox.setX(Movement.walkLeft(this.playerBoundBox.getX()));
 	}
 
 	@Override
 	public void walkRight() {
 		this.x += SPEED;
-		//this.playerBoundBox.setX(this.playerBoundBox.getX() + SPEED);
-		this.playerBoundBox.setX(  Movement.walkRight(this.playerBoundBox.getX())  );
+		// this.playerBoundBox.setX(this.playerBoundBox.getX() + SPEED);
+		this.playerBoundBox.setX(Movement.walkRight(this.playerBoundBox.getX()));
 	}
 
 	@Override
 	public void walkUp() {
 		this.y -= SPEED;
-		//this.playerBoundBox.setY(this.playerBoundBox.getY() - SPEED);
-		this.playerBoundBox.setY(  Movement.walkUp(this.playerBoundBox.getY())  );
+		// this.playerBoundBox.setY(this.playerBoundBox.getY() - SPEED);
+		this.playerBoundBox.setY(Movement.walkUp(this.playerBoundBox.getY()));
 	}
 
 	@Override
 	public void walkDown() {
 		this.y += SPEED;
-		//this.playerBoundBox.setY(this.playerBoundBox.getY() + SPEED);
-		this.playerBoundBox.setY(  Movement.walkDown(this.playerBoundBox.getY())  );
+		// this.playerBoundBox.setY(this.playerBoundBox.getY() + SPEED);
+		this.playerBoundBox.setY(Movement.walkDown(this.playerBoundBox.getY()));
 	}
 
 	public void runLeft() {
 		this.x -= SPRINT;
-		//this.playerBoundBox.setX(this.playerBoundBox.getX() - SPRINT);
-		this.playerBoundBox.setX(  Movement.sprintLeft(this.playerBoundBox.getX()) );
+		// this.playerBoundBox.setX(this.playerBoundBox.getX() - SPRINT);
+		this.playerBoundBox.setX(Movement.sprintLeft(this.playerBoundBox.getX()));
 	}
 
 	public void runRight() {
 		this.x += SPRINT;
-		//this.playerBoundBox.setX(this.playerBoundBox.getX() + SPRINT);
-		this.playerBoundBox.setX(  Movement.sprintRight(this.playerBoundBox.getX()) );
+		// this.playerBoundBox.setX(this.playerBoundBox.getX() + SPRINT);
+		this.playerBoundBox.setX(Movement.sprintRight(this.playerBoundBox.getX()));
 	}
 
 	public void runUp() {
 		this.y -= SPRINT;
-		//this.playerBoundBox.setY(this.playerBoundBox.getY() - SPRINT);
-		this.playerBoundBox.setY(  Movement.sprintUp(this.playerBoundBox.getY()) );
+		// this.playerBoundBox.setY(this.playerBoundBox.getY() - SPRINT);
+		this.playerBoundBox.setY(Movement.sprintUp(this.playerBoundBox.getY()));
 	}
 
 	public void runDown() {
 		this.y += SPRINT;
-		//this.playerBoundBox.setY(this.playerBoundBox.getY() + SPRINT);
-		this.playerBoundBox.setY(  Movement.sprintDown(this.playerBoundBox.getY()) );
+		// this.playerBoundBox.setY(this.playerBoundBox.getY() + SPRINT);
+		this.playerBoundBox.setY(Movement.sprintDown(this.playerBoundBox.getY()));
 	}
 
 	public void interact() {
@@ -166,7 +168,6 @@ public class Player implements Character, GameObject {
 		// spriteImage.getWidth(), x, y, zoom, zoom);
 
 		// introducing the animated sprite here. initially rendering a static sprite.
-		renderer.renderRectangle(playerBoundBoxVisual, zoom, zoom);
 		if (animatedSprite != null)
 			renderer.renderSprite(animatedSprite, x + animatedSprite.getWidth() / 2, y + animatedSprite.getHeight() / 2,
 					xZoom, yZoom);
@@ -187,7 +188,7 @@ public class Player implements Character, GameObject {
 		KeyController keyBinds = engine.getKeyBinds();
 		Map currentMap = engine.getCurrentMap();
 		MouseController mouseActions = engine.getMouseListener();
-		
+
 		// for the player animated sprites
 		boolean didMove = false;
 		int newDirection = direction;
@@ -201,8 +202,8 @@ public class Player implements Character, GameObject {
 		 */
 		if (keyBinds.isRun()) {
 			if (keyBinds.isUp()) {
-				Box up = new Box(curBox.getX(), curBox.getY(), curBox.getWidth()*zoom, curBox.getHeight()*zoom);
-				//up.setY(up.getY() - SPRINT);
+				Box up = new Box(curBox.getX(), curBox.getY(), curBox.getWidth() * zoom, curBox.getHeight() * zoom);
+				// up.setY(up.getY() - SPRINT);
 				up.setY(Movement.sprintUp(up.getY()));
 				if (checkBoundry(currentMap, up)) {
 					newDirection = 2;
@@ -213,9 +214,9 @@ public class Player implements Character, GameObject {
 				}
 			}
 			if (keyBinds.isDown()) {
-				Box down = new Box(curBox.getX(), curBox.getY(), curBox.getWidth()*zoom, curBox.getHeight()*zoom);
-				//down.setY(down.getY() + SPRINT);
-				down.setY( Movement.sprintDown(down.getY()) );
+				Box down = new Box(curBox.getX(), curBox.getY(), curBox.getWidth() * zoom, curBox.getHeight() * zoom);
+				// down.setY(down.getY() + SPRINT);
+				down.setY(Movement.sprintDown(down.getY()));
 				if (checkBoundry(currentMap, down)) {
 					newDirection = 3;
 					didMove = true;
@@ -225,8 +226,8 @@ public class Player implements Character, GameObject {
 				}
 			}
 			if (keyBinds.isLeft()) {
-				Box left = new Box(curBox.getX(), curBox.getY(), curBox.getWidth()*zoom, curBox.getHeight()*zoom);
-				//left.setX(left.getX() - SPRINT);
+				Box left = new Box(curBox.getX(), curBox.getY(), curBox.getWidth() * zoom, curBox.getHeight() * zoom);
+				// left.setX(left.getX() - SPRINT);
 				left.setX(Movement.sprintLeft(left.getX()));
 				if (checkBoundry(currentMap, left)) {
 					newDirection = 1;
@@ -237,9 +238,9 @@ public class Player implements Character, GameObject {
 				}
 			}
 			if (keyBinds.isRight()) {
-				Box right = new Box(curBox.getX(), curBox.getY(), curBox.getWidth()*zoom, curBox.getHeight()*zoom);
-				//right.setX(right.getX() + SPRINT);
-				right.setX( Movement.sprintRight(right.getX()) );
+				Box right = new Box(curBox.getX(), curBox.getY(), curBox.getWidth() * zoom, curBox.getHeight() * zoom);
+				// right.setX(right.getX() + SPRINT);
+				right.setX(Movement.sprintRight(right.getX()));
 				if (checkBoundry(currentMap, right)) {
 					newDirection = 0;
 					didMove = true;
@@ -249,14 +250,15 @@ public class Player implements Character, GameObject {
 				}
 			}
 		}
-		
+
 		/**
 		 * Player walking connection with key controller: Also checks for player
 		 * connection with walls
 		 */
 		if (!keyBinds.isRun() || couldntRun) {
 			if (keyBinds.isUp()) {
-				Box up = new Box(curBox.getX(), curBox.getY() - SPEED, curBox.getWidth()*zoom, curBox.getHeight()*zoom);
+				Box up = new Box(curBox.getX(), curBox.getY() - SPEED, curBox.getWidth() * zoom,
+						curBox.getHeight() * zoom);
 				if (checkBoundry(currentMap, up)) {
 					newDirection = 2;
 					didMove = true;
@@ -264,7 +266,8 @@ public class Player implements Character, GameObject {
 				}
 			}
 			if (keyBinds.isDown()) {
-				Box down = new Box(curBox.getX(), curBox.getY() + SPEED, curBox.getWidth()*zoom, curBox.getHeight()*zoom);
+				Box down = new Box(curBox.getX(), curBox.getY() + SPEED, curBox.getWidth() * zoom,
+						curBox.getHeight() * zoom);
 				if (checkBoundry(currentMap, down)) {
 					newDirection = 3;
 					didMove = true;
@@ -272,7 +275,8 @@ public class Player implements Character, GameObject {
 				}
 			}
 			if (keyBinds.isLeft()) {
-				Box left = new Box(curBox.getX() - SPEED, curBox.getY(), curBox.getWidth()*zoom, curBox.getHeight()*zoom);
+				Box left = new Box(curBox.getX() - SPEED, curBox.getY(), curBox.getWidth() * zoom,
+						curBox.getHeight() * zoom);
 				if (checkBoundry(currentMap, left)) {
 					newDirection = 1;
 					didMove = true;
@@ -280,7 +284,8 @@ public class Player implements Character, GameObject {
 				}
 			}
 			if (keyBinds.isRight()) {
-				Box right = new Box(curBox.getX() + SPEED, curBox.getY(), curBox.getWidth()*zoom, curBox.getHeight()*zoom);
+				Box right = new Box(curBox.getX() + SPEED, curBox.getY(), curBox.getWidth() * zoom,
+						curBox.getHeight() * zoom);
 				if (checkBoundry(currentMap, right)) {
 					newDirection = 0;
 					didMove = true;
