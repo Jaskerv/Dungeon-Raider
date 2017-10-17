@@ -48,8 +48,8 @@ public class Player implements Character, GameObject {
 	private Rectangle playerBoundBox;
 	private Rectangle rightPrimaryAttackRad;
 	private Rectangle leftPrimaryAttackRad;
-	public static final int SPEED = 2;
-	public static final int SPRINT = 7;
+	//public static final int SPEED = 2;
+	//public static final int SPRINT = 7;
 	private int zoom;
 	private Queue<Integer> damageQueue;
 
@@ -102,52 +102,52 @@ public class Player implements Character, GameObject {
 
 	@Override
 	public void walkLeft() {
-		this.x -= SPEED;
+		this.x -= Movement.WALK_SPEED;
 		// this.playerBoundBox.setX(this.playerBoundBox.getX() - SPEED);
 		this.playerBoundBox.setX(Movement.walkLeft(this.playerBoundBox.getX()));
 	}
 
 	@Override
 	public void walkRight() {
-		this.x += SPEED;
+		this.x += Movement.WALK_SPEED;
 		// this.playerBoundBox.setX(this.playerBoundBox.getX() + SPEED);
 		this.playerBoundBox.setX(Movement.walkRight(this.playerBoundBox.getX()));
 	}
 
 	@Override
 	public void walkUp() {
-		this.y -= SPEED;
+		this.y -= Movement.WALK_SPEED;
 		// this.playerBoundBox.setY(this.playerBoundBox.getY() - SPEED);
 		this.playerBoundBox.setY(Movement.walkUp(this.playerBoundBox.getY()));
 	}
 
 	@Override
 	public void walkDown() {
-		this.y += SPEED;
+		this.y += Movement.WALK_SPEED;
 		// this.playerBoundBox.setY(this.playerBoundBox.getY() + SPEED);
 		this.playerBoundBox.setY(Movement.walkDown(this.playerBoundBox.getY()));
 	}
 
 	public void runLeft() {
-		this.x -= SPRINT;
+		this.x -= Movement.SPRINT_SPEED;
 		// this.playerBoundBox.setX(this.playerBoundBox.getX() - SPRINT);
 		this.playerBoundBox.setX(Movement.sprintLeft(this.playerBoundBox.getX()));
 	}
 
 	public void runRight() {
-		this.x += SPRINT;
+		this.x += Movement.SPRINT_SPEED;
 		// this.playerBoundBox.setX(this.playerBoundBox.getX() + SPRINT);
 		this.playerBoundBox.setX(Movement.sprintRight(this.playerBoundBox.getX()));
 	}
 
 	public void runUp() {
-		this.y -= SPRINT;
+		this.y -= Movement.SPRINT_SPEED;
 		// this.playerBoundBox.setY(this.playerBoundBox.getY() - SPRINT);
 		this.playerBoundBox.setY(Movement.sprintUp(this.playerBoundBox.getY()));
 	}
 
 	public void runDown() {
-		this.y += SPRINT;
+		this.y += Movement.SPRINT_SPEED;
 		// this.playerBoundBox.setY(this.playerBoundBox.getY() + SPRINT);
 		this.playerBoundBox.setY(Movement.sprintDown(this.playerBoundBox.getY()));
 	}
@@ -264,7 +264,7 @@ public class Player implements Character, GameObject {
 		 */
 		if (!keyBinds.isRun() || couldntRun) {
 			if (keyBinds.isUp()) {
-				Box up = new Box(curBox.getX(), curBox.getY() - SPEED, curBox.getWidth() * zoom,
+				Box up = new Box(curBox.getX(), curBox.getY() - Movement.WALK_SPEED, curBox.getWidth() * zoom,
 						curBox.getHeight() * zoom);
 				if (checkBoundry(currentMap, up)) {
 					newDirection = 2;
@@ -273,7 +273,7 @@ public class Player implements Character, GameObject {
 				}
 			}
 			if (keyBinds.isDown()) {
-				Box down = new Box(curBox.getX(), curBox.getY() + SPEED, curBox.getWidth() * zoom,
+				Box down = new Box(curBox.getX(), curBox.getY() + Movement.WALK_SPEED, curBox.getWidth() * zoom,
 						curBox.getHeight() * zoom);
 				if (checkBoundry(currentMap, down)) {
 					newDirection = 3;
@@ -282,7 +282,7 @@ public class Player implements Character, GameObject {
 				}
 			}
 			if (keyBinds.isLeft()) {
-				Box left = new Box(curBox.getX() - SPEED, curBox.getY(), curBox.getWidth() * zoom,
+				Box left = new Box(curBox.getX() - Movement.WALK_SPEED, curBox.getY(), curBox.getWidth() * zoom,
 						curBox.getHeight() * zoom);
 				if (checkBoundry(currentMap, left)) {
 					newDirection = 1;
@@ -291,7 +291,7 @@ public class Player implements Character, GameObject {
 				}
 			}
 			if (keyBinds.isRight()) {
-				Box right = new Box(curBox.getX() + SPEED, curBox.getY(), curBox.getWidth() * zoom,
+				Box right = new Box(curBox.getX() + Movement.WALK_SPEED, curBox.getY(), curBox.getWidth() * zoom,
 						curBox.getHeight() * zoom);
 				if (checkBoundry(currentMap, right)) {
 					newDirection = 0;
@@ -319,6 +319,35 @@ public class Player implements Character, GameObject {
 				}
 			}
 		}
+
+		if(keyBinds.isAttak()) {
+			
+			List<GameObject> monsters = engine.getCurrentMap().getMonsters();
+			if(monsters.size() == 0) {
+				//break;
+			}
+			Iterator<GameObject> iterator = monsters.iterator();
+			while(iterator.hasNext()) {
+				Monster mon = (Monster) iterator.next();
+				//if player is looking to the right
+				if(this.direction == 0) {
+					
+					attackMonsterToTheRight(mon,monsters,iterator);
+					// if the player is looking left
+				}else if(this.direction == 1) {
+					attackMonstertoTheLeft(mon,monsters,iterator);
+					// if the player is looking up
+				}else if(this.direction == 2) {
+					attackMonsterAbove(mon,monsters,iterator);
+				}else if(this.direction == 3) {
+					attackMonsterBelow(mon,monsters,iterator);
+				}
+			}
+
+		}
+
+
+
 
 		/**
 		 * Returns left clicks and their co-ordinates to tell where for the character to
@@ -385,6 +414,91 @@ public class Player implements Character, GameObject {
 		}
 	}
 
+	public void attackMonsterToTheRight(Monster mon, List<GameObject> monsters, Iterator<GameObject> iterator) {
+		
+		int playerX = this.playerBoundBox.getX();
+		int playerY = this.playerBoundBox.getY();
+		int playerYHeight = playerY + this.playerBoundBox.getHeight();
+		int monsterX = mon.getBoundingBox().getX();
+		int monsterXWidth = monsterX + mon.getBoundingBox().getWidth();
+		int monsterY = mon.getBoundingBox().getY();
+		int monsterYHeight = monsterY + mon.getBoundingBox().getHeight();
+		int swordLength = 50;
+		
+		if( (playerX + swordLength >= monsterX) && (playerX + swordLength <= monsterXWidth) ) {
+			if( (playerY >= monsterY) || (playerYHeight >= monsterY)) {
+				System.out.println("Fucking REEEEEEE");
+				mon.setHealth(0);
+				checkForMonsterDeath(mon, monsters, iterator);
+			}
+		}
+	}
+
+	public void attackMonstertoTheLeft(Monster mon,List<GameObject> monsters, Iterator<GameObject> iterator) {
+		
+		int playerX = this.playerBoundBox.getX();
+		int playerY = this.playerBoundBox.getY();
+		int playerYHeight = playerY + this.playerBoundBox.getHeight();
+		int monsterX = mon.getBoundingBox().getX();
+		int monsterXWidth = monsterX + mon.getBoundingBox().getWidth();
+		int monsterY = mon.getBoundingBox().getY();
+		int monsterYHeight = monsterY + mon.getBoundingBox().getHeight();
+		int swordLength = 50;
+		
+		if( (playerX - swordLength >= monsterX) && (playerX - swordLength <= monsterXWidth) ) {
+			if( (playerY >= monsterY) || (playerYHeight >= monsterY)) {
+				System.out.println("Fucking REEEEEEE");
+				mon.setHealth(0);
+				checkForMonsterDeath(mon, monsters, iterator);
+			}
+		}
+
+		
+	}
+
+	public void attackMonsterAbove(Monster mon, List<GameObject> monsters,Iterator<GameObject> iterator) {
+		
+		int playerX = this.playerBoundBox.getX();
+		int playerXWidth = playerX + this.playerBoundBox.getWidth();
+		int playerY = this.playerBoundBox.getY();
+		int playerYHeight = playerY + this.playerBoundBox.getHeight();
+		int monsterX = mon.getBoundingBox().getX();
+		int monsterXWidth = monsterX + mon.getBoundingBox().getWidth();
+		int monsterY = mon.getBoundingBox().getY();
+		int monsterYHeight = monsterY + mon.getBoundingBox().getHeight();
+		int swordLength = 50;
+		
+		if( (playerY - swordLength >= monsterY) && (playerY - swordLength <= monsterYHeight)  ) {
+			if( (playerX >= monsterX) || (playerXWidth>=monsterX)  ) {
+				System.out.println("Fucking REEEEEEE");
+				mon.setHealth(0);
+				checkForMonsterDeath(mon, monsters, iterator);
+			}
+		}
+		
+	}
+
+	public void attackMonsterBelow(Monster mon, List<GameObject> monsters,Iterator<GameObject> iterator) {
+		
+		int playerX = this.playerBoundBox.getX();
+		int playerXWidth = playerX + this.playerBoundBox.getWidth();
+		int playerY = this.playerBoundBox.getY();
+		int playerYHeight = playerY + this.playerBoundBox.getHeight();
+		int monsterX = mon.getBoundingBox().getX();
+		int monsterXWidth = monsterX + mon.getBoundingBox().getWidth();
+		int monsterY = mon.getBoundingBox().getY();
+		int monsterYHeight = monsterY + mon.getBoundingBox().getHeight();
+		int swordLength = 50;
+		
+		if( (playerY + swordLength >= monsterY) && (playerY + swordLength <= monsterYHeight)  ) {
+			if( (playerX >= monsterX) || (playerXWidth>=monsterX)  ) {
+				System.out.println("Fucking REEEEEEE");
+				mon.setHealth(0);
+				checkForMonsterDeath(mon, monsters, iterator);
+			}
+		}
+	}
+
 	/**
 	 *
 	 * @param mx
@@ -412,6 +526,8 @@ public class Player implements Character, GameObject {
 				}
 			}
 		}
+
+
 		// left attack calculated from the position of the camera
 		if (mx < center.getX()) {
 			// left side bounding box = to range of weapon and half player height
@@ -433,6 +549,7 @@ public class Player implements Character, GameObject {
 	public void checkForMonsterDeath(Monster monster, List<GameObject> monsters, Iterator<GameObject> iter) {
 		if (monster.getHealth() <= 0) {
 			this.gold = this.gold + 1;
+			System.out.println("monster died");
 			iter.remove();
 		}
 
@@ -529,7 +646,7 @@ public class Player implements Character, GameObject {
 	}
 
 	public int getSpeed() {
-		return SPEED;
+		return Movement.WALK_SPEED;
 	}
 
 	public int getZoom() {

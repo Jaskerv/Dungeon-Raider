@@ -19,6 +19,7 @@ import javax.swing.JFrame;
 import gameEngine.UI.IngameInterface;
 import gameEngine.UI.PauseMenu;
 import gameEngine.UI.YouDied;
+import gameEngine.character.Monster;
 import gameEngine.character.Player;
 import gameEngine.controller.KeyController;
 import gameEngine.controller.MouseController;
@@ -461,6 +462,10 @@ public class Engine extends JFrame implements Runnable, Observer {
 
 	public void setCurrentMapNumber(int currentMapNumber) {
 		this.currentMapNumber = currentMapNumber;
+	}
+	
+	public List<GameObject> getMonsters() {
+		return this.monsters;
 	}
 
 }
