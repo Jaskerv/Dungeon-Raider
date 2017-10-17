@@ -70,9 +70,9 @@ public class StartGame extends Canvas implements KeyListener, MouseListener, Gam
 		g = img.getGraphics();
 		this.engine = engine;
 		font8Bit = FontImporter.fontImport("resources/fonts/Perfect DOS VGA 437.ttf");
-		menuSelection[0] = 200;
-		menuSelection[1] = 350;
-		menuSelection[2] = 500;
+		menuSelection[0] = 320;
+		menuSelection[1] = 390;
+		menuSelection[2] = 460;
 		try {
 			backgroundImage = ImageIO.read(new FileInputStream("resources/images/TitleScreen.png"));
 			// title = ImageIO.read(
@@ -178,10 +178,10 @@ public class StartGame extends Canvas implements KeyListener, MouseListener, Gam
 		if (active) {
 			g.setColor(Color.white);
 			g.setFont(font8Bit.deriveFont(Font.PLAIN, 24));
-			g.drawString("Play", 600, 250);
-			g.drawString("Info", 597, 400);
-			g.drawString("Quit", 600, 550);
-			g.fillRect(578, menuSelection[index] + 37, 10, 10);
+			g.drawString("Play", 600, 370);
+			g.drawString("Load", 600, 440);
+			g.drawString("Quit", 600, 510);
+			g.fillRect(555, menuSelection[index] + 37, 10, 10);
 		} else {
 			g.setColor(Color.white);
 			g.setFont(font8Bit.deriveFont(Font.PLAIN, 24));

@@ -104,7 +104,7 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 			if (engine.isPaused()) {
 				engine.getPauseMenu().setUp(true);
 			}
-			if(player.isDead()) {
+			if (player.isDead()) {
 				engine.getYouDied().setUp(true);
 			}
 			break;
@@ -121,7 +121,7 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 			if (engine.isPaused()) {
 				engine.getPauseMenu().setDown(true);
 			}
-			if(player.isDead()) {
+			if (player.isDead()) {
 				engine.getYouDied().setDown(true);
 			}
 			break;
@@ -143,21 +143,26 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 			this.useItem = false;
 			break;
 		case KeyEvent.VK_ESCAPE:
-			if (this.engine.isPaused()) {
-				this.engine.getPauseMenu().setPaused(false);
-				engine.getSoundLibrary().playClip("cursorReady", -10f);
-				break;
-			} else {
-				this.engine.getPauseMenu().setPaused(true);
-				engine.getSoundLibrary().playClip("cursorReady", -10f);
-				this.engine.getPauseMenu().setIndex(0);
-				break;
+			if (!engine.getPlayer().isDead()) {
+				if (this.engine.isPaused()) {
+					this.engine.getPauseMenu().setPaused(false);
+					engine.getSoundLibrary().playClip("cursorReady", -10f);
+					break;
+				} else {
+
+					this.engine.getPauseMenu().setPaused(true);
+					engine.getSoundLibrary().playClip("cursorReady", -10f);
+					this.engine.getPauseMenu().setIndex(0);
+					break;
+				}
 			}
+			break;
+
 		case KeyEvent.VK_ENTER:
 			if (engine.isPaused()) {
 				engine.getPauseMenu().setEnter(true);
 			}
-			if(player.isDead()) {
+			if (player.isDead()) {
 				engine.getYouDied().setEnter(true);
 			}
 			break;
