@@ -1,56 +1,56 @@
-package library3;
 
+package library3;
 
 public class Movement {
 
+	public static final int WALK_SPEED = 2;
+	public static final int SPRINT_SPEED = 7;
 
-	public static int moveLeft(int currentX) {
-		if(currentX <= 3) {
-			return 0;
-		}
-		return currentX - 3;
-		
+
+	/*
+	 * Methods for walking
+	 */
+	
+	public static int walkUp(int currentY) {
+		return currentY - Movement.WALK_SPEED;
 	}
-
-	public static int moveRight(int currentX) {
-		//need to figure out right wall coordinate
-		return currentX + 3;
-		
+	
+	public static int walkRight(int currentX) {
+		return currentX + Movement.WALK_SPEED;
 	}
-
-	public static int moveUp(int currentY) {
-		if(currentY <= 3) {
-			return 0;
-		}
-		return currentY - 3;
-		
+	
+	public static int walkDown(int currentY) {
+		return currentY + Movement.WALK_SPEED;
 	}
-
-	public static int moveDown(int currentY) {
-		return currentY + 3;
+	
+	public static int walkLeft(int currentX) {
+		return currentX - Movement.WALK_SPEED;
 	}
+	
+	
+	
+	/*
+	 * Methods for sprinting 
+	 */
+	
+	public static int sprintUp(int currentY) {
+		return currentY - Movement.SPRINT_SPEED;
+	}
+	
+	public static int sprintRight(int currentX) {
+		return currentX + Movement.SPRINT_SPEED;
+	}
+	
+	public static int sprintDown(int currentY) {
+		return currentY + Movement.SPRINT_SPEED;
+	}
+	
+	public static int sprintLeft(int currentX) {
+		return currentX - Movement.SPRINT_SPEED;
+	}
+	
+	
 
 
-
-	//--------------------------------------------------------------------------
-
-
-//	public static int moveUpRight(int currentX) {
-//		
-//		throw new UnsupportedOperationException();
-//	}
-//
-//	public static int moveUpLeft(int currentX) {
-//		
-//		throw new UnsupportedOperationException();
-//	}
-//
-//	public static int moveDownRight(int currentY) {
-//		throw new UnsupportedOperationException();
-//	}
-//
-//	public static int moveDownLeft(int currentY) {
-//		throw new UnsupportedOperationException();
-//	}
 
 }
