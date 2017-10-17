@@ -47,6 +47,7 @@ public class Player implements Character, GameObject {
 	private Sprite spriteImage;
 	private Rectangle playerBoundBox;
 	private Rectangle rightPrimaryAttackRad;
+	private Rectangle leftPrimaryAttackRad;
 	public static final int SPEED = 2;
 	public static final int SPRINT = 7;
 	private int zoom;
@@ -169,6 +170,10 @@ public class Player implements Character, GameObject {
 		if (rightPrimaryAttackRad != null) {
 			rightPrimaryAttackRad.generateGraphics(Color.red.getRGB());
 			renderer.renderRectangle(rightPrimaryAttackRad, 1, 1);
+		}
+		if (leftPrimaryAttackRad != null) {
+			leftPrimaryAttackRad.generateGraphics(Color.pink.getRGB());
+			renderer.renderRectangle(leftPrimaryAttackRad, 1, 1);
 		}
 		if (animatedSprite != null)
 			renderer.renderSprite(animatedSprite, x + animatedSprite.getWidth() / 2, y + animatedSprite.getHeight() / 2,
@@ -410,7 +415,7 @@ public class Player implements Character, GameObject {
 		// left attack calculated from the position of the camera
 		if (mx < center.getX()) {
 			// left side bounding box = to range of weapon and half player height
-			Box leftPrimaryAttackRad = new Box(x - primaryWeapon.getRange(), y, primaryWeapon.getRange() + width,
+			leftPrimaryAttackRad = new Rectangle(x - primaryWeapon.getRange(), y, primaryWeapon.getRange() + width,
 					height);
 			// attackLeft();
 			Iterator<GameObject> iter = monsters.iterator();
