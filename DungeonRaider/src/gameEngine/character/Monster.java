@@ -1,6 +1,8 @@
 package gameEngine.character;
 
 import java.awt.Color;
+import java.util.Iterator;
+import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -37,11 +39,12 @@ public class Monster implements Character, GameObject {
 	private Box boundingBox;
 	private int attackTimer;
 	private Rectangle rect;
+	private int ID;
 
 	/**
 	 * Monster
 	 */
-	public Monster(String name, int x, int y, int speed, int health, Sprite sprite) {
+	public Monster(String name, int x, int y, int speed, int health, int ID, Sprite sprite) {
 		SPRITE_SHEET_2.loadSprites(16, 16);
 		this.name = name;
 		this.x = x;
@@ -49,6 +52,7 @@ public class Monster implements Character, GameObject {
 		this.speed = speed;
 		this.spriteImage = sprite;
 		this.health = health;
+		this.ID = ID;
 		this.height = spriteImage.getHeight();
 		this.width = spriteImage.getWidth();
 		this.damageQueue = new PriorityQueue<>();
@@ -106,6 +110,9 @@ public class Monster implements Character, GameObject {
 		int playerX = player.getX();//+((player.getSpriteImage().getWidth()*player.getZoom())/2);
 		int playerY = player.getY();//+((player.getSpriteImage().getWidth()*player.getZoom()/2));
 
+		//returns all of the monsters on the map
+		List<GameObject> monsters = engine.getCurrentMap().getMonsters();
+
 		//Updating monster attack range
 		this.boundingBox = new Box(this.x, this.y, this.width, this.height);
 		this.rect = new Rectangle(this.x, this.y, this.width, this.height);
@@ -129,14 +136,15 @@ public class Monster implements Character, GameObject {
 		//player is to the left of this monster
 		if (playerX < this.x) {
 			if(!boundingBox.contains(player.getPlayerBoundBox())) {
-				Box left = new Box(this.x-speed, this.y, this.width, this.height);
+				Box left = new Box(this.x-speed, this.y, this.width*ZOOM, this.height*ZOOM);
 				if(checkBoundry(currentMap, left))
 					walkLeft();
 			}
+
 		}
 		if (playerX > this.x) {
 			if(!boundingBox.contains(player.getPlayerBoundBox())) {
-				Box right = new Box(this.x+speed, this.y, this.width, this.height);
+				Box right = new Box(this.x+speed, this.y, this.width*ZOOM, this.height*ZOOM);
 				if(checkBoundry(currentMap, right))
 					walkRight();
 			}
@@ -144,14 +152,14 @@ public class Monster implements Character, GameObject {
 		//player is to the bottom of this monster
 		if (playerY > this.y) {
 			if(!boundingBox.contains(player.getPlayerBoundBox())) {
-				Box down = new Box(this.x, this.y+speed, this.width, this.height);
+				Box down = new Box(this.x, this.y+speed, this.width*ZOOM, this.height*ZOOM);
 				if(checkBoundry(currentMap, down))
 					walkDown();
 			}
 		}
 		if (playerY < this.y) {
 			if(!boundingBox.contains(player.getPlayerBoundBox())) {
-				Box up = new Box(this.x, this.y-speed, this.width, this.height);
+				Box up = new Box(this.x, this.y-speed, this.width*ZOOM, this.height*ZOOM);
 				if(checkBoundry(currentMap, up))
 					walkUp();
 			}
@@ -199,4 +207,18 @@ public class Monster implements Character, GameObject {
 	public void setHealth(int health) {
 		this.health = health;
 	}
+
+	public int getID() {
+		return ID;
+	}
+
+	public void setID(int iD) {
+		ID = iD;
+	}
+
+	public void setBoundingBox(Box boundingBox) {
+		this.boundingBox = boundingBox;
+	}
+
+
 }
