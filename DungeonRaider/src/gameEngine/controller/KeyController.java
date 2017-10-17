@@ -48,10 +48,19 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 		switch (key) {
+		case KeyEvent.VK_UP:
+			// move up
+			this.up = true;
+			// System.out.println("w pressed");
 		case KeyEvent.VK_W:
 			// move up
 			this.up = true;
 			// System.out.println("w pressed");
+			break;
+		case KeyEvent.VK_LEFT:
+			// move left
+			this.left = true;
+			// System.out.println("a pressed");
 			break;
 		case KeyEvent.VK_A:
 			// move left
@@ -63,7 +72,17 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 			this.down = true;
 			// System.out.println("s pressed");
 			break;
+		case KeyEvent.VK_DOWN:
+			// move down
+			this.down = true;
+			// System.out.println("s pressed");
+			break;
 		case KeyEvent.VK_D:
+			// move right
+			this.right = true;
+			// System.out.println("d pressed");
+			break;
+		case KeyEvent.VK_RIGHT:
 			// move right
 			this.right = true;
 			// System.out.println("d pressed");
@@ -100,15 +119,31 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 			// move up
 			this.up = false;
 			// System.out.println("w releasedd");
+			if (engine.isPaused()) {
+				engine.getPauseMenu().setUp(true);
+			}
+			if (player.isDead()) {
+				engine.getYouDied().setUp(true);
+			}
+			break;
+		case KeyEvent.VK_UP:
+			// move up
+			this.up = false;
+			// System.out.println("w releasedd");
 
 			if (engine.isPaused()) {
 				engine.getPauseMenu().setUp(true);
 			}
-			if(player.isDead()) {
+			if (player.isDead()) {
 				engine.getYouDied().setUp(true);
 			}
 			break;
 		case KeyEvent.VK_A:
+			// move left
+			this.left = false;
+			// System.out.println("a released");
+			break;
+		case KeyEvent.VK_LEFT:
 			// move left
 			this.left = false;
 			// System.out.println("a released");
@@ -121,11 +156,28 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 			if (engine.isPaused()) {
 				engine.getPauseMenu().setDown(true);
 			}
-			if(player.isDead()) {
+			if (player.isDead()) {
+				engine.getYouDied().setDown(true);
+			}
+			break;
+		case KeyEvent.VK_DOWN:
+			// move down
+			this.down = false;
+			// System.out.println("s released");
+
+			if (engine.isPaused()) {
+				engine.getPauseMenu().setDown(true);
+			}
+			if (player.isDead()) {
 				engine.getYouDied().setDown(true);
 			}
 			break;
 		case KeyEvent.VK_D:
+			// move right
+			this.right = false;
+			// System.out.println("d released");
+			break;
+		case KeyEvent.VK_RIGHT:
 			// move right
 			this.right = false;
 			// System.out.println("d released");
@@ -143,21 +195,26 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 			this.useItem = false;
 			break;
 		case KeyEvent.VK_ESCAPE:
-			if (this.engine.isPaused()) {
-				this.engine.getPauseMenu().setPaused(false);
-				engine.getSoundLibrary().playClip("cursorReady", -10f);
-				break;
-			} else {
-				this.engine.getPauseMenu().setPaused(true);
-				engine.getSoundLibrary().playClip("cursorReady", -10f);
-				this.engine.getPauseMenu().setIndex(0);
-				break;
+			if (!engine.getPlayer().isDead()) {
+				if (this.engine.isPaused()) {
+					this.engine.getPauseMenu().setPaused(false);
+					engine.getSoundLibrary().playClip("cursorReady", -10f);
+					break;
+				} else {
+
+					this.engine.getPauseMenu().setPaused(true);
+					engine.getSoundLibrary().playClip("cursorReady", -10f);
+					this.engine.getPauseMenu().setIndex(0);
+					break;
+				}
 			}
+			break;
+
 		case KeyEvent.VK_ENTER:
 			if (engine.isPaused()) {
 				engine.getPauseMenu().setEnter(true);
 			}
-			if(player.isDead()) {
+			if (player.isDead()) {
 				engine.getYouDied().setEnter(true);
 			}
 			break;
