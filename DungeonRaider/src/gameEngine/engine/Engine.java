@@ -6,12 +6,15 @@ import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -40,7 +43,7 @@ import library4.Saveable;
  * @author Jono Yan
  *
  */
-public class Engine extends JFrame implements Runnable, Observer {
+public class Engine extends JFrame implements Runnable, Observer, Saveable {
 	public static final PatternInt alpha = new PatternInt(0xFFFF00DC, -16777216);
 	private static final long serialVersionUID = 1L;
 	private Canvas canvas;
@@ -144,7 +147,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 		/** GUI */
 		this.GUI = new IngameInterface(player, WIDTH, HEIGHT);
 		this.pauseMenu = new PauseMenu(this.loadImage("resources/images/Pause.png"));
-	this.youDied = new YouDied(this.loadImage("resources/images/YouDied.png"));
+		this.youDied = new YouDied(this.loadImage("resources/images/YouDied.png"));
 		/**
 		 * initiating key listener
 		 */
@@ -168,7 +171,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 			super.paint(g);
 			this.renderer.clearArray();
 			if (player.isDead()) {
-		youDied.render(renderer, 1, 1);
+				youDied.render(renderer, 1, 1);
 			} else {
 				/**
 				 * If not paused
@@ -189,7 +192,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 				 * If paused
 				 */
 				else {
-				pauseMenu.render(renderer, 1, 1);
+					pauseMenu.render(renderer, 1, 1);
 				}
 			}
 			renderer.render(g);
@@ -263,14 +266,14 @@ public class Engine extends JFrame implements Runnable, Observer {
 		 * If player is dead
 		 */
 		if (player.isDead()) {
-		this.youDied.update(this);
+			this.youDied.update(this);
 		} else {
 			/** if in start menu */
 			if (menu) {
 				startGame.update(this);
 			} else {
 				/** not paused */
-			if (!this.pauseMenu.isPaused()) {
+				if (!this.pauseMenu.isPaused()) {
 					this.player.update(this);
 					for (GameObject gameObject : monsters) {
 						gameObject.update(this);
@@ -281,7 +284,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 				 * If paused
 				 */
 				else {
-				this.pauseMenu.update(this);
+					this.pauseMenu.update(this);
 				}
 			}
 		}
@@ -323,11 +326,11 @@ public class Engine extends JFrame implements Runnable, Observer {
 		Map tutMap = new Map();
 		tutMap.initialiseMap("TutorialMap");
 		mapList.put(count++, tutMap);
-		//the first proper map
+		// the first proper map
 		Map map_01 = new Map();
 		map_01.initialiseMap("Map_01");
 		mapList.put(count++, map_01);
-		//the final maze map.
+		// the final maze map.
 		Map map_02 = new Map();
 		map_02.initialiseMap("Map_02");
 		mapList.put(count++, map_02);
@@ -372,19 +375,17 @@ public class Engine extends JFrame implements Runnable, Observer {
 		SPRITE_SHEET_2.loadSprites(16, 16);
 		if (name.equals("Monster_One")) {
 			return dungeonTiles.getSprite(3, 6);
-		}else if (name.equals("Monster_Two")) {
+		} else if (name.equals("Monster_Two")) {
 			return SPRITE_SHEET_2.getSprite(3, 10);
-		}else if (name.equals("Monster_Three")) {
+		} else if (name.equals("Monster_Three")) {
 			return SPRITE_SHEET_2.getSprite(3, 12);
-		}else if (name.equals("Monster_Four")) {
+		} else if (name.equals("Monster_Four")) {
 			return SPRITE_SHEET_2.getSprite(4, 11);
-		}else if (name.equals("Small_Health_Potion") || name.equals("Big_Health_Potion")) {
+		} else if (name.equals("Small_Health_Potion") || name.equals("Big_Health_Potion")) {
 			return SPRITE_SHEET_2.getSprite(12, 11);
 		}
 		return null;
 	}
-
-
 
 	/**
 	 * @return the keyBinds
@@ -448,7 +449,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 	 * I pause menu is up
 	 */
 	public boolean isPaused() {
-	return pauseMenu.isPaused();
+		return pauseMenu.isPaused();
 	}
 
 	/**
@@ -478,5 +479,39 @@ public class Engine extends JFrame implements Runnable, Observer {
 		return this.monsters;
 	}
 
+	@Override
+	public String save() {
+		String s = "Map	{\n";
+		s += "int	currentMapNumber	" + currentMapNumber + "\n";
+		s += "}	\n";
+		return s;
+	}
+
+	@Override
+	public void load(File file) {
+		Scanner sc = null;
+		try {
+			sc = new Scanner(file);
+
+			while (sc.hasNext()) {
+				String s = sc.nextLine();
+				if (s.contains("{")) {
+					String[] split = s.split("\t");
+					if (split[0].equals("Player")) {
+						List<String> fields = new ArrayList<>();
+						while (sc.hasNext()) {
+							String line = sc.nextLine();
+							if (line.contains("}")) {
+							}
+						}
+					}
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 
 }

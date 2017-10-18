@@ -2,16 +2,18 @@ package library4;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Scanner;
 
 import gameEngine.character.Player;
 import gameEngine.engine.Engine;
 import gameEngine.item.Weapon;
 
-public class SaveBoi implements Saveable {
+public class SaveBoi {
 
 	private static final String fname = "resources/save/save09.txt";
 
@@ -25,8 +27,7 @@ public class SaveBoi implements Saveable {
 		this.weapon = player.getPrimaryWeapon();
 	}
 
-	@Override
-	public String save() {
+	public void save() {
 		FileOutputStream fos = null;
 		File saveFile = new File(fname);
 		BufferedWriter out = null;
@@ -36,6 +37,7 @@ public class SaveBoi implements Saveable {
 
 			out.write(player.save());
 			out.write(weapon.save());
+			out.write(engine.save());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -46,11 +48,9 @@ public class SaveBoi implements Saveable {
 				e.printStackTrace();
 			}
 		}
-		return null;
 	}
 
-	@Override
-	public void load() {
+	public void load(File file) {
 
 	}
 
