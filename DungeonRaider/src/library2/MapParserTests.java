@@ -183,7 +183,7 @@ public class MapParserTests {
         }
     }
 
-    /**
+    /**IllegalArgumentException
      * Tests parsing in too large of a map. The MapParser should throw an
      * IllegalArgumentException. This test map string is two rows and one
      * column too large.

@@ -1,296 +1,315 @@
-//package library3;
-//
-//
-//import org.junit.Test;
-//
-//public class MovementTests {
-//	
-//    @Test
-//    public void testMoveLeft_1() throws Exception {
-//    	
-//        try {
-//           int currentX = 10;
-//           int newX = Movement.moveLeft(currentX);
-//           if(newX != 7 ) {
-//        	   throw new Exception("The value returned is not correct");
-//           }
-//        }
-//        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//    
-//    @Test
-//    public void testMoveLeft_2() throws Exception {
-//    	
-//        try {
-//           int currentX = 0;
-//           int newX = Movement.moveLeft(currentX);
-//           if(newX < 0  ) {
-//        	   throw new Exception("The value returned is not correct");
-//           }
-//        }
-//        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//    
-//    
-//    @Test
-//    public void testMoveRight_1() throws Exception {
-//    	
-//        try {
-//           int currentX = 0;
-//           int newX = Movement.moveRight(currentX);
-//           if(newX != 3  ) {
-//        	   throw new Exception("The value returned is not correct");
-//           }
-//        }
-//        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//    
-//    @Test
-//    public void testMoveUp_1() throws Exception {
-//    	
-//        try {
-//           int currentY = 10;
-//           int newY = Movement.moveUp(currentY);
-//           if(newY != 7  ) {
-//        	   throw new Exception("The value returned is not correct");
-//           }
-//        }
-//        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//    
-//    
-//    @Test
-//    public void testMoveUp_2() throws Exception {
-//    	
-//        try {
-//           int currentY = 0;
-//           int newY = Movement.moveUp(currentY);
-//           if(newY <0  ) {
-//        	   throw new Exception("The value returned is not correct");
-//           }
-//        }
-//        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//    
-//    @Test
-//    public void testMoveDown_1() throws Exception {
-//    	
-//        try {
-//           int currentY = 0;
-//           int newY = Movement.moveDown(currentY);
-//           if(newY != 3  ) {
-//        	   throw new Exception("The value returned is not correct");
-//           }
-//        }
-//        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//    
-//    @Test
-//   public void testMoveTopLeft_1() throws Exception{
-//    	try {
-//    		int currentX = 10;
-//    		int currentY = 10;
-//    		int newX = Movement.moveLeft(currentX);
-//    		int newY = Movement.moveUp(currentY);
-//    		if(newX != 7 || newY != 7) {
-//    			throw new Exception("The value returned is not correct");
-//    		}
-//    	}catch(IllegalArgumentException | IndexOutOfBoundsException e) {
-//    		e.printStackTrace();
-//    	}
-//    	
-//    }
-//    
-//    @Test
-//    public void testMoveTopLeft_2() throws Exception{
-//     	try {
-//     		int currentX = 0;
-//     		int currentY = 10;
-//     		int newX = Movement.moveLeft(currentX);
-//     		int newY = Movement.moveUp(currentY);
-//     		if(newX != 0|| newY != 7) {
-//     			throw new Exception("The value returned is not correct");
-//     		}
-//     	}catch(IllegalArgumentException | IndexOutOfBoundsException e) {
-//     		e.printStackTrace();
-//     	}
-//     	
-//     }
-//    
-//    @Test
-//    public void testMoveTopLeft_3() throws Exception{
-//    	try {
-//    		int currentX = 1;
-//    		int currentY = 1;
-//    		int newX = Movement.moveLeft(currentX);
-//    		int newY = Movement.moveUp(currentY);
-//    		if(newX != 0 || newY != 0 ) { //should get stuck at the corner at x= 0, y = 0 if its close to the walls
-//    			throw new Exception("The value returned is not correct");
-//    		}
-//    	}catch(IllegalArgumentException | IndexOutOfBoundsException e){
-//    		e.printStackTrace();
-//    	}
-//    }
-//    
-//    @Test
-//    public void testMoveTopLeft_4() throws Exception{
-//    	try {
-//    		int currentX = 10;
-//    		int currentY = 1;
-//    		int newX = Movement.moveLeft(currentX);
-//    		int newY = Movement.moveUp(currentY);
-//    		if(newX != 7 || newY != 0 ) { //x should still move freely. y gets stuck at the top 
-//    			throw new Exception("The value returned is not correct");
-//    		}
-//    	}catch(IllegalArgumentException | IndexOutOfBoundsException e){
-//    		e.printStackTrace();
-//    	}
-//    }
-//    
-//    @Test
-//    public void testMoveTopLeft_5() throws Exception{
-//    	try {
-//    		int currentX = 1;
-//    		int currentY = 10;
-//    		int newX = Movement.moveLeft(currentX);
-//    		int newY = Movement.moveUp(currentY);
-//    		if(newX != 0 || newY != 7) { //y should still move freely. x gets stuck at the left 
-//    			throw new Exception("The value returned is not correct");
-//    		}
-//    	}catch(IllegalArgumentException | IndexOutOfBoundsException e){
-//    		e.printStackTrace();
-//    	}
-//    }
-//    
-//    
-//    @Test
-//    public void testMoveTopRight_1() throws Exception{
-//     	try {
-//     		int currentX = 10;
-//     		int currentY = 10;
-//     		int newX = Movement.moveRight(currentX);
-//     		int newY = Movement.moveUp(currentY);
-//     		if(newX != 13 || newY != 7) {
-//     			throw new Exception("The value returned is not correct");
-//     		}
-//     	}catch(IllegalArgumentException | IndexOutOfBoundsException e) {
-//     		e.printStackTrace();
-//     	}
-//     	
-//     }
-//    
-//    @Test
-//    public void testMoveTopRight_2() throws Exception{
-//     	try {
-//     		int currentX = 10;
-//     		int currentY = 0;
-//     		int newX = Movement.moveRight(currentX);
-//     		int newY = Movement.moveUp(currentY);
-//     		if(newX != 13 || newY != 0) {
-//     			throw new Exception("The value returned is not correct");
-//     		}
-//     	}catch(IllegalArgumentException | IndexOutOfBoundsException e) {
-//     		e.printStackTrace();
-//     	}
-//     	
-//     }
-//    
-//    @Test
-//    public void testMoveTopRight_3() throws Exception{
-//     	try {
-//     		int currentX = 10;
-//     		int currentY = 1;
-//     		int newX = Movement.moveRight(currentX);
-//     		int newY = Movement.moveUp(currentY);
-//     		if(newX != 13 || newY != 0) { // should be able to move right. But the top wont go up any further.
-//     			throw new Exception("The value returned is not correct");
-//     		}
-//     	}catch(IllegalArgumentException | IndexOutOfBoundsException e) {
-//     		e.printStackTrace();
-//     	}
-//     	
-//     }
-//    
-//    @Test
-//    public void testMoveBotLeft_1() throws Exception{
-//     	try {
-//     		int currentX = 10;
-//     		int currentY = 10;
-//     		int newX = Movement.moveLeft(currentX);
-//     		int newY = Movement.moveDown(currentY);
-//     		if(newX != 7 || newY != 13) {
-//     			throw new Exception("The value returned is not correct");
-//     		}
-//     	}catch(IllegalArgumentException | IndexOutOfBoundsException e) {
-//     		e.printStackTrace();
-//     	}
-//     	
-//     }
-//    
-//    @Test
-//    public void testMoveBotLeft_2() throws Exception{
-//     	try {
-//     		int currentX = 0;
-//     		int currentY = 10;
-//     		int newX = Movement.moveLeft(currentX);
-//     		int newY = Movement.moveDown(currentY);
-//     		if(newX < 0 || newY != 13) {
-//     			throw new Exception("The value returned is not correct");
-//     		}
-//     	}catch(IllegalArgumentException | IndexOutOfBoundsException e) {
-//     		e.printStackTrace();
-//     	}
-//     	
-//     }
-//    
-//    @Test
-//    public void testMoveBotLeft_3() throws Exception{
-//     	try {
-//     		int currentX = 1;
-//     		int currentY = 10;
-//     		int newX = Movement.moveLeft(currentX);
-//     		int newY = Movement.moveDown(currentY);
-//     		if(newX != 0  || newY != 13) { // x should be at 0 since the object has hit the left wall. there is still room to move down 
-//     			throw new Exception("The value returned is not correct");
-//     		}
-//     	}catch(IllegalArgumentException | IndexOutOfBoundsException e) {
-//     		e.printStackTrace();
-//     	}
-//     	
-//     }
-//    
-//    
-//    
-//    @Test
-//    public void testMoveBotRight_1() throws Exception{
-//     	try {
-//     		int currentX = 10;
-//     		int currentY = 10;
-//     		int newX = Movement.moveRight(currentX);
-//     		int newY = Movement.moveDown(currentY);
-//     		if(newX != 13 || newY != 13) {
-//     			throw new Exception("The value returned is not correct");
-//     		}
-//     	}catch(IllegalArgumentException | IndexOutOfBoundsException e) {
-//     		e.printStackTrace();
-//     	}
-//     	
-//     }
-//    
-//  
-//    
-//    
-//}
-//
+package library3;
+
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+public class MovementTests {
+
+    @Test
+    public void testWalkLeft_1() throws Exception {
+    	//walk left works properly
+        try {
+           int currentX = 10;
+           int newX = Movement.walkLeft(currentX);
+           assertTrue(newX == 8);
+
+        }
+        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testWalkLeft_2() throws Exception {
+    	//walk left x is 2
+        try {
+           int currentX = 2;
+           int newX = Movement.walkLeft(currentX);
+           assertTrue(newX == 0);
+
+        }
+        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testWalkLeft_3() throws Exception {
+    	//walk left works x is 0
+        try {
+           int currentX = 0;
+           int newX = Movement.walkLeft(currentX);
+           assertTrue(newX == 0);
+
+        }
+        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////
+
+    @Test
+    public void testWalkUp_1() throws Exception {
+    	//walk left works properly
+        try {
+           int currentY = 10;
+           int newY = Movement.walkUp(currentY);
+           assertTrue(newY == 8);
+
+        }
+        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testWalkUp_2() throws Exception {
+    	//walk left works y is 2
+        try {
+           int currentY = 2;
+           int newY = Movement.walkUp(currentY);
+           assertTrue(newY == 0);
+
+        }
+        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Test
+    public void testWalkUp_3() throws Exception {
+    	//walk left works y is 0
+        try {
+           int currentY = 0;
+           int newY = Movement.walkUp(currentY);
+           assertTrue(newY == 0);
+
+        }
+        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+
+
+    @Test
+    public void testWalkRight_1() throws Exception {
+    	//width of JFrame is 1280 but we dont know how big the map will be yet
+        try {
+           int currentX = 0;
+           int newX = Movement.walkRight(currentX);
+           assertTrue(newX == 2);
+
+        }
+        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testWalkRight_2() throws Exception {
+    	//width of JFrame is 1280 but we dont know how big the map will be yet
+        try {
+           int currentX = 10;
+           int newX = Movement.walkRight(currentX);
+           assertTrue(newX == 12);
+
+        }
+        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////////////////
+
+    @Test
+    public void testWalkDown_1() throws Exception {
+    	//height of JFrame is 720 but we dont know how big the map will be yet
+        try {
+           int currentY = 10;
+           int newY = Movement.walkDown(currentY);
+           assertTrue(newY == 12);
+
+        }
+        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testWalkDown_2() throws Exception {
+    	//height of JFrame is 720 but we dont know how big the map will be yet
+        try {
+           int currentY = 0;
+           int newY = Movement.walkDown(currentY);
+           assertTrue(newY == 2);
+
+        }
+        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+
+
+    @Test
+    public void testSprintUp_1() throws Exception {
+    	//test sprint up should work when y = 0. It just doesnt move
+        try {
+           int currentY = 0;
+           int newY = Movement.sprintUp(currentY);
+           assertTrue(newY == 0);
+
+        }
+        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testSprintUp_2() throws Exception {
+    	//test sprint up should work when y = 3. It should stop at 0
+        try {
+           int currentY = 3;
+           int newY = Movement.sprintUp(currentY);
+           assertTrue(newY == 0);
+
+        }
+        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testSprintUp_3() throws Exception {
+    	//test sprint up should work when y = 10.
+        try {
+           int currentY = 10;
+           int newY = Movement.sprintUp(currentY);
+           assertTrue(newY == 3);
+
+        }
+        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+
+    @Test
+    public void testSprintLeft_1() throws Exception {
+    	//test sprint left should work when x = 0. It just doesnt move
+        try {
+           int currentX = 0;
+           int newX = Movement.sprintLeft(currentX);
+           assertTrue(newX == 0);
+
+        }
+        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testSprintLeft_2() throws Exception {
+    	//test sprint left should work when x = 3. It moves to x = 0
+        try {
+           int currentX = 3;
+           int newX = Movement.sprintLeft(currentX);
+           assertTrue(newX == 0);
+
+        }
+        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Test
+    public void testSprintLeft_3() throws Exception {
+    	//test sprint left should work when x = 10.
+        try {
+           int currentX = 10;
+           int newX = Movement.sprintLeft(currentX);
+           assertTrue(newX == 3);
+
+        }
+        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /////////////////////////////////////////////////////////////////////////////
+
+    @Test
+    public void testSprintRight_1() throws Exception {
+    	//test sprint right should work when x = 0.
+        try {
+           int currentX = 0;
+           int newX = Movement.sprintRight(currentX);
+           assertTrue(newX == 7);
+
+        }
+        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testSprintRight_2() throws Exception {
+    	//test sprint right should also work when x = 10.
+        try {
+           int currentX = 10;
+           int newX = Movement.sprintRight(currentX);
+           assertTrue(newX == 17);
+
+        }
+        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+
+    @Test
+    public void testSprintDown_1() throws Exception {
+    	//test sprint down should work when y = 0.
+        try {
+           int currentY = 0;
+           int newY = Movement.sprintRight(currentY);
+           assertTrue(newY== 7);
+
+        }
+        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testSprintDown_2() throws Exception {
+    	//test sprint down should work when y = 10.
+        try {
+           int currentY = 10;
+           int newY = Movement.sprintRight(currentY);
+           assertTrue(newY== 17);
+
+        }
+        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+
+
+}
+

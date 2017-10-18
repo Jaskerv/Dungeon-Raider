@@ -102,7 +102,7 @@ public class Player implements Character, GameObject, Saveable {
 		this.x -= Movement.WALK_SPEED;
 		// this.playerBoundBox.setX(this.playerBoundBox.getX() - SPEED);
 		this.playerBoundBox
-				.setX(Movement.walkLeft(this.playerBoundBox.getX(), Movement.WALK_SPEED));
+				.setX(Movement.walkLeft(this.playerBoundBox.getX()));
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public class Player implements Character, GameObject, Saveable {
 		this.x += Movement.WALK_SPEED;
 		// this.playerBoundBox.setX(this.playerBoundBox.getX() + SPEED);
 		this.playerBoundBox
-				.setX(Movement.walkRight(this.playerBoundBox.getX(), Movement.WALK_SPEED));
+				.setX(Movement.walkRight(this.playerBoundBox.getX()));
 	}
 
 	@Override
@@ -118,7 +118,7 @@ public class Player implements Character, GameObject, Saveable {
 		this.y -= Movement.WALK_SPEED;
 		// this.playerBoundBox.setY(this.playerBoundBox.getY() - SPEED);
 		this.playerBoundBox
-				.setY(Movement.walkUp(this.playerBoundBox.getY(), Movement.WALK_SPEED));
+				.setY(Movement.walkUp(this.playerBoundBox.getY()));
 	}
 
 	@Override
@@ -126,7 +126,7 @@ public class Player implements Character, GameObject, Saveable {
 		this.y += Movement.WALK_SPEED;
 		// this.playerBoundBox.setY(this.playerBoundBox.getY() + SPEED);
 		this.playerBoundBox
-				.setY(Movement.walkDown(this.playerBoundBox.getY(), Movement.WALK_SPEED));
+				.setY(Movement.walkDown(this.playerBoundBox.getY()));
 	}
 
 	public void runLeft() {
