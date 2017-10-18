@@ -17,7 +17,7 @@ import java.util.Scanner;
  */
 public class ItemParser {
 
-	private static List<String> listOfCategories = Arrays.asList("Weapon", 
+	private static List<String> listOfCategories = Arrays.asList("Weapon",
 				"Shield", "Consumable", "Monster");
 
 	/**

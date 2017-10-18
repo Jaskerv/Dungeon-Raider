@@ -137,7 +137,8 @@ public class Map {
 				this.items.add(item);
 			} else if (category.equals("Monster")) {
 				GameObject monster = new Monster(name, parameters[0],
-						parameters[1], parameters[2], parameters[3], parameters[4],Engine.findSprite(name));
+						parameters[1], parameters[2], parameters[3],
+						parameters[4],Engine.findSprite(name));
 				monsters.add(monster);
 			}
 			name = "";
@@ -187,7 +188,7 @@ public class Map {
 		}
 		return true;
 	}
-	
+
 	public boolean onWall(Box box) {
 		Tile currentTile;
 		for (int row = 0; row < LENGTH; row++) {
@@ -220,5 +221,5 @@ public class Map {
 	public void setMonsters(List<GameObject> monsters) {
 		this.monsters = monsters;
 	}
-	
+
 }

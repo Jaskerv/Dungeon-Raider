@@ -323,9 +323,14 @@ public class Engine extends JFrame implements Runnable, Observer {
 		Map tutMap = new Map();
 		tutMap.initialiseMap("TutorialMap");
 		mapList.put(count++, tutMap);
+		//the first proper map
 		Map map_01 = new Map();
 		map_01.initialiseMap("Map_01");
 		mapList.put(count++, map_01);
+		//the final maze map.
+		Map map_02 = new Map();
+		map_02.initialiseMap("Map_02");
+		mapList.put(count++, map_02);
 		return mapList;
 
 	}

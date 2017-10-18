@@ -27,7 +27,8 @@ public class Renderer {
 
 	public Renderer(int width, int height) {
 		/** Creates view */
-		this.view = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		this.view = new BufferedImage(width, height,
+				BufferedImage.TYPE_INT_RGB);
 		this.camera = new Camera(0, 0, view.getWidth(), view.getHeight());
 		// this.camera.setX(-100);
 		// this.camera.setY(-30);
@@ -63,15 +64,18 @@ public class Renderer {
 	 * @param yPos
 	 *            y position
 	 * @param xZoom
-	 *            horizontal resize, xZoom of 2 will make the width of the image 2
-	 *            times bigger
+	 *            horizontal resize, xZoom of 2 will make the width of the image
+	 *            2 times bigger
 	 * @param yZoom
-	 *            vertical resize, yZoom of 2 will make the height of the image 2
-	 *            times bigger
+	 *            vertical resize, yZoom of 2 will make the height of the image
+	 *            2 times bigger
 	 */
-	public void renderImage(BufferedImage img, int xPos, int yPos, int xZoom, int yZoom) {
-		int[] imgPixels = ((DataBufferInt) img.getRaster().getDataBuffer()).getData();
-		renderArray(imgPixels, img.getWidth(), img.getHeight(), xPos, yPos, xZoom, yZoom);
+	public void renderImage(BufferedImage img, int xPos, int yPos, int xZoom,
+			int yZoom) {
+		int[] imgPixels = ((DataBufferInt) img.getRaster().getDataBuffer())
+				.getData();
+		renderArray(imgPixels, img.getWidth(), img.getHeight(), xPos, yPos,
+				xZoom, yZoom);
 	}
 
 	/**
@@ -85,8 +89,10 @@ public class Renderer {
 	 * @param yZoom
 	 *            Vertical zoom multiplier
 	 */
-	public void renderSprite(Sprite sprite, int xPos, int yPos, int xZoom, int yZoom) {
-		renderArray(sprite.getPixels(), sprite.getWidth(), sprite.getHeight(), xPos, yPos, xZoom, yZoom);
+	public void renderSprite(Sprite sprite, int xPos, int yPos, int xZoom,
+			int yZoom) {
+		renderArray(sprite.getPixels(), sprite.getWidth(), sprite.getHeight(),
+				xPos, yPos, xZoom, yZoom);
 	}
 
 	/**
@@ -103,7 +109,8 @@ public class Renderer {
 	public void renderRectangle(Rectangle rect, int xZoom, int yZoom) {
 		int[] rectPixels = rect.getPixels();
 		if (rectPixels != null) {
-			renderArray(rectPixels, rect.getWidth(), rect.getHeight(), rect.getX(), rect.getY(), xZoom, yZoom);
+			renderArray(rectPixels, rect.getWidth(), rect.getHeight(),
+					rect.getX(), rect.getY(), xZoom, yZoom);
 		}
 	}
 
@@ -114,17 +121,18 @@ public class Renderer {
 	 *            this is the current map that will be displayed
 	 */
 	public void renderMap(Map map) {
-		//map (bottom layer)
+		// map (bottom layer)
 		for (int y = 0; y < 22; y++) {
 			for (int x = 0; x < 22; x++) {
 				Tile tile = map.getMap()[x][y];
 				Sprite tileSprite = tile.getSprite();
-				renderArray(tileSprite.getPixels(), tileSprite.getWidth(), tileSprite.getHeight(), tile.getX(),
-						tile.getY(), ZOOM, ZOOM);
+				renderArray(tileSprite.getPixels(), tileSprite.getWidth(),
+						tileSprite.getHeight(), tile.getX(), tile.getY(), ZOOM,
+						ZOOM);
 
 			}
 		}
-		//items
+		// items
 		for (int y = 0; y < 22; y++) {
 			for (int x = 0; x < 22; x++) {
 				Tile tile = map.getMap()[x][y];
@@ -132,11 +140,11 @@ public class Renderer {
 					Item item = tile.getItem();
 					Sprite sprite = item.getSprite();
 					if (!item.getPickedUp()) {
-						
-						renderArray(sprite.getPixels(), sprite.getWidth(), sprite.getHeight(),
-								item.getPosition().getX(), item.getPosition().getY(), ZOOM, ZOOM);
-					}
-					else {
+
+						renderArray(sprite.getPixels(), sprite.getWidth(),
+								sprite.getHeight(), item.getPosition().getX(),
+								item.getPosition().getY(), ZOOM, ZOOM);
+					} else {
 						sprite.drawOnSprite(sprite, 500, 500, 3, 3);
 					}
 				}
@@ -157,13 +165,14 @@ public class Renderer {
 	 * @param yZoom
 	 *            Vertical zoom multiplier
 	 */
-	public void renderArray(int[] renderPixel, int renderWidth, int renderHeight, int xPos, int yPos, int xZoom,
-			int yZoom) {
+	public void renderArray(int[] renderPixel, int renderWidth,
+			int renderHeight, int xPos, int yPos, int xZoom, int yZoom) {
 		for (int y = 0; y < renderHeight; y++)
 			for (int x = 0; x < renderWidth; x++)
 				for (int yZoomIndex = 0; yZoomIndex < yZoom; yZoomIndex++)
 					for (int xZoomIndex = 0; xZoomIndex < xZoom; xZoomIndex++)
-						setPixel(renderPixel[x + y * renderWidth], (x * xZoom) + xPos + xZoomIndex,
+						setPixel(renderPixel[x + y * renderWidth],
+								(x * xZoom) + xPos + xZoomIndex,
 								(y * yZoom) + yPos + yZoomIndex);
 	}
 
@@ -179,7 +188,8 @@ public class Renderer {
 		for (int y = 0; y < height; y++)
 			for (int x = 0; x < width; x++) {
 				int pixelIndex = (x + (y * view.getWidth()));
-				if (pixels.length > pixelIndex && !Engine.alpha.match(ui[pixelIndex])) {
+				if (pixels.length > pixelIndex
+						&& !Engine.alpha.match(ui[pixelIndex])) {
 					pixels[pixelIndex] = ui[pixelIndex];
 				}
 			}
@@ -194,7 +204,8 @@ public class Renderer {
 	 */
 	private void setPixel(int pixel, int x, int y) {
 		if (this.camera.contains(x, y)) {
-			int pixelIndex = (x - this.camera.getX()) + (y - this.camera.getY()) * view.getWidth();
+			int pixelIndex = (x - this.camera.getX())
+					+ (y - this.camera.getY()) * view.getWidth();
 			if (pixels.length > pixelIndex && !Engine.alpha.match(pixel)) {
 				pixels[pixelIndex] = pixel;
 			}
@@ -209,7 +220,8 @@ public class Renderer {
 	 */
 	public void updateSize(int width, int height) {
 		/** Creates view */
-		this.view = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		this.view = new BufferedImage(width, height,
+				BufferedImage.TYPE_INT_RGB);
 		/** Creates array for pixels */
 		pixels = ((DataBufferInt) view.getRaster().getDataBuffer()).getData();
 		for (int i = 0; i < pixels.length; i++) {
