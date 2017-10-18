@@ -22,68 +22,85 @@ import library5.StatModifier;
  * Monster class
  */
 public class Monster implements Character, GameObject {
-
+	
+	//Monsters name
 	private String name;
-
+	
+	//Monsters x and y coordinates
 	private int x;
 	private int y;
-
+	
+	//Monsters health
 	private int health;
+	
+	//Monsters sprite image
 	private Sprite spriteImage;
-
+	
+	//Monsters speed
 	private int speed;
-
+	
+	//Monsters zoom file 
 	private static final int ZOOM = 5;
-	private static final String SPRITE_SHEET_2_PATH = "resources/"
-			+ "tiles/DungeonTileset4.png";
-
-	private static final SpriteSheet SPRITE_SHEET_2 = new SpriteSheet(
-			Engine.loadImage(SPRITE_SHEET_2_PATH));
-
+	
+	//The monsters height and width based on the size of the monsters sprite
+	//times by the amount that sprite is bring moved in
 	private int realHeight;
 	private int realWidth;
-
+	
+	//A queue keeping track of all of the damage the monster has taken
 	private Queue<Integer> damageQueue;
 
+	//A bounding box for the monsters movement collisions and a attack radius
 	private Rectangle boundingBox;
+	private Rectangle attackRadius;
 
+	//Keeps track of the monsters last attack and when they can next attack
 	private int attackTimer;
-
-	private int ID;
+	
+	//Amount of damage the monster does
+	private int damage;
 
 	/**
 	 * Monster
 	 */
-	public Monster(String name, int x, int y, int speed, int health, int ID,
+	public Monster(String name, int x, int y, int speed, int health, int damage,
 			Sprite sprite) {
-		SPRITE_SHEET_2.loadSprites(16, 16);
+		//Sets all values passed through constructor
 		this.name = name;
 		this.x = x;
 		this.y = y;
 		this.speed = speed;
-		this.spriteImage = sprite;
 		this.health = health;
-		this.ID = ID;
+		this.damage = damage;
+		this.spriteImage = sprite;
+		//Generates height and width values that account for zoom
 		this.realHeight = spriteImage.getHeight() * ZOOM;
 		this.realWidth = spriteImage.getWidth() * ZOOM;
-		this.damageQueue = new PriorityQueue<>();
+
+		//Initiates the collision radius of the monster
 		this.boundingBox = new Rectangle(this.x,
 				this.y + (int) (this.realHeight * 0.7), this.realWidth,
 				(int) (this.realHeight * 0.3));
-
 		this.boundingBox.generateGraphics(Color.BLUE.getRGB());
+
+		//Initiates the attack radius of the monster
+		this.attackRadius = new Rectangle(this.x-(this.realWidth), this.y-(this.realHeight), (int) (this.realWidth+(this.realWidth*0.4)), (int) (this.realHeight+(this.realHeight*0.4)));
+		this.attackRadius.generateGraphics(Color.BLUE.getRGB());
+		
+		//Initiates attack timer and damage queue
 		this.attackTimer = 0;
+		this.damageQueue = new PriorityQueue<>();
 	}
 
 	@Override
 	public int heavyAttack() {
 		// TODO Auto-generated method stub
-		return 1;
+		return this.damage;
 	}
 
 	@Override
 	public void walkLeft() {
-		this.x -= Movement.WALK_SPEED;
+		this.x -= speed;
 		// this.playerBoundBox.setX(this.playerBoundBox.getX() - SPEED);
 		this.boundingBox
 				.setX(Movement.walkLeft(this.boundingBox.getX(), this.speed));
@@ -91,7 +108,7 @@ public class Monster implements Character, GameObject {
 
 	@Override
 	public void walkRight() {
-		this.x += Movement.WALK_SPEED;
+		this.x += speed;
 		// this.playerBoundBox.setX(this.playerBoundBox.getX() + SPEED);
 		this.boundingBox
 				.setX(Movement.walkRight(this.boundingBox.getX(), this.speed));
@@ -99,7 +116,7 @@ public class Monster implements Character, GameObject {
 
 	@Override
 	public void walkUp() {
-		this.y -= Movement.WALK_SPEED;
+		this.y -= speed;
 		// this.playerBoundBox.setY(this.playerBoundBox.getY() - SPEED);
 		this.boundingBox
 				.setY(Movement.walkUp(this.boundingBox.getY(), this.speed));
@@ -107,22 +124,28 @@ public class Monster implements Character, GameObject {
 
 	@Override
 	public void walkDown() {
-		this.y += Movement.WALK_SPEED;
+		this.y += speed;
 		// this.playerBoundBox.setY(this.playerBoundBox.getY() + SPEED);
 		this.boundingBox
 				.setY(Movement.walkDown(this.boundingBox.getY(), this.speed));
 	}
 
+	//Render method for the chosen rectangle bounding box to display visually
 	@Override
 	public void render(Renderer renderer, int xZoom, int yZoom) {
-		renderer.renderRectangle(this.boundingBox, 1, 1);
+		renderer.renderRectangle(this.attackRadius, 1, 1);
 		renderer.renderArray(spriteImage.getPixels(), spriteImage.getWidth(),
 				spriteImage.getHeight(), x, y, ZOOM, ZOOM);
 	}
 
+	/**
+	 * Updates the monster based on recent events inside the engine
+	 */
 	@Override
 	public void update(Engine engine) {
-
+		//sets the new attack radius co-ordinates
+		this.attackRadius.setX( (int) (this.x-(this.realWidth*0.2)));
+		this.attackRadius.setY( (int) (this.y-(this.realHeight*0.2)));
 		// Checks to see if player should attack
 		checkAttack(engine);
 		// Checks to see if player should move
@@ -131,31 +154,40 @@ public class Monster implements Character, GameObject {
 		checkDamage();
 
 	}
-
+	
+	/**
+	 * Deals damage to the player = to that of the monsters damage set
+	 */
 	@Override
 	public void attack(int mx, int my, Engine engine) {
 		// TODO Auto-generated method stub
 		Player player = engine.getPlayer();
-		engine.getPlayer().damage((int) StatModifier.calcDamage(heavyAttack(),
-				player.getHp(), 0, 0));
+		engine.getPlayer().damage(heavyAttack());
 	}
 
+	/**
+	 * Checks to see if the monster can attack and if so attempts to attack the player
+	 * @param engine is the game engine containing all the information needed to calculate the attack 
+	 */
 	public void checkAttack(Engine engine) {
 		// Keeps track of how many updates have passed inbetween each attack so
 		// monster cant
 		// attack to quickly
-		if (this.attackTimer < 10) {
+		if (this.attackTimer < 100) {
 			// cant attack yet
 			attackTimer++;
 		} else {
 			// attacks now
-			if (boundingBox.contains(engine.getPlayer().getPlayerBoundBox())) {
+			if (attackRadius.contains(engine.getPlayer().getPlayerBoundBox())) {
 				attackTimer = 0;
 				attack(x, y, engine);
 			}
 		}
 	}
 
+	/**
+	 * Checks to see if the monster has taken any damage
+	 */
 	public void checkDamage() {
 		if (!damageQueue.isEmpty()) {
 			this.health += damageQueue.poll();
@@ -181,14 +213,15 @@ public class Monster implements Character, GameObject {
 		Box b = this.getBoundingBox();
 		// Player is left move -> walk left
 		if (playerX < b.getX()) {
+			//If the players distance is within the next movement 
 			if (playerX > (b.getX() - speed)) {
 
 			} else {
-				Box next = this.boundingBox.clone();
-				next.setX(b.getX() - speed);
-				if (!player.getPlayerBoundBox().contains(next)) {
-					if (!monsterCollision(engine, next))
-						if (checkBoundry(currentMap, next))
+				Box next = this.boundingBox.clone();	
+				next.setX(b.getX() - speed);	//Creates a bounding box = to that of the next movement
+				if (!player.getPlayerBoundBox().contains(next)) { //Checks if the monster will collide with the player
+					if (!monsterCollision(engine, next)) //Checks if the monster will collide with another monster
+						if (checkBoundry(currentMap, next)) //Checks if the monster will collide with a wall
 							walkLeft();
 				}
 			}
@@ -237,6 +270,12 @@ public class Monster implements Character, GameObject {
 		}
 	}
 
+	/**
+	 * Computes whether two monsters are colliding in the movement
+	 * @param engine is the game engine containing all the information needed to calculate the collision
+	 * @param nextMovement is the next movement that could occur if there are no collisions
+	 * @return true if the is a collision false if there is not
+	 */
 	public boolean monsterCollision(Engine engine, Box nextMovement) {
 		// Returns all of the monsters in the engine
 		List<GameObject> monsters = engine.getCurrentMap().getMonsters();
@@ -261,10 +300,8 @@ public class Monster implements Character, GameObject {
 	}
 
 	/**
-	 * Damages monster with positive numbers, heals monster with negative
-	 * numbers
-	 *
-	 * @param i
+	 * Adds damage into the monsters damage queue to be dealt to the monster
+	 * @param i the amount of damage being dealt.
 	 */
 	public void damage(int i) {
 		this.damageQueue.offer(-i);
@@ -284,14 +321,6 @@ public class Monster implements Character, GameObject {
 
 	public void setHealth(int health) {
 		this.health = health;
-	}
-
-	public int getID() {
-		return ID;
-	}
-
-	public void setID(int iD) {
-		ID = iD;
 	}
 
 	public void setBoundingBox(Rectangle boundingBox) {

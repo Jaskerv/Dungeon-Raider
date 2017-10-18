@@ -1,10 +1,10 @@
 { 
 Weapon Short_Sword 0 2 10
 Consumable Small_Health_Potion 857 90 30
-Monster Monster_One 300 600 2 100 1
-Monster Monster_Two 400 700 3 100 2
-Monster Monster_Three 500 700 4 100 3
-Monster Monster_Four 600 700 1 100 4
+Monster Monster_One 300 600 2 100
+Monster Monster_Two 400 700 3 100
+Monster Monster_Three 500 700 4 100
+Monster Monster_Four 600 700 1 100
 }
 
 0 0 0
