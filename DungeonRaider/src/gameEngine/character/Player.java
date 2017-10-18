@@ -638,6 +638,11 @@ public class Player implements Character, GameObject, Saveable {
 		s += "int	gold	" + gold + "\n";
 		s += "int	x	" + x + "\n";
 		s += "int	y	" + y + "\n";
+		s += "primaryWeapon	primaryWeapon	"+primaryWeapon.save()+"\n";
+		s += "inventory	inventory	"+inventory.save()+"\n";
+		s += "zoom	zoom	"+zoom+"\n";
+		s += "damageQueue	damageQueue	"+damageQueue+"\n";
+		s += "direction	direction	"+direction+"\n";
 		s += "}	\n";
 
 		return s;

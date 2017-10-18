@@ -1,7 +1,10 @@
 package gameEngine.item;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.PrimitiveIterator.OfDouble;
+import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.swing.DefaultDesktopManager;
@@ -29,7 +32,8 @@ public class Weapon extends Item implements Upgradable, Saveable {
 	 *            in percentage
 	 *
 	 */
-	public Weapon(String name, int x, int y, int damage, int range, int critChance, Sprite sprite) {
+	public Weapon(String name, int x, int y, int damage, int range,
+			int critChance, Sprite sprite) {
 		super(x, y, sprite);
 		this.name = name;
 		this.damage = damage;
@@ -39,8 +43,8 @@ public class Weapon extends Item implements Upgradable, Saveable {
 	}
 
 	/**
-	 * Upgrade weapon by increasing its damage and crit chance. Number of upgrades
-	 * capped at 5.
+	 * Upgrade weapon by increasing its damage and crit chance. Number of
+	 * upgrades capped at 5.
 	 */
 	@Override
 	public void upgrade() {
@@ -106,6 +110,28 @@ public class Weapon extends Item implements Upgradable, Saveable {
 
 	@Override
 	public void load(File file) {
+		Scanner sc = null;
+		try {
+			sc = new Scanner(file);
+
+			while (sc.hasNext()) {
+				String s = sc.nextLine();
+				if (s.contains("{")) {
+					String[] split = s.split("\t");
+					if (split[0].equals("Player")) {
+						List<String> fields = new ArrayList<>();
+						while (sc.hasNext()) {
+							String line = sc.nextLine();
+							if (line.contains("}")) {
+							}
+						}
+					}
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
