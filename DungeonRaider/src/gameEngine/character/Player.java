@@ -198,6 +198,9 @@ public class Player implements Character, GameObject, Saveable {
 
 		Box curBox = this.playerBoundBox;
 
+		pickUp(engine);
+
+
 		/**
 		 * Player running connection with key controller: Also checks for player
 		 * connection with walls
@@ -303,28 +306,9 @@ public class Player implements Character, GameObject, Saveable {
 			couldntRun = false;
 		}
 
-		// Checking if player is attempting to pick up and whether there is
-		// anything to
-		// pick up
-		if (keyBinds.isPickUp()) {
-			// this.pickUpRadius = new Rectangle(x, y, (spriteImage.getWidth() *
-			// zoom),
-			// (spriteImage.getHeight() * zoom));
-			// need to check if any of the items locations
-			List<Item> itemsOnMap = engine.getCurrentMap().getItems();
-			for (Item item : itemsOnMap) {
-				Box itemPos = item.getBoundingBox();
-				if (this.playerBoundBox.contains(itemPos)) {
-					this.inventory.add(item);
-					item.setPickedUp(true);
-					itemsOnMap.remove(item);
-					break;
-				}
-			}
-		}
+
 
 		if (keyBinds.isAttak()) {
-
 			List<GameObject> monsters = engine.getCurrentMap().getMonsters();
 			if (monsters.size() == 0) {
 				// break;
@@ -346,7 +330,6 @@ public class Player implements Character, GameObject, Saveable {
 					attackMonsterBelow(mon, monsters, iterator);
 				}
 			}
-
 		}
 
 		/**
@@ -408,6 +391,30 @@ public class Player implements Character, GameObject, Saveable {
 			this.playerBoundBox.generateGraphics(Color.blue.getRGB());
 		}
 	}
+
+	public void pickUp(Engine engine) {
+		KeyController keyBinds = engine.getKeyBinds();
+		//Checks if player is attempting to pick up item
+		if (keyBinds.isPickUp()) {
+			//Returns all of the items on the map
+			List<Item> itemsOnMap = engine.getCurrentMap().getItems();
+			for (Item item : itemsOnMap) {
+				Box itemPos = item.getBoundingBox();
+				//Checks if the player is standing within pickup range
+				if (this.playerBoundBox.contains(itemPos)) {
+					//Adds item to players inventory
+					this.inventory.add(item);
+					//Sets the item pickup value to true
+					item.setPickedUp(true);
+					//Removes the item from the map
+					itemsOnMap.remove(item);
+					break;
+				}
+			}
+		}
+	}
+
+
 
 	public void attackMonsterToTheRight(Monster mon, List<GameObject> monsters,
 			Iterator<GameObject> iterator) {

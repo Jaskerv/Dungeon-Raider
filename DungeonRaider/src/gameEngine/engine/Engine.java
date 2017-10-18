@@ -265,6 +265,7 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 					this.pauseMenu.update(this);
 				}
 			}
+
 		}
 	}
 
