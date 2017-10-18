@@ -12,7 +12,7 @@ public class MovementTests {
     	//walk left works properly
         try {
            int currentX = 10;
-           int newX = Movement.walkLeft(currentX);
+           int newX = Movement.walkLeft(currentX,);
            assertTrue(newX == 8);
 
         }

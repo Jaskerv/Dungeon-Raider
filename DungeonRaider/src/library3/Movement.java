@@ -11,25 +11,20 @@ public class Movement {
 	 * Methods for walking
 	 */
 
-	public static int walkUp(int currentY) {
-		if(currentY <= WALK_SPEED)
-			return 0;
-
-		return currentY - WALK_SPEED;
+	public static int walkUp(int currentY,int walkSpeed) {
+		return currentY - walkSpeed;
 	}
 
-	public static int walkRight(int currentX) {
-		return currentX + WALK_SPEED;
+	public static int walkRight(int currentX,int walkSpeed) {
+		return currentX + walkSpeed;
 	}
 
-	public static int walkDown(int currentY) {
-		return currentY + WALK_SPEED;
+	public static int walkDown(int currentY,int walkSpeed) {
+		return currentY + walkSpeed;
 	}
 
-	public static int walkLeft(int currentX) {
-		if(currentX <= WALK_SPEED)
-			return 0;
-		return currentX - WALK_SPEED;
+	public static int walkLeft(int currentX,int walkSpeed) {
+		return currentX - walkSpeed;
 	}
 
 
@@ -39,23 +34,19 @@ public class Movement {
 	 */
 
 	public static int sprintUp(int currentY) {
-		if(currentY <= SPRINT_SPEED)
-			return 0;
-		return currentY - SPRINT_SPEED;
+		return currentY - Movement.SPRINT_SPEED;
 	}
 
 	public static int sprintRight(int currentX) {
-		return currentX + SPRINT_SPEED;
+		return currentX + Movement.SPRINT_SPEED;
 	}
 
 	public static int sprintDown(int currentY) {
-		return currentY + SPRINT_SPEED;
+		return currentY + Movement.SPRINT_SPEED;
 	}
 
 	public static int sprintLeft(int currentX) {
-		if(currentX <= SPRINT_SPEED)
-			return 0;
-		return currentX - SPRINT_SPEED;
+		return currentX - Movement.SPRINT_SPEED;
 	}
 
 
