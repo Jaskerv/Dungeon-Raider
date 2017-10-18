@@ -12,6 +12,8 @@ public class Movement {
 	 */
 
 	public static int walkUp(int currentY,int walkSpeed) {
+		if(currentY - walkSpeed <= 0)
+			return 0;
 		return currentY - walkSpeed;
 	}
 
@@ -24,6 +26,8 @@ public class Movement {
 	}
 
 	public static int walkLeft(int currentX,int walkSpeed) {
+		if(currentX - walkSpeed <= 0 )
+			return 0;
 		return currentX - walkSpeed;
 	}
 

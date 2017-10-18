@@ -12,13 +12,15 @@ public class MovementTests {
     	//walk left works properly
         try {
            int currentX = 10;
-           int newX = Movement.walkLeft(currentX,);
+           int speed = 2;
+           int newX = Movement.walkLeft(currentX,speed);
            assertTrue(newX == 8);
 
         }
         catch (IllegalArgumentException | IndexOutOfBoundsException e) {
             e.printStackTrace();
         }
+
     }
 
     @Test
@@ -26,7 +28,8 @@ public class MovementTests {
     	//walk left x is 2
         try {
            int currentX = 2;
-           int newX = Movement.walkLeft(currentX);
+           int speed = 2;
+           int newX = Movement.walkLeft(currentX,speed);
            assertTrue(newX == 0);
 
         }
@@ -40,8 +43,39 @@ public class MovementTests {
     	//walk left works x is 0
         try {
            int currentX = 0;
-           int newX = Movement.walkLeft(currentX);
+           int speed = 2;
+           int newX = Movement.walkLeft(currentX,speed);
            assertTrue(newX == 0);
+
+        }
+        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testWalkLeft_4() throws Exception {
+    	//walk left works x is 0
+        try {
+           int currentX = 0;
+           int speed = 5;
+           int newX = Movement.walkLeft(currentX,speed);
+           assertTrue(newX == 0);
+
+        }
+        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testWalkLeft_5() throws Exception {
+    	//walk left works x is 0
+        try {
+           int currentX = 6;
+           int speed = 5;
+           int newX = Movement.walkLeft(currentX,speed);
+           assertTrue(newX == 1);
 
         }
         catch (IllegalArgumentException | IndexOutOfBoundsException e) {
@@ -56,7 +90,8 @@ public class MovementTests {
     	//walk left works properly
         try {
            int currentY = 10;
-           int newY = Movement.walkUp(currentY);
+           int speed = 2;
+           int newY = Movement.walkUp(currentY,speed);
            assertTrue(newY == 8);
 
         }
@@ -70,7 +105,8 @@ public class MovementTests {
     	//walk left works y is 2
         try {
            int currentY = 2;
-           int newY = Movement.walkUp(currentY);
+           int speed =2;
+           int newY = Movement.walkUp(currentY,speed);
            assertTrue(newY == 0);
 
         }
@@ -85,8 +121,39 @@ public class MovementTests {
     	//walk left works y is 0
         try {
            int currentY = 0;
-           int newY = Movement.walkUp(currentY);
+           int speed = 2;
+           int newY = Movement.walkUp(currentY, speed);
            assertTrue(newY == 0);
+
+        }
+        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testWalkUp_4() throws Exception {
+    	//walk left works y is 0
+        try {
+           int currentY = 0;
+           int speed = 5;
+           int newY = Movement.walkUp(currentY, speed);
+           assertTrue(newY == 0);
+
+        }
+        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testWalkUp_5() throws Exception {
+    	//walk left works y is 0
+        try {
+           int currentY = 6;
+           int speed = 5;
+           int newY = Movement.walkUp(currentY, speed);
+           assertTrue(newY == 1);
 
         }
         catch (IllegalArgumentException | IndexOutOfBoundsException e) {
@@ -102,7 +169,8 @@ public class MovementTests {
     	//width of JFrame is 1280 but we dont know how big the map will be yet
         try {
            int currentX = 0;
-           int newX = Movement.walkRight(currentX);
+           int speed = 2;
+           int newX = Movement.walkRight(currentX,speed);
            assertTrue(newX == 2);
 
         }
@@ -116,8 +184,24 @@ public class MovementTests {
     	//width of JFrame is 1280 but we dont know how big the map will be yet
         try {
            int currentX = 10;
-           int newX = Movement.walkRight(currentX);
+           int speed =2;
+           int newX = Movement.walkRight(currentX,speed);
            assertTrue(newX == 12);
+
+        }
+        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testWalkRight_3() throws Exception {
+    	//width of JFrame is 1280 but we dont know how big the map will be yet
+        try {
+           int currentX = 10;
+           int speed =5;
+           int newX = Movement.walkRight(currentX,speed);
+           assertTrue(newX == 15);
 
         }
         catch (IllegalArgumentException | IndexOutOfBoundsException e) {
@@ -132,7 +216,8 @@ public class MovementTests {
     	//height of JFrame is 720 but we dont know how big the map will be yet
         try {
            int currentY = 10;
-           int newY = Movement.walkDown(currentY);
+           int speed = 2;
+           int newY = Movement.walkDown(currentY, speed);
            assertTrue(newY == 12);
 
         }
@@ -146,8 +231,39 @@ public class MovementTests {
     	//height of JFrame is 720 but we dont know how big the map will be yet
         try {
            int currentY = 0;
-           int newY = Movement.walkDown(currentY);
+           int speed = 2;
+           int newY = Movement.walkDown(currentY,speed);
            assertTrue(newY == 2);
+
+        }
+        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testWalkDown_3() throws Exception {
+    	//height of JFrame is 720 but we dont know how big the map will be yet
+        try {
+           int currentY = 0;
+           int speed = 5;
+           int newY = Movement.walkDown(currentY,speed);
+           assertTrue(newY == 5);
+
+        }
+        catch (IllegalArgumentException | IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testWalkDown_4() throws Exception {
+    	//height of JFrame is 720 but we dont know how big the map will be yet
+        try {
+           int currentY = 10;
+           int speed = 5;
+           int newY = Movement.walkDown(currentY,speed);
+           assertTrue(newY == 15);
 
         }
         catch (IllegalArgumentException | IndexOutOfBoundsException e) {
