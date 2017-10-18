@@ -1,9 +1,9 @@
 Player 
-int	hp	31
+int	hp	160
 int	hpMax	100
 int	gold	0
-int	x	202
-int	y	819
+int	x	1446
+int	y	173
 Weapon
 String	name	Start
 int	damage	10
