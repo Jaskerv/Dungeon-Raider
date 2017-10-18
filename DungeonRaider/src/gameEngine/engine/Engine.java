@@ -3,15 +3,12 @@ package gameEngine.engine;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-
 import java.util.ArrayList;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
@@ -24,13 +21,10 @@ import javax.swing.JFrame;
 import gameEngine.UI.IngameInterface;
 import gameEngine.UI.PauseMenu;
 import gameEngine.UI.YouDied;
-import gameEngine.character.Monster;
 import gameEngine.character.Player;
 import gameEngine.controller.KeyController;
-import gameEngine.controller.MouseController;
 import gameEngine.map.Map;
 import gameEngine.sound.SoundMap;
-import gameEngine.sprite.AnimatedSprite;
 import gameEngine.sprite.Sprite;
 import gameEngine.sprite.SpriteSheet;
 import gameEngine.util.PatternInt;
@@ -47,21 +41,26 @@ import library4.Saveable;
  */
 
 public class Engine extends JFrame implements Runnable, Observer, Saveable {
-	public static final PatternInt alpha = new PatternInt(0xFFFF00DC, -16777216);
+	public static final PatternInt alpha = new PatternInt(0xFFFF00DC,
+			-16777216);
 
 	private static final long serialVersionUID = 1L;
 	private Canvas canvas;
-	private Toolkit tk;
 	private Renderer renderer;
 	public static int WIDTH = 1280;
 	public static int HEIGHT = 720;
 	private SaveBoi save;
-
+	/**
+	 * Sprites
+	 */
+	private static SpriteSheet dunegeonSpritesheet = new SpriteSheet(
+			loadImage("resources/tiles/DungeonTileset1.png"));
+	private static SpriteSheet dunegeonSpritesheet2 = new SpriteSheet(
+			Engine.loadImage("resources/tiles/DungeonTileset4.png"));
 	/**
 	 * Key listener - keeps track of cameras movement
 	 */
 	private KeyController keyBinds;
-	private MouseController mouseListener;
 	private Player player;
 	/**
 	 * GUI
@@ -72,28 +71,24 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 	private YouDied youDied;
 	private boolean menu;
 	/** This will contain the list of maps from start to finish */
-	private HashMap<Integer, Map> mapList = initialiseMaps();
-	private Map currentMap = mapList.get(0);
-	private int currentMapNumber = 1;
-	/** Test Objects */
-	private Sprite playerSprite;
-	private SpriteSheet testSpriteSheet;
-	private static SpriteSheet dungeonTiles = new SpriteSheet(
-			loadImage("resources/tiles/DungeonTileset1.png"));
-	private static final SpriteSheet SPRITE_SHEET_2 = new SpriteSheet(
-			Engine.loadImage("resources/tiles/DungeonTileset4.png"));
+	private HashMap<Integer, Map> mapList;
+	private Map currentMap;
+	private int currentMapNumber;
 	private List<GameObject> monsters;
-	private Sprite weaponTestSprite;
 
 	private SoundMap soundLibrary;
 
 	public Engine() {
-		// this.canvas = new Canvas();
+		/** Initializing the map */
+		this.mapList = initialiseMaps();
+		this.currentMap = mapList.get(0);
+		this.currentMapNumber = 1;
+		/** Initializing the sound library */
 		this.soundLibrary = new SoundMap(
 				"resources/sountracks/soundlibrary.txt");
+		/** setting start game screen */
 		this.startGame = new StartGame(this);
 		this.menu = true;
-		this.tk = this.getToolkit();
 
 		/** Sets name of JFrame window */
 		setTitle("Dungeon Raider");
@@ -108,7 +103,6 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 		setLocationRelativeTo(null);
 
 		// /** Adds canvas to JFrame */
-		// add(canvas);
 		add(startGame);
 
 		/** Disable Resizeable */
@@ -118,55 +112,27 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 		setVisible(true);
 
 		/** Component listener to see if JFrame is resized */
-		/** Creates 2 buffer renderer */
+		/** Creates 3 buffer renderer */
 		this.startGame.createBufferStrategy(3);
 		this.renderer = new Renderer(getWidth(), getHeight());
-
-		/**
-		 * Testing Objects
-		 */
-		BufferedImage sheet = loadImage("resources/tiles/Tiles1.png");
-
-		testSpriteSheet = new SpriteSheet(sheet);
-		testSpriteSheet.loadSprites(16, 16);
-		// dungeonTiles.loadSprites(16, 16);
-		this.playerSprite = dungeonTiles.getSprite(4, 6);
-
-		// Testing the animated sprites for the player
-		BufferedImage playerSheetImage = loadImage(
-				"resources/images/Player.png");
-		SpriteSheet playerSheet = new SpriteSheet(playerSheetImage);
-		playerSheet.loadSprites(20, 26);
-
-		AnimatedSprite playerAnimations = new AnimatedSprite(playerSheet, 5);
-
-		/**
-		 * Testing melee
-		 */
-		weaponTestSprite = dungeonTiles.getSprite(10, 1);
-
 		/**
 		 * Initiating the players
 		 */
-		this.player = new Player(new Position(150, 200), 100, playerAnimations,
-				5, 100, 100);
+		this.player = new Player(new Position(150, 200), 100, 5, 100, 100);
 		this.monsters = currentMap.getMonsters();
-		// this.object.add(player);
 		/** GUI */
 		this.GUI = new IngameInterface(player, WIDTH, HEIGHT);
 
 		this.pauseMenu = new PauseMenu(
-				this.loadImage("resources/images/Pause.png"));
+				Engine.loadImage("resources/images/Pause.png"));
 		this.youDied = new YouDied(
-				this.loadImage("resources/images/YouDied.png"));
+				Engine.loadImage("resources/images/YouDied.png"));
 
 		/**
 		 * initiating key listener
 		 */
 		this.keyBinds = new KeyController(player, this);
-		this.mouseListener = new MouseController(this);
 		this.addKeyListener(keyBinds);
-		this.addMouseListener(mouseListener);
 	}
 
 	/**
@@ -370,7 +336,6 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 				this.canvas.createBufferStrategy(3);
 				this.canvas.addKeyListener(keyBinds);
 				this.canvas.addFocusListener(keyBinds);
-				this.canvas.addMouseListener(mouseListener);
 				this.setFocusable(true);
 			}
 			this.menu = false;
@@ -388,21 +353,21 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 	 * @return
 	 */
 	public static Sprite findSprite(String name) {
-		dungeonTiles.loadSprites(16, 16);
-		SPRITE_SHEET_2.loadSprites(16, 16);
+		dunegeonSpritesheet.loadSprites(16, 16);
+		dunegeonSpritesheet2.loadSprites(16, 16);
 		if (name.equals("Monster_One")) {
-			return dungeonTiles.getSprite(3, 6);
+			return dunegeonSpritesheet.getSprite(3, 6);
 		} else if (name.equals("Monster_Two")) {
-			return SPRITE_SHEET_2.getSprite(3, 10);
+			return dunegeonSpritesheet2.getSprite(3, 10);
 		} else if (name.equals("Monster_Three")) {
-			return SPRITE_SHEET_2.getSprite(3, 12);
+			return dunegeonSpritesheet2.getSprite(3, 12);
 		} else if (name.equals("Monster_Four")) {
-			return SPRITE_SHEET_2.getSprite(4, 11);
+			return dunegeonSpritesheet2.getSprite(4, 11);
 
 		} else if (name.equals("Small_Health_Potion")
 				|| name.equals("Big_Health_Potion")) {
 
-			return SPRITE_SHEET_2.getSprite(12, 11);
+			return dunegeonSpritesheet2.getSprite(12, 11);
 		}
 		return null;
 	}
@@ -454,10 +419,6 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 		return soundLibrary;
 	}
 
-	public MouseController getMouseListener() {
-		return mouseListener;
-	}
-
 	/**
 	 * @return the pauseMenu
 	 */
@@ -499,7 +460,6 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 		return this.monsters;
 	}
 
-
 	@Override
 	public String save() {
 		String s = "Map	{\n";
@@ -535,5 +495,12 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 
 	}
 
-
+	/**
+	 * Adds monster to the list of monsters
+	 *
+	 * @param monster
+	 */
+	public void addMonster(GameObject monster) {
+		this.monsters.add(monster);
+	}
 }

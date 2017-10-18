@@ -1,6 +1,7 @@
 package gameEngine.character;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Iterator;
 import java.util.List;
@@ -8,7 +9,6 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 import gameEngine.controller.KeyController;
-import gameEngine.controller.MouseController;
 import gameEngine.engine.Engine;
 import gameEngine.engine.GameObject;
 import gameEngine.engine.Renderer;
@@ -18,6 +18,7 @@ import gameEngine.item.Weapon;
 import gameEngine.map.Map;
 import gameEngine.sprite.AnimatedSprite;
 import gameEngine.sprite.Sprite;
+import gameEngine.sprite.SpriteSheet;
 import gameEngine.util.Box;
 import gameEngine.util.Position;
 import gameEngine.util.Rectangle;
@@ -43,15 +44,10 @@ public class Player implements Character, GameObject, Saveable {
 	/**
 	 * Item and bounding box variables
 	 */
-	private boolean primaryEquipped;
 	private Weapon primaryWeapon;
 	private Inventory inventory;
 	private Sprite spriteImage;
 	private Rectangle playerBoundBox;
-	private Rectangle rightPrimaryAttackRad;
-	private Rectangle leftPrimaryAttackRad;
-	// public static final int SPEED = 2;
-	// public static final int SPRINT = 7;
 	private int zoom;
 	private Queue<Integer> damageQueue;
 
@@ -61,67 +57,26 @@ public class Player implements Character, GameObject, Saveable {
 	// Player.png
 	private int direction = 0;
 
-	public Player(Position center, int stamina, Sprite playerSprite, int zoom,
-			int hp, int hpMax) {
+	public Player(Position center, int stamina, int zoom, int hp, int hpMax) {
 		this.damageQueue = new PriorityQueue<>();
-		this.spriteImage = playerSprite;
+		loadSprites();
 		this.zoom = zoom;
 		this.zoom = 3;
-		this.x = center.getX() - (playerSprite.getWidth() / 2 * zoom);
-		this.y = center.getY() - (playerSprite.getHeight() / 2 * zoom);
+		this.x = center.getX() - (spriteImage.getWidth() / 2 * zoom);
+		this.y = center.getY() - (spriteImage.getHeight() / 2 * zoom);
 		this.hp = hp;
 		this.hpMax = hpMax;
-		// Pick up radius of the player starts half of the players width to the
-		// left of
-		// the player and
-		// extends to twice the players width meaning the pick up radius is
-		// twice the
-		// size of the player
 		this.inventory = new Inventory(20);
-		this.primaryEquipped = true;
 		this.primaryWeapon = new Weapon("Start", 0, 0, 10, 300, 10,
-				playerSprite);
-		this.sprite = playerSprite;
+				spriteImage);
+		this.sprite = spriteImage;
 		if (sprite != null && sprite instanceof AnimatedSprite) {
-			this.animatedSprite = (AnimatedSprite) playerSprite;
+			this.animatedSprite = (AnimatedSprite) spriteImage;
 		}
 		this.playerBoundBox = new Rectangle(x + 16, y + 63,
 				(int) (animatedSprite.getWidth() * .8),
 				(int) (animatedSprite.getHeight() * 0.4) - 1);
 		this.playerBoundBox.generateGraphics(Color.green.getRGB());
-		/*
-		 * this.playerBoundBoxVisual = new Rectangle(x -
-		 * ((playerSprite.getWidth() * zoom)), y - ((playerSprite.getHeight() *
-		 * zoom)), (playerSprite.getWidth() * zoom) * 4,
-		 * (playerSprite.getHeight() * zoom) * 4);
-		 * this.playerBoundBoxVisual.generateGraphics(Color.blue.getRGB());
-		 * updateDirection();
-		 */ }
-
-	public Player(int hp, int hpMax, int gold, int x, int y,
-			boolean primaryEquipped, Weapon primaryWeapon, Inventory inventory,
-			Sprite spriteImage, Rectangle playerBoundBox,
-			Rectangle rightPrimaryAttackRad, Rectangle leftPrimaryAttackRad,
-			int zoom, Queue<Integer> damageQueue, Sprite sprite,
-			AnimatedSprite animatedSprite, int direction) {
-		super();
-		this.hp = hp;
-		this.hpMax = hpMax;
-		this.gold = gold;
-		this.x = x;
-		this.y = y;
-		this.primaryEquipped = primaryEquipped;
-		this.primaryWeapon = primaryWeapon;
-		this.inventory = inventory;
-		this.spriteImage = spriteImage;
-		this.playerBoundBox = playerBoundBox;
-		this.rightPrimaryAttackRad = rightPrimaryAttackRad;
-		this.leftPrimaryAttackRad = leftPrimaryAttackRad;
-		this.zoom = zoom;
-		this.damageQueue = damageQueue;
-		this.sprite = sprite;
-		this.animatedSprite = animatedSprite;
-		this.direction = direction;
 	}
 
 	private void updateDirection() {
@@ -200,21 +155,9 @@ public class Player implements Character, GameObject, Saveable {
 	 */
 	@Override
 	public void render(Renderer renderer, int xZoom, int yZoom) {
-		// renderer.renderArray(spriteImage.getPixels(), spriteImage.getWidth(),
-		// spriteImage.getWidth(), x, y, zoom, zoom);
-
 		// introducing the animated sprite here. initially rendering a static
 		// sprite.
 		renderer.renderRectangle(playerBoundBox, zoom, zoom);
-
-		if (rightPrimaryAttackRad != null) {
-			rightPrimaryAttackRad.generateGraphics(Color.red.getRGB());
-			renderer.renderRectangle(rightPrimaryAttackRad, 1, 1);
-		}
-		if (leftPrimaryAttackRad != null) {
-			leftPrimaryAttackRad.generateGraphics(Color.pink.getRGB());
-			renderer.renderRectangle(leftPrimaryAttackRad, 1, 1);
-		}
 		if (animatedSprite != null)
 			renderer.renderSprite(animatedSprite,
 					x + animatedSprite.getWidth() / 2,
@@ -237,7 +180,6 @@ public class Player implements Character, GameObject, Saveable {
 	public void update(Engine engine) {
 		KeyController keyBinds = engine.getKeyBinds();
 		Map currentMap = engine.getCurrentMap();
-		MouseController mouseActions = engine.getMouseListener();
 
 		// for the player animated sprites
 		boolean didMove = false;
@@ -400,22 +342,6 @@ public class Player implements Character, GameObject, Saveable {
 		}
 
 		/**
-		 * Returns left clicks and their co-ordinates to tell where for the
-		 * character to attack
-		 */
-		while (!mouseActions.getAttackPositions().isEmpty()) {
-			// Gets the attack position from the mouse controller
-			Position attackPos = mouseActions.getAttackPos();
-			// Prevents player from being able to run and attack at the same
-			// time
-			keyBinds.setRun(false);
-			int mx = attackPos.getX();
-			int my = attackPos.getY();
-			if (primaryEquipped)
-				attack(mx, my, engine);
-		}
-
-		/**
 		 * Updates the players hpbar if they have taken damage
 		 */
 		if (!damageQueue.isEmpty()) {
@@ -484,7 +410,7 @@ public class Player implements Character, GameObject, Saveable {
 		int monsterX = mon.getBoundingBox().getX();
 		int monsterXWidth = monsterX + mon.getBoundingBox().getWidth();
 		int monsterY = mon.getBoundingBox().getY();
-		int monsterYHeight = monsterY + mon.getBoundingBox().getHeight();
+		// int monsterYHeight = monsterY + mon.getBoundingBox().getHeight();
 		int swordLength = 50;
 
 		if ((playerX + swordLength >= monsterX)
@@ -506,7 +432,7 @@ public class Player implements Character, GameObject, Saveable {
 		int monsterX = mon.getBoundingBox().getX();
 		int monsterXWidth = monsterX + mon.getBoundingBox().getWidth();
 		int monsterY = mon.getBoundingBox().getY();
-		int monsterYHeight = monsterY + mon.getBoundingBox().getHeight();
+		// int monsterYHeight = monsterY + mon.getBoundingBox().getHeight();
 		int swordLength = 50;
 
 		if ((playerX - swordLength >= monsterX)
@@ -526,9 +452,9 @@ public class Player implements Character, GameObject, Saveable {
 		int playerX = this.playerBoundBox.getX();
 		int playerXWidth = playerX + this.playerBoundBox.getWidth();
 		int playerY = this.playerBoundBox.getY();
-		int playerYHeight = playerY + this.playerBoundBox.getHeight();
+		// int playerYHeight = playerY + this.playerBoundBox.getHeight();
 		int monsterX = mon.getBoundingBox().getX();
-		int monsterXWidth = monsterX + mon.getBoundingBox().getWidth();
+		// int monsterXWidth = monsterX + mon.getBoundingBox().getWidth();
 		int monsterY = mon.getBoundingBox().getY();
 		int monsterYHeight = monsterY + mon.getBoundingBox().getHeight();
 		int swordLength = 50;
@@ -550,9 +476,9 @@ public class Player implements Character, GameObject, Saveable {
 		int playerX = this.playerBoundBox.getX();
 		int playerXWidth = playerX + this.playerBoundBox.getWidth();
 		int playerY = this.playerBoundBox.getY();
-		int playerYHeight = playerY + this.playerBoundBox.getHeight();
+		// int playerYHeight = playerY + this.playerBoundBox.getHeight();
 		int monsterX = mon.getBoundingBox().getX();
-		int monsterXWidth = monsterX + mon.getBoundingBox().getWidth();
+		// int monsterXWidth = monsterX + mon.getBoundingBox().getWidth();
 		int monsterY = mon.getBoundingBox().getY();
 		int monsterYHeight = monsterY + mon.getBoundingBox().getHeight();
 		int swordLength = 50;
@@ -575,45 +501,7 @@ public class Player implements Character, GameObject, Saveable {
 	 */
 	@Override
 	public void attack(int mx, int my, Engine engine) {
-		int width = spriteImage.getWidth() * zoom;
-		int height = spriteImage.getHeight() * zoom;
-		Position center = engine.getRenderer().getCamera().getCenter();
-		List<GameObject> monsters = engine.getCurrentMap().getMonsters();
-		// right attack calculated from the position of the camera
-		if (mx > center.getX()) {
-			// right side bounding box = to range of weapon and half player
-			// height
-			rightPrimaryAttackRad = new Rectangle(x, y,
-					primaryWeapon.getRange(), height);
-			// attackRight();
-			Iterator<GameObject> iter = monsters.iterator();
-			while (iter.hasNext()) {
-				Monster monster = (Monster) iter.next();
-				if (rightPrimaryAttackRad.contains(monster.getBoundingBox())) {
-					monster.damage(heavyAttack());
-					System.out.println(monster.getHealth());
-					checkForMonsterDeath(monster, monsters, iter);
-				}
-			}
-		}
 
-		// left attack calculated from the position of the camera
-		if (mx < center.getX()) {
-			// left side bounding box = to range of weapon and half player
-			// height
-			leftPrimaryAttackRad = new Rectangle(x - primaryWeapon.getRange(),
-					y, primaryWeapon.getRange() + width, height);
-			// attackLeft();
-			Iterator<GameObject> iter = monsters.iterator();
-			while (iter.hasNext()) {
-				Monster monster = (Monster) iter.next();
-				if (leftPrimaryAttackRad.contains(monster.getBoundingBox())) {
-					monster.damage(heavyAttack());
-					System.out.println(monster.getHealth());
-					checkForMonsterDeath(monster, monsters, iter);
-				}
-			}
-		}
 	}
 
 	public void checkForMonsterDeath(Monster monster, List<GameObject> monsters,
@@ -765,4 +653,13 @@ public class Player implements Character, GameObject, Saveable {
 		return primaryWeapon;
 	}
 
+	private void loadSprites() {
+		BufferedImage playerSheetImage = Engine
+				.loadImage("resources/images/Player.png");
+		SpriteSheet playerSheet = new SpriteSheet(playerSheetImage);
+		playerSheet.loadSprites(20, 26);
+
+		AnimatedSprite playerAnimations = new AnimatedSprite(playerSheet, 5);
+		this.spriteImage = playerAnimations;
+	}
 }
