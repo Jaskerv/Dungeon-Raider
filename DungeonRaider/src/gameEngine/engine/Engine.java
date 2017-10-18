@@ -114,11 +114,11 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 		/** Component listener to see if JFrame is resized */
 		/** Creates 3 buffer renderer */
 		this.startGame.createBufferStrategy(3);
-		this.renderer = new Renderer(getWidth(), getHeight());
+		this.renderer = new Renderer(getWidth(), getHeight(),this);
 		/**
 		 * Initiating the players
 		 */
-		this.player = new Player(new Position(150, 200), 100, 5, 100, 100);
+		this.player = new Player(new Position(150, 200), 100, 5, 100, 100, 200);
 		this.monsters = currentMap.getMonsters();
 		/** GUI */
 		this.GUI = new IngameInterface(player, WIDTH, HEIGHT);

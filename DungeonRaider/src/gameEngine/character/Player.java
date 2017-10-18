@@ -56,10 +56,16 @@ public class Player implements Character, GameObject, Saveable {
 	// 0 == right, 1 == left, 2 == up, 3 == down. This is based off the
 	// Player.png
 	private int direction = 0;
+	/**
+	 * Player visual radius
+	 */
+	private int radius;
 
-	public Player(Position center, int stamina, int zoom, int hp, int hpMax) {
+	public Player(Position center, int stamina, int zoom, int hp, int hpMax,
+			int radius) {
 		this.damageQueue = new PriorityQueue<>();
 		loadSprites();
+		this.radius = radius;
 		this.zoom = zoom;
 		this.zoom = 3;
 		this.x = center.getX() - (spriteImage.getWidth() / 2 * zoom);
@@ -630,6 +636,14 @@ public class Player implements Character, GameObject, Saveable {
 		this.inventory = inventory;
 	}
 
+	public int getRadius() {
+		return radius;
+	}
+
+	public void setRadius(int radius) {
+		this.radius = radius;
+	}
+
 	@Override
 	public String save() {
 		String s = "Player	{\n";
@@ -638,11 +652,11 @@ public class Player implements Character, GameObject, Saveable {
 		s += "int	gold	" + gold + "\n";
 		s += "int	x	" + x + "\n";
 		s += "int	y	" + y + "\n";
-		s += "primaryWeapon	primaryWeapon	"+primaryWeapon.save()+"\n";
-		s += "inventory	inventory	"+inventory.save()+"\n";
-		s += "zoom	zoom	"+zoom+"\n";
-		s += "damageQueue	damageQueue	"+damageQueue+"\n";
-		s += "direction	direction	"+direction+"\n";
+		s += "primaryWeapon	primaryWeapon	" + primaryWeapon.save() + "\n";
+		s += "inventory	inventory	" + inventory.save() + "\n";
+		s += "zoom	zoom	" + zoom + "\n";
+		s += "damageQueue	damageQueue	" + damageQueue + "\n";
+		s += "direction	direction	" + direction + "\n";
 		s += "}	\n";
 
 		return s;
@@ -666,5 +680,26 @@ public class Player implements Character, GameObject, Saveable {
 
 		AnimatedSprite playerAnimations = new AnimatedSprite(playerSheet, 5);
 		this.spriteImage = playerAnimations;
+	}
+
+	/**
+	 * Checks if x and y is within the player radius
+	 *
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public boolean checkRadius(int x, int y) {
+		int pX = this.playerBoundBox.getX() + this.playerBoundBox.getWidth() / 2
+				+ 15;
+		int pY = this.playerBoundBox.getY()
+				+ this.playerBoundBox.getHeight() / 2;
+		int dx = Math.abs(x - pX);
+		int dy = Math.abs(y - pY);
+		int pythagoris = (int) (Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2)));
+		if (pythagoris <= this.radius) {
+			return true;
+		}
+		return false;
 	}
 }

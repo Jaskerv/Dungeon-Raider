@@ -25,7 +25,10 @@ public class Renderer {
 
 	public static final int ZOOM = 6;
 
-	public Renderer(int width, int height) {
+	private Engine engine;
+
+	public Renderer(int width, int height, Engine engine) {
+		this.engine = engine;
 		/** Creates view */
 		this.view = new BufferedImage(width, height,
 				BufferedImage.TYPE_INT_RGB);
@@ -206,12 +209,10 @@ public class Renderer {
 		if (this.camera.contains(x, y)) {
 			int pixelIndex = (x - this.camera.getX())
 					+ (y - this.camera.getY()) * view.getWidth();
-			if (pixels.length > pixelIndex && !Engine.alpha.match(pixel)) {
+			if (pixels.length > pixelIndex && !Engine.alpha.match(pixel)
+					&& this.engine.getPlayer().checkRadius(x, y)) {
 				pixels[pixelIndex] = pixel;
 			}
-			// else if (pixels.length > pixelIndex && pixel != Engine.alpha) {
-			// pixels[pixelIndex] = 0;
-			// }
 		}
 	}
 
