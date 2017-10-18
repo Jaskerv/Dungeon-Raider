@@ -1,5 +1,6 @@
 package gameEngine.character;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,8 +58,8 @@ return null;
 	}
 
 	@Override
-	public void load() {
+	public void load(File file) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

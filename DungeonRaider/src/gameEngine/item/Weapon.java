@@ -1,5 +1,6 @@
 package gameEngine.item;
 
+import java.io.File;
 import java.util.PrimitiveIterator.OfDouble;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -93,17 +94,18 @@ public class Weapon extends Item implements Upgradable, Saveable {
 
 	@Override
 	public String save() {
-		String s = "Weapon\n";
+		String s = "Weapon	{\n";
 		s += "String	name	" + name + "\n";
 		s += "int	damage	" + damage + "\n";
-		s += "double	critChance	"+ critChance + "\n";
-		s += "int	range	"+ range + "\n";
-		s += "int	numberOfUpgrades	"+ numberOfUpgrades + "\n";
+		s += "double	critChance	" + critChance + "\n";
+		s += "int	range	" + range + "\n";
+		s += "int	numberOfUpgrades	" + numberOfUpgrades + "\n";
+		s += "}	\n";
 		return s;
 	}
 
 	@Override
-	public void load() {
+	public void load(File file) {
 
 	}
 

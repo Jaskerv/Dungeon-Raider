@@ -8,10 +8,11 @@ import gameEngine.engine.Engine;
 import gameEngine.engine.GameObject;
 import gameEngine.engine.Renderer;
 import gameEngine.sprite.Sprite;
+import library4.SaveBoi;
 
 /**
  * GUI for pause menu
- * 
+ *
  * @author Jono Yan
  *
  */
@@ -90,7 +91,7 @@ public class PauseMenu implements GameObject {
 
 	/**
 	 * moves cursor up
-	 * 
+	 *
 	 * @param engine
 	 */
 	public void cursorUp(Engine engine) {
@@ -102,7 +103,7 @@ public class PauseMenu implements GameObject {
 
 	/**
 	 * moves cursor down
-	 * 
+	 *
 	 * @param engine
 	 */
 	public void cursorDown(Engine engine) {
@@ -114,16 +115,33 @@ public class PauseMenu implements GameObject {
 
 	/**
 	 * Cursor enter at the right spot
-	 * 
+	 *
 	 * @param engine
 	 */
 	public void cursorEnter(Engine engine) {
+		/** Resume */
 		if (index == 0) {
 			this.paused = false;
-		} else if (index == 3) {
+		}
+		/** Save */
+		else if (index == 1) {
+			save(engine);
+		}
+		/** load */
+		else if (index == 2) {
+
+		}
+		/** Exit */
+		else if (index == 3) {
 			System.exit(0);
 		}
 		engine.getSoundLibrary().playClip("cursorReady", -10f);
+	}
+
+	private void save(Engine engine) {
+		SaveBoi save = new SaveBoi(engine);
+		save.save();
+
 	}
 
 	/**

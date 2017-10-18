@@ -1,54 +1,57 @@
 package library4;
-import gameEngine.engine.*;
-import gameEngine.map.*;
-import gameEngine.sound.*;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.Scanner;
 
-import gameEngine.character.*;
-import gameEngine.character.*;
-import gameEngine.item.*;
+import gameEngine.character.Player;
+import gameEngine.engine.Engine;
+import gameEngine.item.Weapon;
 
-
-public class SaveBoi implements Saveable{
-
+public class SaveBoi {
 
 	private static final String fname = "resources/save/save09.txt";
 
+	private Engine engine;
+	private Player player;
+	private Weapon weapon;
 
-private Engine engine;
-private Player player;
-private Weapon weapon;
+	public SaveBoi(Engine engine) {
+		this.engine = engine;
+		this.player = engine.getPlayer();
+		this.weapon = player.getPrimaryWeapon();
+	}
 
-public SaveBoi(Engine engine) {this.engine = engine;}
-
-	@Override
-	public String save() {
+	public void save() {
 		FileOutputStream fos = null;
+		File saveFile = new File(fname);
+		BufferedWriter out = null;
 		try {
-			//	File file = new File("resources/save/save01.txt");
-			PrintWriter out = new PrintWriter(fname);
-			out.println(player.save());
-			out.println(weapon.save());
+			// File file = new File("resources/save/save01.txt");
+			out = new BufferedWriter(new FileWriter(saveFile));
 
+			out.write(player.save());
+			out.write(weapon.save());
+			out.write(engine.save());
 
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		}		return null;
+		} finally {
+			try {
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
-
-	
-	@Override
-	public void load() {
-		// TODO Auto-generated method stub
+	public void load(File file) {
 
 	}
-
-
 
 }

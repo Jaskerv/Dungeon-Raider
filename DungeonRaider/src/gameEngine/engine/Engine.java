@@ -6,13 +6,17 @@ import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.security.KeyStore.Entry;
+
+import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -41,9 +45,10 @@ import library4.Saveable;
  * @author Jono Yan
  *
  */
-public class Engine extends JFrame implements Runnable, Observer {
-	public static final PatternInt alpha = new PatternInt(0xFFFF00DC,
-			-16777216);
+
+public class Engine extends JFrame implements Runnable, Observer, Saveable {
+	public static final PatternInt alpha = new PatternInt(0xFFFF00DC, -16777216);
+
 	private static final long serialVersionUID = 1L;
 	private Canvas canvas;
 	private Toolkit tk;
@@ -149,10 +154,12 @@ public class Engine extends JFrame implements Runnable, Observer {
 		// this.object.add(player);
 		/** GUI */
 		this.GUI = new IngameInterface(player, WIDTH, HEIGHT);
+
 		this.pauseMenu = new PauseMenu(
 				this.loadImage("resources/images/Pause.png"));
 		this.youDied = new YouDied(
 				this.loadImage("resources/images/YouDied.png"));
+
 		/**
 		 * initiating key listener
 		 */
@@ -343,6 +350,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 
 		mapList.entrySet().stream()
 				.forEach(entry -> System.out.println(entry.getValue()));
+
 		return mapList;
 
 	}
@@ -390,8 +398,10 @@ public class Engine extends JFrame implements Runnable, Observer {
 			return SPRITE_SHEET_2.getSprite(3, 12);
 		} else if (name.equals("Monster_Four")) {
 			return SPRITE_SHEET_2.getSprite(4, 11);
+
 		} else if (name.equals("Small_Health_Potion")
 				|| name.equals("Big_Health_Potion")) {
+
 			return SPRITE_SHEET_2.getSprite(12, 11);
 		}
 		return null;
@@ -488,5 +498,42 @@ public class Engine extends JFrame implements Runnable, Observer {
 	public List<GameObject> getMonsters() {
 		return this.monsters;
 	}
+
+
+	@Override
+	public String save() {
+		String s = "Map	{\n";
+		s += "int	currentMapNumber	" + currentMapNumber + "\n";
+		s += "}	\n";
+		return s;
+	}
+
+	@Override
+	public void load(File file) {
+		Scanner sc = null;
+		try {
+			sc = new Scanner(file);
+
+			while (sc.hasNext()) {
+				String s = sc.nextLine();
+				if (s.contains("{")) {
+					String[] split = s.split("\t");
+					if (split[0].equals("Player")) {
+						List<String> fields = new ArrayList<>();
+						while (sc.hasNext()) {
+							String line = sc.nextLine();
+							if (line.contains("}")) {
+							}
+						}
+					}
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
 
 }

@@ -1,6 +1,7 @@
 package gameEngine.character;
 
 import java.awt.Color;
+import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -96,6 +97,32 @@ public class Player implements Character, GameObject, Saveable {
 		 * this.playerBoundBoxVisual.generateGraphics(Color.blue.getRGB());
 		 * updateDirection();
 		 */ }
+
+	public Player(int hp, int hpMax, int gold, int x, int y,
+			boolean primaryEquipped, Weapon primaryWeapon, Inventory inventory,
+			Sprite spriteImage, Rectangle playerBoundBox,
+			Rectangle rightPrimaryAttackRad, Rectangle leftPrimaryAttackRad,
+			int zoom, Queue<Integer> damageQueue, Sprite sprite,
+			AnimatedSprite animatedSprite, int direction) {
+		super();
+		this.hp = hp;
+		this.hpMax = hpMax;
+		this.gold = gold;
+		this.x = x;
+		this.y = y;
+		this.primaryEquipped = primaryEquipped;
+		this.primaryWeapon = primaryWeapon;
+		this.inventory = inventory;
+		this.spriteImage = spriteImage;
+		this.playerBoundBox = playerBoundBox;
+		this.rightPrimaryAttackRad = rightPrimaryAttackRad;
+		this.leftPrimaryAttackRad = leftPrimaryAttackRad;
+		this.zoom = zoom;
+		this.damageQueue = damageQueue;
+		this.sprite = sprite;
+		this.animatedSprite = animatedSprite;
+		this.direction = direction;
+	}
 
 	private void updateDirection() {
 		if (animatedSprite != null) {
@@ -432,7 +459,9 @@ public class Player implements Character, GameObject, Saveable {
 
 		if (this.x >= 1940 && this.y <= 100) {
 			if (engine.getCurrentMapNumber() == 3) {
-				//so it doesn't go to a non-existing map
+
+				// so it doesn't go to a non-existing map
+
 				return;
 			}
 			engine.setCurrentMap(
@@ -715,20 +744,25 @@ public class Player implements Character, GameObject, Saveable {
 
 	@Override
 	public String save() {
-		String s = "Player \n";
+		String s = "Player	{\n";
 		s += "int	hp	" + hp + "\n";
 		s += "int	hpMax	" + hpMax + "\n";
 		s += "int	gold	" + gold + "\n";
 		s += "int	x	" + x + "\n";
 		s += "int	y	" + y + "\n";
+		s += "}	\n";
 
 		return s;
 	}
 
 	@Override
-	public void load() {
+	public void load(File file) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public Weapon getPrimaryWeapon() {
+		return primaryWeapon;
 	}
 
 }
