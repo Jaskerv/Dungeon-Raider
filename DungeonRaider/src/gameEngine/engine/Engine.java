@@ -8,6 +8,7 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.security.KeyStore.Entry;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
@@ -41,7 +42,8 @@ import library4.Saveable;
  *
  */
 public class Engine extends JFrame implements Runnable, Observer {
-	public static final PatternInt alpha = new PatternInt(0xFFFF00DC, -16777216);
+	public static final PatternInt alpha = new PatternInt(0xFFFF00DC,
+			-16777216);
 	private static final long serialVersionUID = 1L;
 	private Canvas canvas;
 	private Toolkit tk;
@@ -71,7 +73,8 @@ public class Engine extends JFrame implements Runnable, Observer {
 	/** Test Objects */
 	private Sprite playerSprite;
 	private SpriteSheet testSpriteSheet;
-	private static SpriteSheet dungeonTiles = new SpriteSheet(loadImage("resources/tiles/DungeonTileset1.png"));
+	private static SpriteSheet dungeonTiles = new SpriteSheet(
+			loadImage("resources/tiles/DungeonTileset1.png"));
 	private static final SpriteSheet SPRITE_SHEET_2 = new SpriteSheet(
 			Engine.loadImage("resources/tiles/DungeonTileset4.png"));
 	private List<GameObject> monsters;
@@ -81,7 +84,8 @@ public class Engine extends JFrame implements Runnable, Observer {
 
 	public Engine() {
 		// this.canvas = new Canvas();
-		this.soundLibrary = new SoundMap("resources/sountracks/soundlibrary.txt");
+		this.soundLibrary = new SoundMap(
+				"resources/sountracks/soundlibrary.txt");
 		this.startGame = new StartGame(this);
 		this.menu = true;
 		this.tk = this.getToolkit();
@@ -124,7 +128,8 @@ public class Engine extends JFrame implements Runnable, Observer {
 		this.playerSprite = dungeonTiles.getSprite(4, 6);
 
 		// Testing the animated sprites for the player
-		BufferedImage playerSheetImage = loadImage("resources/images/Player.png");
+		BufferedImage playerSheetImage = loadImage(
+				"resources/images/Player.png");
 		SpriteSheet playerSheet = new SpriteSheet(playerSheetImage);
 		playerSheet.loadSprites(20, 26);
 
@@ -138,13 +143,16 @@ public class Engine extends JFrame implements Runnable, Observer {
 		/**
 		 * Initiating the players
 		 */
-		this.player = new Player(new Position(200, 200), 100, playerAnimations, 5, 100, 100);
+		this.player = new Player(new Position(150, 200), 100, playerAnimations,
+				5, 100, 100);
 		this.monsters = currentMap.getMonsters();
 		// this.object.add(player);
 		/** GUI */
 		this.GUI = new IngameInterface(player, WIDTH, HEIGHT);
-		this.pauseMenu = new PauseMenu(this.loadImage("resources/images/Pause.png"));
-	this.youDied = new YouDied(this.loadImage("resources/images/YouDied.png"));
+		this.pauseMenu = new PauseMenu(
+				this.loadImage("resources/images/Pause.png"));
+		this.youDied = new YouDied(
+				this.loadImage("resources/images/YouDied.png"));
 		/**
 		 * initiating key listener
 		 */
@@ -168,7 +176,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 			super.paint(g);
 			this.renderer.clearArray();
 			if (player.isDead()) {
-		youDied.render(renderer, 1, 1);
+				youDied.render(renderer, 1, 1);
 			} else {
 				/**
 				 * If not paused
@@ -189,7 +197,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 				 * If paused
 				 */
 				else {
-				pauseMenu.render(renderer, 1, 1);
+					pauseMenu.render(renderer, 1, 1);
 				}
 			}
 			renderer.render(g);
@@ -263,14 +271,14 @@ public class Engine extends JFrame implements Runnable, Observer {
 		 * If player is dead
 		 */
 		if (player.isDead()) {
-		this.youDied.update(this);
+			this.youDied.update(this);
 		} else {
 			/** if in start menu */
 			if (menu) {
 				startGame.update(this);
 			} else {
 				/** not paused */
-			if (!this.pauseMenu.isPaused()) {
+				if (!this.pauseMenu.isPaused()) {
 					this.player.update(this);
 					for (GameObject gameObject : monsters) {
 						gameObject.update(this);
@@ -281,7 +289,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 				 * If paused
 				 */
 				else {
-				this.pauseMenu.update(this);
+					this.pauseMenu.update(this);
 				}
 			}
 		}
@@ -296,8 +304,8 @@ public class Engine extends JFrame implements Runnable, Observer {
 		BufferedImage loadedImage;
 		try {
 			loadedImage = ImageIO.read(new FileInputStream(path));
-			BufferedImage format = new BufferedImage(loadedImage.getWidth(), loadedImage.getHeight(),
-					BufferedImage.TYPE_INT_RGB);
+			BufferedImage format = new BufferedImage(loadedImage.getWidth(),
+					loadedImage.getHeight(), BufferedImage.TYPE_INT_RGB);
 			format.getGraphics().drawImage(loadedImage, 0, 0, null);
 			return format;
 		} catch (IOException e) {
@@ -311,26 +319,30 @@ public class Engine extends JFrame implements Runnable, Observer {
 	}
 
 	/**
-	 * This method is responsible for creating every map instance at the beginning,
-	 * and storing it for later use until the player traverses through to each map.
+	 * This method is responsible for creating every map instance at the
+	 * beginning, and storing it for later use until the player traverses
+	 * through to each map.
 	 *
 	 * @return list of maps
 	 */
 	private HashMap<Integer, Map> initialiseMaps() {
 		HashMap<Integer, Map> mapList = new HashMap<Integer, Map>();
 		int count = 0;
+		Map map_02 = new Map();
+		map_02.initialiseMap("Map_02");
+		mapList.put(count++, map_02);
 		// Tutorial map
 		Map tutMap = new Map();
 		tutMap.initialiseMap("TutorialMap");
 		mapList.put(count++, tutMap);
-		//the first proper map
+		// the first proper map
 		Map map_01 = new Map();
 		map_01.initialiseMap("Map_01");
 		mapList.put(count++, map_01);
-		//the final maze map.
-		Map map_02 = new Map();
-		map_02.initialiseMap("Map_02");
-		mapList.put(count++, map_02);
+		// the final maze map.
+
+		mapList.entrySet().stream()
+				.forEach(entry -> System.out.println(entry.getValue()));
 		return mapList;
 
 	}
@@ -372,19 +384,18 @@ public class Engine extends JFrame implements Runnable, Observer {
 		SPRITE_SHEET_2.loadSprites(16, 16);
 		if (name.equals("Monster_One")) {
 			return dungeonTiles.getSprite(3, 6);
-		}else if (name.equals("Monster_Two")) {
+		} else if (name.equals("Monster_Two")) {
 			return SPRITE_SHEET_2.getSprite(3, 10);
-		}else if (name.equals("Monster_Three")) {
+		} else if (name.equals("Monster_Three")) {
 			return SPRITE_SHEET_2.getSprite(3, 12);
-		}else if (name.equals("Monster_Four")) {
+		} else if (name.equals("Monster_Four")) {
 			return SPRITE_SHEET_2.getSprite(4, 11);
-		}else if (name.equals("Small_Health_Potion") || name.equals("Big_Health_Potion")) {
+		} else if (name.equals("Small_Health_Potion")
+				|| name.equals("Big_Health_Potion")) {
 			return SPRITE_SHEET_2.getSprite(12, 11);
 		}
 		return null;
 	}
-
-
 
 	/**
 	 * @return the keyBinds
@@ -448,7 +459,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 	 * I pause menu is up
 	 */
 	public boolean isPaused() {
-	return pauseMenu.isPaused();
+		return pauseMenu.isPaused();
 	}
 
 	/**
@@ -477,6 +488,5 @@ public class Engine extends JFrame implements Runnable, Observer {
 	public List<GameObject> getMonsters() {
 		return this.monsters;
 	}
-
 
 }

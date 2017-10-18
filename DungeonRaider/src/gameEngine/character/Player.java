@@ -431,6 +431,10 @@ public class Player implements Character, GameObject, Saveable {
 		}
 
 		if (this.x >= 1940 && this.y <= 100) {
+			if (engine.getCurrentMapNumber() == 3) {
+				//so it doesn't go to a non-existing map
+				return;
+			}
 			engine.setCurrentMap(
 					engine.getMapList().get(engine.getCurrentMapNumber()));
 			this.x = 200;

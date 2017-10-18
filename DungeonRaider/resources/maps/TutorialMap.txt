@@ -27,6 +27,6 @@ Monster Monster_One 500 500 2 300
 2 W W W W W W W W W W W W W W W W W W W W 4
 2 W W W W W W W W W W W W W W W W W W W W 4
 2 W W W W W W W W W W W W W W W W W W W W 4
-2 W W W W W W W W W W W W W W W W W W W W 4
+2 W N W W W W W W W W W W W W W W W W W W 4
 2 W W W W W W W W W W W W W W W W W W W W 4
 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
