@@ -15,6 +15,7 @@ import gameEngine.sprite.SpriteSheet;
 import gameEngine.util.Box;
 import gameEngine.util.Position;
 import gameEngine.util.Rectangle;
+import library3.Movement;
 import library5.StatModifier;
 
 /**
@@ -23,22 +24,31 @@ import library5.StatModifier;
 public class Monster implements Character, GameObject {
 
 	private String name;
+
 	private int x;
 	private int y;
+
 	private int health;
 	private Sprite spriteImage;
+
 	private int speed;
+
 	private static final int ZOOM = 5;
 	private static final String SPRITE_SHEET_2_PATH = "resources/"
 			+ "tiles/DungeonTileset4.png";
+
 	private static final SpriteSheet SPRITE_SHEET_2 = new SpriteSheet(
 			Engine.loadImage(SPRITE_SHEET_2_PATH));
-	private int height;
-	private int width;
+
+	private int realHeight;
+	private int realWidth;
+
 	private Queue<Integer> damageQueue;
-	private Box boundingBox;
+
+	private Rectangle boundingBox;
+
 	private int attackTimer;
-	private Rectangle rect;
+
 	private int ID;
 
 	/**
@@ -54,15 +64,15 @@ public class Monster implements Character, GameObject {
 		this.spriteImage = sprite;
 		this.health = health;
 		this.ID = ID;
-		this.height = spriteImage.getHeight();
-		this.width = spriteImage.getWidth();
+		this.realHeight = spriteImage.getHeight() * ZOOM;
+		this.realWidth = spriteImage.getWidth() * ZOOM;
 		this.damageQueue = new PriorityQueue<>();
-		this.boundingBox = new Box(this.x, this.y, this.width, this.height);
-		this.attackTimer = 0;
+		this.boundingBox = new Rectangle(this.x,
+				this.y + (int) (this.realHeight * 0.7), this.realWidth,
+				(int) (this.realHeight * 0.3));
 
-		// testing monster bounding boxes
-		this.rect = new Rectangle(this.x, this.y, this.width, this.height);
-		this.rect.generateGraphics(Color.BLUE.getRGB());
+		this.boundingBox.generateGraphics(Color.BLUE.getRGB());
+		this.attackTimer = 0;
 	}
 
 	@Override
@@ -73,105 +83,52 @@ public class Monster implements Character, GameObject {
 
 	@Override
 	public void walkLeft() {
-		this.x -= speed;
-
+		this.x -= Movement.WALK_SPEED;
+		// this.playerBoundBox.setX(this.playerBoundBox.getX() - SPEED);
+		this.boundingBox
+				.setX(Movement.walkLeft(this.boundingBox.getX(), this.speed));
 	}
 
 	@Override
 	public void walkRight() {
-		// TODO Auto-generated method stub
-		this.x += speed;
-
+		this.x += Movement.WALK_SPEED;
+		// this.playerBoundBox.setX(this.playerBoundBox.getX() + SPEED);
+		this.boundingBox
+				.setX(Movement.walkRight(this.boundingBox.getX(), this.speed));
 	}
 
 	@Override
 	public void walkUp() {
-		// TODO Auto-generated method stub
-		this.y -= speed;
+		this.y -= Movement.WALK_SPEED;
+		// this.playerBoundBox.setY(this.playerBoundBox.getY() - SPEED);
+		this.boundingBox
+				.setY(Movement.walkUp(this.boundingBox.getY(), this.speed));
 	}
 
 	@Override
 	public void walkDown() {
-		// TODO Auto-generated method stub
-		this.y += speed;
+		this.y += Movement.WALK_SPEED;
+		// this.playerBoundBox.setY(this.playerBoundBox.getY() + SPEED);
+		this.boundingBox
+				.setY(Movement.walkDown(this.boundingBox.getY(), this.speed));
 	}
 
 	@Override
 	public void render(Renderer renderer, int xZoom, int yZoom) {
-		renderer.renderRectangle(this.rect, ZOOM, ZOOM);
+		renderer.renderRectangle(this.boundingBox, 1, 1);
 		renderer.renderArray(spriteImage.getPixels(), spriteImage.getWidth(),
 				spriteImage.getHeight(), x, y, ZOOM, ZOOM);
 	}
 
 	@Override
 	public void update(Engine engine) {
-		// Gets player Position
-		Player player = engine.getPlayer();
-		Map currentMap = engine.getCurrentMap();
-		int playerX = player.getX();// +((player.getSpriteImage().getWidth()*player.getZoom())/2);
-		int playerY = player.getY();// +((player.getSpriteImage().getWidth()*player.getZoom()/2));
 
-		// returns all of the monsters on the map
-		List<GameObject> monsters = engine.getCurrentMap().getMonsters();
-
-		// Updating monster attack range
-		this.boundingBox = new Box(this.x, this.y, this.width, this.height);
-		this.rect = new Rectangle(this.x, this.y, this.width, this.height);
-		this.rect.generateGraphics(Color.BLUE.getRGB());
-
-		// Keeps track of how many updates have passed inbetween each attack so
-		// monster cant
-		// attack to quickly
-		if (this.attackTimer < 10) {
-			// cant attack yet
-			attackTimer++;
-		} else {
-			// attacks now
-			if (boundingBox.contains(player.getPlayerBoundBox())) {
-				attackTimer = 0;
-				attack(x, y, engine);
-			}
-		}
-
-		// player is to the left of this monster
-		if (playerX < this.x) {
-			if (!boundingBox.contains(player.getPlayerBoundBox())) {
-				Box left = new Box(this.x - speed, this.y, this.width * ZOOM,
-						this.height * ZOOM);
-				if (checkBoundry(currentMap, left))
-					walkLeft();
-			}
-
-		}
-		if (playerX > this.x) {
-			if (!boundingBox.contains(player.getPlayerBoundBox())) {
-				Box right = new Box(this.x + speed, this.y, this.width * ZOOM,
-						this.height * ZOOM);
-				if (checkBoundry(currentMap, right))
-					walkRight();
-			}
-		}
-		// player is to the bottom of this monster
-		if (playerY > this.y) {
-			if (!boundingBox.contains(player.getPlayerBoundBox())) {
-				Box down = new Box(this.x, this.y + speed, this.width * ZOOM,
-						this.height * ZOOM);
-				if (checkBoundry(currentMap, down))
-					walkDown();
-			}
-		}
-		if (playerY < this.y) {
-			if (!boundingBox.contains(player.getPlayerBoundBox())) {
-				Box up = new Box(this.x, this.y - speed, this.width * ZOOM,
-						this.height * ZOOM);
-				if (checkBoundry(currentMap, up))
-					walkUp();
-			}
-		}
-
-		if (!damageQueue.isEmpty()) {
-			this.health += damageQueue.poll();
-		}
+		// Checks to see if player should attack
+		checkAttack(engine);
+		// Checks to see if player should move
+		checkMovement(engine);
+		// Checks to see if player has taken damage
+		checkDamage();
 
 	}
 
@@ -181,6 +138,126 @@ public class Monster implements Character, GameObject {
 		Player player = engine.getPlayer();
 		engine.getPlayer().damage((int) StatModifier.calcDamage(heavyAttack(),
 				player.getHp(), 0, 0));
+	}
+
+	public void checkAttack(Engine engine) {
+		// Keeps track of how many updates have passed inbetween each attack so
+		// monster cant
+		// attack to quickly
+		if (this.attackTimer < 10) {
+			// cant attack yet
+			attackTimer++;
+		} else {
+			// attacks now
+			if (boundingBox.contains(engine.getPlayer().getPlayerBoundBox())) {
+				attackTimer = 0;
+				attack(x, y, engine);
+			}
+		}
+	}
+
+	public void checkDamage() {
+		if (!damageQueue.isEmpty()) {
+			this.health += damageQueue.poll();
+		}
+	}
+
+	/**
+	 * Calculates all of the monsters moving in the engine
+	 *
+	 * @param engine
+	 *            is the engine of the game that contains of necessary elements
+	 *            that need to be modified during movement
+	 */
+	public void checkMovement(Engine engine) {
+		// Gets player Position
+		Player player = engine.getPlayer();
+		// Sets players x and y locations
+		int playerX = engine.getPlayer().getPlayerBoundBox().getX();
+		int playerY = engine.getPlayer().getPlayerBoundBox().getY();
+
+		// Retusn the current map being loaded
+		Map currentMap = engine.getCurrentMap();
+		Box b = this.getBoundingBox();
+		// Player is left move -> walk left
+		if (playerX < b.getX()) {
+			if (playerX > (b.getX() - speed)) {
+
+			} else {
+				Box next = this.boundingBox.clone();
+				next.setX(b.getX() - speed);
+				if (!player.getPlayerBoundBox().contains(next)) {
+					if (!monsterCollision(engine, next))
+						if (checkBoundry(currentMap, next))
+							walkLeft();
+				}
+			}
+		}
+		// Player is right -> walk right
+		else if (playerX > b.getX()) {
+			if (playerX < (b.getX() + speed)) {
+
+			} else {
+				Box next = this.boundingBox.clone();
+				next.setX(b.getX() + speed);
+				if (!player.getPlayerBoundBox().contains(next)) {
+					if (!monsterCollision(engine, next))
+						if (checkBoundry(currentMap, next))
+							walkRight();
+				}
+			}
+		}
+		// Player is below -> walk down
+		if (playerY > b.getY()) {
+			if (playerY < (b.getY() + speed)) {
+
+			} else {
+				Box next = this.boundingBox.clone();
+				next.setY(b.getY() + speed);
+				if (!player.getPlayerBoundBox().contains(next)) {
+					if (!monsterCollision(engine, next))
+						if (checkBoundry(currentMap, next))
+							walkDown();
+				}
+			}
+		}
+		// Player is above -> walk above
+		else if (playerY < b.getY()) {
+			if (playerY > (b.getY() - speed)) {
+
+			} else {
+				Box next = this.boundingBox.clone();
+				next.setY(b.getY() - speed);
+				if (!player.getPlayerBoundBox().contains(next)) {
+					if (!monsterCollision(engine, next))
+						if (checkBoundry(currentMap, next))
+							walkUp();
+				}
+			}
+		}
+	}
+
+	public boolean monsterCollision(Engine engine, Box nextMovement) {
+		// Returns all of the monsters in the engine
+		List<GameObject> monsters = engine.getCurrentMap().getMonsters();
+		Iterator<GameObject> iterator = monsters.iterator();
+		// Iterating through all monsters
+		boolean check = false;
+		while (iterator.hasNext()) {
+			Monster mon = (Monster) iterator.next();
+			// Checking next monster isnt the current monster
+			if (mon != this) {
+				// checks to see whether this monsters bounding box contains the
+				// next movement to be computed by the monster moving
+				if (mon.getBoundingBox().contains(nextMovement)) {
+					// Yes a collision will occur
+					check = true;
+				}
+				continue;
+			}
+		}
+		// collision will not occur
+		return check;
 	}
 
 	/**
@@ -201,10 +278,6 @@ public class Monster implements Character, GameObject {
 		this.spriteImage = spriteImage;
 	}
 
-	public Box getBoundingBox() {
-		return boundingBox;
-	}
-
 	public int getHealth() {
 		return health;
 	}
@@ -221,8 +294,12 @@ public class Monster implements Character, GameObject {
 		ID = iD;
 	}
 
-	public void setBoundingBox(Box boundingBox) {
+	public void setBoundingBox(Rectangle boundingBox) {
 		this.boundingBox = boundingBox;
+	}
+
+	public Box getBoundingBox() {
+		return boundingBox;
 	}
 
 }

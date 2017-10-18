@@ -81,7 +81,7 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 	public Engine() {
 		/** Initializing the map */
 		this.mapList = initialiseMaps();
-		this.currentMap = mapList.get(0);
+		this.currentMap = mapList.get(1);
 		this.currentMapNumber = 1;
 		/** Initializing the sound library */
 		this.soundLibrary = new SoundMap(
@@ -118,7 +118,7 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 		/**
 		 * Initiating the players
 		 */
-		this.player = new Player(new Position(150, 200), 100, 5, 100, 100, 200);
+		this.player = new Player(new Position(150, 200), 100, 5, 100, 100, 600);
 		this.monsters = currentMap.getMonsters();
 		/** GUI */
 		this.GUI = new IngameInterface(player, WIDTH, HEIGHT);

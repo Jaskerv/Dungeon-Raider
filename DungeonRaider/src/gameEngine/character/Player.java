@@ -53,6 +53,7 @@ public class Player implements Character, GameObject, Saveable {
 
 	private Sprite sprite;
 	private AnimatedSprite animatedSprite = null;
+	private int speed = 3;
 	// 0 == right, 1 == left, 2 == up, 3 == down. This is based off the
 	// Player.png
 	private int direction = 0;
@@ -79,9 +80,9 @@ public class Player implements Character, GameObject, Saveable {
 		if (sprite != null && sprite instanceof AnimatedSprite) {
 			this.animatedSprite = (AnimatedSprite) spriteImage;
 		}
-		this.playerBoundBox = new Rectangle(x + 16, y + 63,
-				(int) (animatedSprite.getWidth() * .8),
-				(int) (animatedSprite.getHeight() * 0.4) - 1);
+		this.playerBoundBox = new Rectangle(x + 11, y + 62,
+				(int) (animatedSprite.getWidth() * zoom * 0.6 - 2),
+				(int) (animatedSprite.getHeight() * zoom * 0.2));
 		this.playerBoundBox.generateGraphics(Color.green.getRGB());
 	}
 
@@ -100,7 +101,8 @@ public class Player implements Character, GameObject, Saveable {
 	public void walkLeft() {
 		this.x -= Movement.WALK_SPEED;
 		// this.playerBoundBox.setX(this.playerBoundBox.getX() - SPEED);
-		this.playerBoundBox.setX(Movement.walkLeft(this.playerBoundBox.getX()));
+		this.playerBoundBox
+				.setX(Movement.walkLeft(this.playerBoundBox.getX(), Movement.WALK_SPEED));
 	}
 
 	@Override
@@ -108,21 +110,23 @@ public class Player implements Character, GameObject, Saveable {
 		this.x += Movement.WALK_SPEED;
 		// this.playerBoundBox.setX(this.playerBoundBox.getX() + SPEED);
 		this.playerBoundBox
-				.setX(Movement.walkRight(this.playerBoundBox.getX()));
+				.setX(Movement.walkRight(this.playerBoundBox.getX(), Movement.WALK_SPEED));
 	}
 
 	@Override
 	public void walkUp() {
 		this.y -= Movement.WALK_SPEED;
 		// this.playerBoundBox.setY(this.playerBoundBox.getY() - SPEED);
-		this.playerBoundBox.setY(Movement.walkUp(this.playerBoundBox.getY()));
+		this.playerBoundBox
+				.setY(Movement.walkUp(this.playerBoundBox.getY(), Movement.WALK_SPEED));
 	}
 
 	@Override
 	public void walkDown() {
 		this.y += Movement.WALK_SPEED;
 		// this.playerBoundBox.setY(this.playerBoundBox.getY() + SPEED);
-		this.playerBoundBox.setY(Movement.walkDown(this.playerBoundBox.getY()));
+		this.playerBoundBox
+				.setY(Movement.walkDown(this.playerBoundBox.getY(), Movement.WALK_SPEED));
 	}
 
 	public void runLeft() {
@@ -163,7 +167,7 @@ public class Player implements Character, GameObject, Saveable {
 	public void render(Renderer renderer, int xZoom, int yZoom) {
 		// introducing the animated sprite here. initially rendering a static
 		// sprite.
-		renderer.renderRectangle(playerBoundBox, zoom, zoom);
+		renderer.renderRectangle(playerBoundBox, 1, 1);
 		if (animatedSprite != null)
 			renderer.renderSprite(animatedSprite,
 					x + animatedSprite.getWidth() / 2,
@@ -201,7 +205,7 @@ public class Player implements Character, GameObject, Saveable {
 		if (keyBinds.isRun()) {
 			if (keyBinds.isUp()) {
 				Box up = new Box(curBox.getX(), curBox.getY(),
-						curBox.getWidth() * zoom, curBox.getHeight() * zoom);
+						curBox.getWidth(), curBox.getHeight());
 				// up.setY(up.getY() - SPRINT);
 				up.setY(Movement.sprintUp(up.getY()));
 				if (checkBoundry(currentMap, up)) {
@@ -214,7 +218,7 @@ public class Player implements Character, GameObject, Saveable {
 			}
 			if (keyBinds.isDown()) {
 				Box down = new Box(curBox.getX(), curBox.getY(),
-						curBox.getWidth() * zoom, curBox.getHeight() * zoom);
+						curBox.getWidth(), curBox.getHeight());
 				// down.setY(down.getY() + SPRINT);
 				down.setY(Movement.sprintDown(down.getY()));
 				if (checkBoundry(currentMap, down)) {
@@ -227,7 +231,7 @@ public class Player implements Character, GameObject, Saveable {
 			}
 			if (keyBinds.isLeft()) {
 				Box left = new Box(curBox.getX(), curBox.getY(),
-						curBox.getWidth() * zoom, curBox.getHeight() * zoom);
+						curBox.getWidth(), curBox.getHeight());
 				// left.setX(left.getX() - SPRINT);
 				left.setX(Movement.sprintLeft(left.getX()));
 				if (checkBoundry(currentMap, left)) {
@@ -240,7 +244,7 @@ public class Player implements Character, GameObject, Saveable {
 			}
 			if (keyBinds.isRight()) {
 				Box right = new Box(curBox.getX(), curBox.getY(),
-						curBox.getWidth() * zoom, curBox.getHeight() * zoom);
+						curBox.getWidth(), curBox.getHeight());
 				// right.setX(right.getX() + SPRINT);
 				right.setX(Movement.sprintRight(right.getX()));
 				if (checkBoundry(currentMap, right)) {
@@ -260,8 +264,8 @@ public class Player implements Character, GameObject, Saveable {
 		if (!keyBinds.isRun() || couldntRun) {
 			if (keyBinds.isUp()) {
 				Box up = new Box(curBox.getX(),
-						curBox.getY() - Movement.WALK_SPEED,
-						curBox.getWidth() * zoom, curBox.getHeight() * zoom);
+						curBox.getY() - Movement.WALK_SPEED, curBox.getWidth(),
+						curBox.getHeight());
 				if (checkBoundry(currentMap, up)) {
 					newDirection = 2;
 					didMove = true;
@@ -270,8 +274,8 @@ public class Player implements Character, GameObject, Saveable {
 			}
 			if (keyBinds.isDown()) {
 				Box down = new Box(curBox.getX(),
-						curBox.getY() + Movement.WALK_SPEED,
-						curBox.getWidth() * zoom, curBox.getHeight() * zoom);
+						curBox.getY() + Movement.WALK_SPEED, curBox.getWidth(),
+						curBox.getHeight());
 				if (checkBoundry(currentMap, down)) {
 					newDirection = 3;
 					didMove = true;
@@ -280,8 +284,7 @@ public class Player implements Character, GameObject, Saveable {
 			}
 			if (keyBinds.isLeft()) {
 				Box left = new Box(curBox.getX() - Movement.WALK_SPEED,
-						curBox.getY(), curBox.getWidth() * zoom,
-						curBox.getHeight() * zoom);
+						curBox.getY(), curBox.getWidth(), curBox.getHeight());
 				if (checkBoundry(currentMap, left)) {
 					newDirection = 1;
 					didMove = true;
@@ -290,8 +293,7 @@ public class Player implements Character, GameObject, Saveable {
 			}
 			if (keyBinds.isRight()) {
 				Box right = new Box(curBox.getX() + Movement.WALK_SPEED,
-						curBox.getY(), curBox.getWidth() * zoom,
-						curBox.getHeight() * zoom);
+						curBox.getY(), curBox.getWidth(), curBox.getHeight());
 				if (checkBoundry(currentMap, right)) {
 					newDirection = 0;
 					didMove = true;
@@ -621,7 +623,7 @@ public class Player implements Character, GameObject, Saveable {
 	}
 
 	public Box getPlayerBoundBox() {
-		return playerBoundBox;
+		return this.playerBoundBox;
 	}
 
 	public void setPlayerBoundBox(Box playerBoundBox) {

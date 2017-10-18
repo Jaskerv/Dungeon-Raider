@@ -2,7 +2,7 @@ package gameEngine.util;
 
 /**
  * This is a general box
- * 
+ *
  * @author Jono Yan
  *
  */
@@ -20,22 +20,24 @@ public class Box {
 	}
 
 	/**
-	 * This method will check to see if the new x and y being parsed in is within
-	 * the boundaries of the box.
-	 * 
+	 * This method will check to see if the new x and y being parsed in is
+	 * within the boundaries of the box.
+	 *
 	 * @param x
 	 * @param y
 	 * @return
 	 */
 	public boolean contains(int x, int y) {
-		if (this.x <= x && this.x + width >= x && this.y <= y && this.y + height >= y) {
+		if (this.x <= x && this.x + width >= x && this.y <= y
+				&& this.y + height >= y) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	public boolean contains(Box box) {
-		return this.x < box.x + box.getWidth() && x + width > box.x && y < box.y + box.height && y + height > box.y;
+		return this.x < box.x + box.getWidth() && x + width > box.x
+				&& y < box.y + box.getHeight() && y + height > box.y;
 	}
 
 	/**
@@ -96,6 +98,10 @@ public class Box {
 	 */
 	public void setHeight(int height) {
 		this.height = height;
+	}
+
+	public Box clone() {
+		return new Box(x, y, width, height);
 	}
 
 }
