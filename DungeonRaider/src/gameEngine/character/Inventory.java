@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gameEngine.item.Item;
+import library4.Saveable;
 
 /**
  * Inventory for any object that can contain multiple items
@@ -11,7 +12,7 @@ import gameEngine.item.Item;
  * @author Jono Yan
  *
  */
-public class Inventory {
+public class Inventory implements Saveable {
 	private List<Item> inventory;
 
 	public Inventory(int currentCapacity) {
@@ -47,5 +48,17 @@ public class Inventory {
 
 	public void setInventory(List<Item> inventory) {
 		this.inventory = inventory;
+	}
+
+	@Override
+	public String save() {
+
+return null;
+	}
+
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
+		
 	}
 }

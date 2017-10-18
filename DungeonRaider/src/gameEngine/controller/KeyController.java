@@ -125,7 +125,7 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 			this.up = false;
 			// System.out.println("w releasedd");
 			if (engine.isPaused()) {
-				engine.getPauseMenu().setUp(true);
+			//	engine.getPauseMenu().setUp(true);
 			}
 			if (player.isDead()) {
 				engine.getYouDied().setUp(true);
@@ -162,7 +162,7 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 				engine.getPauseMenu().setDown(true);
 			}
 			if (player.isDead()) {
-				engine.getYouDied().setDown(true);
+			engine.getYouDied().setDown(true);
 			}
 			break;
 		case KeyEvent.VK_DOWN:
@@ -171,10 +171,10 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 			// System.out.println("s released");
 
 			if (engine.isPaused()) {
-				engine.getPauseMenu().setDown(true);
+			engine.getPauseMenu().setDown(true);
 			}
 			if (player.isDead()) {
-				engine.getYouDied().setDown(true);
+			engine.getYouDied().setDown(true);
 			}
 			break;
 		case KeyEvent.VK_D:
@@ -205,14 +205,14 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 		case KeyEvent.VK_ESCAPE:
 			if (!engine.getPlayer().isDead()) {
 				if (this.engine.isPaused()) {
-					this.engine.getPauseMenu().setPaused(false);
+				this.engine.getPauseMenu().setPaused(false);
 					engine.getSoundLibrary().playClip("cursorReady", -10f);
 					break;
 				} else {
 
-					this.engine.getPauseMenu().setPaused(true);
+				this.engine.getPauseMenu().setPaused(true);
 					engine.getSoundLibrary().playClip("cursorReady", -10f);
-					this.engine.getPauseMenu().setIndex(0);
+				this.engine.getPauseMenu().setIndex(0);
 					break;
 				}
 			}
@@ -220,15 +220,15 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 
 		case KeyEvent.VK_ENTER:
 			if (engine.isPaused()) {
-				engine.getPauseMenu().setEnter(true);
+			engine.getPauseMenu().setEnter(true);
 			}
 			if (player.isDead()) {
-				engine.getYouDied().setEnter(true);
+			engine.getYouDied().setEnter(true);
 			}
 			break;
-		
-			
-			
+
+
+
 		}
 	}
 
@@ -255,7 +255,7 @@ public class KeyController extends Observable implements KeyListener, FocusListe
 	public boolean isAttak() {
 		return attak;
 	}
-	
+
 	public boolean isRun() {
 		return run;
 	}

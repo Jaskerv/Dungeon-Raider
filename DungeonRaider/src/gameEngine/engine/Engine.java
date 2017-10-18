@@ -30,6 +30,8 @@ import gameEngine.sprite.Sprite;
 import gameEngine.sprite.SpriteSheet;
 import gameEngine.util.PatternInt;
 import gameEngine.util.Position;
+import library4.SaveBoi;
+import library4.Saveable;
 
 /**
  * The main engine class which implements runnable and also contains the main
@@ -46,6 +48,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 	private Renderer renderer;
 	public static int WIDTH = 1280;
 	public static int HEIGHT = 720;
+	private SaveBoi save;
 
 	/**
 	 * Key listener - keeps track of cameras movement
@@ -141,7 +144,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 		/** GUI */
 		this.GUI = new IngameInterface(player, WIDTH, HEIGHT);
 		this.pauseMenu = new PauseMenu(this.loadImage("resources/images/Pause.png"));
-		this.youDied = new YouDied(this.loadImage("resources/images/YouDied.png"));
+	this.youDied = new YouDied(this.loadImage("resources/images/YouDied.png"));
 		/**
 		 * initiating key listener
 		 */
@@ -165,7 +168,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 			super.paint(g);
 			this.renderer.clearArray();
 			if (player.isDead()) {
-				youDied.render(renderer, 1, 1);
+		youDied.render(renderer, 1, 1);
 			} else {
 				/**
 				 * If not paused
@@ -186,7 +189,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 				 * If paused
 				 */
 				else {
-					pauseMenu.render(renderer, 1, 1);
+				pauseMenu.render(renderer, 1, 1);
 				}
 			}
 			renderer.render(g);
@@ -260,14 +263,14 @@ public class Engine extends JFrame implements Runnable, Observer {
 		 * If player is dead
 		 */
 		if (player.isDead()) {
-			this.youDied.update(this);
+		this.youDied.update(this);
 		} else {
 			/** if in start menu */
 			if (menu) {
 				startGame.update(this);
 			} else {
 				/** not paused */
-				if (!this.pauseMenu.isPaused()) {
+			if (!this.pauseMenu.isPaused()) {
 					this.player.update(this);
 					for (GameObject gameObject : monsters) {
 						gameObject.update(this);
@@ -278,7 +281,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 				 * If paused
 				 */
 				else {
-					this.pauseMenu.update(this);
+				this.pauseMenu.update(this);
 				}
 			}
 		}
@@ -355,7 +358,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 
 	/**
 	 * Finds sprite image based on name that is parsed in
-	 * 
+	 *
 	 * @param name
 	 * @return
 	 */
@@ -375,6 +378,8 @@ public class Engine extends JFrame implements Runnable, Observer {
 		}
 		return null;
 	}
+
+
 
 	/**
 	 * @return the keyBinds
@@ -438,7 +443,7 @@ public class Engine extends JFrame implements Runnable, Observer {
 	 * I pause menu is up
 	 */
 	public boolean isPaused() {
-		return pauseMenu.isPaused();
+	return pauseMenu.isPaused();
 	}
 
 	/**
@@ -463,9 +468,10 @@ public class Engine extends JFrame implements Runnable, Observer {
 	public void setCurrentMapNumber(int currentMapNumber) {
 		this.currentMapNumber = currentMapNumber;
 	}
-	
+
 	public List<GameObject> getMonsters() {
 		return this.monsters;
 	}
+
 
 }

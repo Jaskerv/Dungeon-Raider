@@ -21,16 +21,17 @@ import gameEngine.util.Box;
 import gameEngine.util.Position;
 import gameEngine.util.Rectangle;
 import library3.Movement;
+import library4.Saveable;
 
 /**
  * Need to implement equiping of weapon then test if attacking works because
  * right now null pointer exeception when trying to find weapon range
- * 
+ *
  * @author Gabriel Tennent
  *
  */
 
-public class Player implements Character, GameObject {
+public class Player implements Character, GameObject, Saveable {
 
 	private int hp;
 	private int hpMax;
@@ -321,7 +322,7 @@ public class Player implements Character, GameObject {
 		}
 
 		if(keyBinds.isAttak()) {
-			
+
 			List<GameObject> monsters = engine.getCurrentMap().getMonsters();
 			if(monsters.size() == 0) {
 				//break;
@@ -331,7 +332,7 @@ public class Player implements Character, GameObject {
 				Monster mon = (Monster) iterator.next();
 				//if player is looking to the right
 				if(this.direction == 0) {
-					
+
 					attackMonsterToTheRight(mon,monsters,iterator);
 					// if the player is looking left
 				}else if(this.direction == 1) {
@@ -415,7 +416,7 @@ public class Player implements Character, GameObject {
 	}
 
 	public void attackMonsterToTheRight(Monster mon, List<GameObject> monsters, Iterator<GameObject> iterator) {
-		
+
 		int playerX = this.playerBoundBox.getX();
 		int playerY = this.playerBoundBox.getY();
 		int playerYHeight = playerY + this.playerBoundBox.getHeight();
@@ -424,7 +425,7 @@ public class Player implements Character, GameObject {
 		int monsterY = mon.getBoundingBox().getY();
 		int monsterYHeight = monsterY + mon.getBoundingBox().getHeight();
 		int swordLength = 50;
-		
+
 		if( (playerX + swordLength >= monsterX) && (playerX + swordLength <= monsterXWidth) ) {
 			if( (playerY >= monsterY) || (playerYHeight >= monsterY)) {
 				System.out.println("Fucking REEEEEEE");
@@ -435,7 +436,7 @@ public class Player implements Character, GameObject {
 	}
 
 	public void attackMonstertoTheLeft(Monster mon,List<GameObject> monsters, Iterator<GameObject> iterator) {
-		
+
 		int playerX = this.playerBoundBox.getX();
 		int playerY = this.playerBoundBox.getY();
 		int playerYHeight = playerY + this.playerBoundBox.getHeight();
@@ -444,7 +445,7 @@ public class Player implements Character, GameObject {
 		int monsterY = mon.getBoundingBox().getY();
 		int monsterYHeight = monsterY + mon.getBoundingBox().getHeight();
 		int swordLength = 50;
-		
+
 		if( (playerX - swordLength >= monsterX) && (playerX - swordLength <= monsterXWidth) ) {
 			if( (playerY >= monsterY) || (playerYHeight >= monsterY)) {
 				System.out.println("Fucking REEEEEEE");
@@ -453,11 +454,11 @@ public class Player implements Character, GameObject {
 			}
 		}
 
-		
+
 	}
 
 	public void attackMonsterAbove(Monster mon, List<GameObject> monsters,Iterator<GameObject> iterator) {
-		
+
 		int playerX = this.playerBoundBox.getX();
 		int playerXWidth = playerX + this.playerBoundBox.getWidth();
 		int playerY = this.playerBoundBox.getY();
@@ -467,7 +468,7 @@ public class Player implements Character, GameObject {
 		int monsterY = mon.getBoundingBox().getY();
 		int monsterYHeight = monsterY + mon.getBoundingBox().getHeight();
 		int swordLength = 50;
-		
+
 		if( (playerY - swordLength >= monsterY) && (playerY - swordLength <= monsterYHeight)  ) {
 			if( (playerX >= monsterX) || (playerXWidth>=monsterX)  ) {
 				System.out.println("Fucking REEEEEEE");
@@ -475,11 +476,11 @@ public class Player implements Character, GameObject {
 				checkForMonsterDeath(mon, monsters, iterator);
 			}
 		}
-		
+
 	}
 
 	public void attackMonsterBelow(Monster mon, List<GameObject> monsters,Iterator<GameObject> iterator) {
-		
+
 		int playerX = this.playerBoundBox.getX();
 		int playerXWidth = playerX + this.playerBoundBox.getWidth();
 		int playerY = this.playerBoundBox.getY();
@@ -489,7 +490,7 @@ public class Player implements Character, GameObject {
 		int monsterY = mon.getBoundingBox().getY();
 		int monsterYHeight = monsterY + mon.getBoundingBox().getHeight();
 		int swordLength = 50;
-		
+
 		if( (playerY + swordLength >= monsterY) && (playerY + swordLength <= monsterYHeight)  ) {
 			if( (playerX >= monsterX) || (playerXWidth>=monsterX)  ) {
 				System.out.println("Fucking REEEEEEE");
@@ -667,6 +668,24 @@ public class Player implements Character, GameObject {
 
 	public void setInventory(Inventory inventory) {
 		this.inventory = inventory;
+	}
+
+	@Override
+	public String save() {
+		String s = "Player \n";
+		s += "int	hp	" + hp + "\n";
+		s += "int	hpMax	"+ hpMax + "\n";
+		s += "int	gold	"+ gold + "\n";
+		s += "int	x	"+ x + "\n";
+		s += "int	y	"+ y + "\n";
+
+		return s;
+	}
+
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
+
 	}
 
 }
