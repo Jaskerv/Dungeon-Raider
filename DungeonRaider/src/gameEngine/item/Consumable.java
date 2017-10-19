@@ -1,5 +1,6 @@
 package gameEngine.item;
 
+import gameEngine.engine.Engine;
 import gameEngine.sprite.Sprite;
 
 /**
@@ -18,6 +19,12 @@ public class Consumable extends Item {
 		this.name = name;
 	}
 
+	private Consumable(int healing) {
+		super(0, 0,
+				new Sprite(Engine.loadImage("resources/images/potion.png")));
+		this.healingStrength = healing;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -34,4 +41,7 @@ public class Consumable extends Item {
 		this.name = name;
 	}
 
+	public static Consumable createConsumable(int healValue) {
+		return new Consumable(healValue);
+	}
 }

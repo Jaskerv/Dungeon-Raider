@@ -24,6 +24,7 @@ import gameEngine.util.Position;
 import gameEngine.util.Rectangle;
 import library3.Movement;
 import library4.Saveable;
+import library5.StatModifier;
 
 /**
  * Need to implement equiping of weapon then test if attacking works because
@@ -63,7 +64,7 @@ public class Player implements Character, GameObject, Saveable {
 	private Rectangle playerAttack;
 	private Boolean attacking;
 	private int attackTimer;
-	public static final int ATTACKTIME = 8;
+	public static final int ATTACKTIME = 2;
 
 	private Sprite[] swords = new Sprite[4];
 
@@ -308,6 +309,8 @@ public class Player implements Character, GameObject, Saveable {
 		newDirection = direction;
 		couldntRun = false;
 
+		// Attempts to upgrade the weapon
+		checkUpgrade(engine);
 		// Attempts to pick up an item
 		pickUp(engine);
 		// Checks if the player has taken damage
@@ -375,6 +378,14 @@ public class Player implements Character, GameObject, Saveable {
 		}
 	}
 
+	public void checkUpgrade(Engine engine) {
+		KeyController keyBinds = engine.getKeyBinds();
+		if (keyBinds.isUpgrade()) {
+			if (gold > 100)
+				this.primaryWeapon.upgrade();
+		}
+	}
+
 	/**
 	 * Checks if the player is stepping on a teleporter
 	 *
@@ -431,7 +442,6 @@ public class Player implements Character, GameObject, Saveable {
 		Map currentMap = engine.getCurrentMap();
 		if (keyBinds.isRun()) {
 			if (keyBinds.isUp()) {
-				attacking = false;
 				Box up = new Box(curBox.getX(), curBox.getY(),
 						curBox.getWidth(), curBox.getHeight());
 				// up.setY(up.getY() - SPRINT);
@@ -550,7 +560,8 @@ public class Player implements Character, GameObject, Saveable {
 			// Checks if there is a monster in range of the player Attack
 			if (playerAttack.contains(mon.getBoundingBox())) {
 				// Adjusts monsters health accordingly
-				mon.setHealth(mon.getHealth() - heavyAttack());
+				mon.setHealth((int) (StatModifier.calcDamage(heavyAttack(),
+						mon.getHealth(), 0, primaryWeapon.getCritChance())));
 				// Checks is the monster is dead
 				checkForMonsterDeath(mon, monsters, iterator);
 			}
@@ -570,7 +581,8 @@ public class Player implements Character, GameObject, Saveable {
 				Consumable healthPot = (Consumable) this.inventory
 						.returnFirstItem();
 				// Heals the player = to that of the potions strength
-				this.heal(healthPot.getHealingStrength());
+				hp = (int) (StatModifier.calculateHealing(
+						healthPot.getHealingStrength(), hp, hpMax));
 			}
 			// Prevents two potions from being used with one press
 			keyBinds.setUseItem(false);
@@ -621,7 +633,7 @@ public class Player implements Character, GameObject, Saveable {
 	public void checkForMonsterDeath(Monster monster, List<GameObject> monsters,
 			Iterator<GameObject> iter) {
 		if (monster.getHealth() <= 0) {
-			this.gold = this.gold + 1;
+			this.gold = this.gold + 100;
 			System.out.println("monster died");
 			iter.remove();
 		}
@@ -674,15 +686,6 @@ public class Player implements Character, GameObject, Saveable {
 		this.damageQueue.offer(-i);
 	}
 
-	/**
-	 * Heals player with negative numbers
-	 *
-	 * @param i
-	 */
-	public void heal(int i) {
-		this.damageQueue.offer(i);
-	}
-
 	public Queue<Integer> getDamageQueue() {
 		return damageQueue;
 	}
@@ -714,6 +717,10 @@ public class Player implements Character, GameObject, Saveable {
 
 	public void setY(int y) {
 		this.y = y;
+	}
+
+	public void setHp(int hp) {
+		this.hp = hp;
 	}
 
 	public Sprite getSpriteImage() {
