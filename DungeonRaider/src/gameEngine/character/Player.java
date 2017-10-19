@@ -204,12 +204,23 @@ public class Player implements Character, GameObject, Saveable {
 		newDirection = direction;
 		couldntRun = false;
 
+		//Attempts to pick up an item
 		pickUp(engine);
+		//Checks if the player has taken damage
 		checkDamage();
+		//Checks if the player is using an item
 		useItem(engine);
+		//Checks if player is running
 		tryRun(engine);
+		//Checks if player is walking
 		tryWalk(engine);
+		//Checks if player teleporting
+		checkTeleportation(engine);
+		//Checks if player is attacking
+		checkAttack(engine);
+		//Updates playing animations accordingly
 		updateAnimations(engine);
+
 	}
 
 
