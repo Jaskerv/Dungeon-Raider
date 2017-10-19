@@ -35,6 +35,8 @@ public class Movement {
 	 */
 
 	public static int sprintUp(int currentY) {
+		if(currentY - WALK_SPEED <= 0)
+			return 0;
 		return currentY - Movement.SPRINT_SPEED;
 	}
 
@@ -47,6 +49,8 @@ public class Movement {
 	}
 
 	public static int sprintLeft(int currentX) {
+		if(currentX <= 0 )
+			return 0;
 		return currentX - Movement.SPRINT_SPEED;
 	}
 
