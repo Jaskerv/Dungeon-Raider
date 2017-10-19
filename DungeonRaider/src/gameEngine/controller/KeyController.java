@@ -24,7 +24,7 @@ public class KeyController extends Observable
 	private boolean pickUp;
 	private boolean run;
 	private boolean useItem;
-	private boolean attak;
+	private boolean attack;
 
 	private Player player;
 	private Engine engine;
@@ -40,7 +40,7 @@ public class KeyController extends Observable
 		this.engine = engine;
 		this.run = false;
 		this.useItem = false;
-		this.attak = false;
+		this.attack = false;
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class KeyController extends Observable
 			break;
 		case KeyEvent.VK_SPACE:
 			// lets the player attack by setting the attak field to true
-			this.attak = true;
+			this.attack = true;
 			break;
 		}
 	}
@@ -183,7 +183,7 @@ public class KeyController extends Observable
 
 		case KeyEvent.VK_SPACE:
 			// stops the attack by setting attak to false
-			this.attak = false;
+			this.attack = false;
 			break;
 
 		case KeyEvent.VK_SHIFT:
@@ -256,8 +256,8 @@ public class KeyController extends Observable
 		return pickUp;
 	}
 
-	public boolean isAttak() {
-		return attak;
+	public boolean isAttack() {
+		return attack;
 	}
 
 	public boolean isRun() {

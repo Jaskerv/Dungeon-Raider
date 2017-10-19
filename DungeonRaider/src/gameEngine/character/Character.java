@@ -13,7 +13,9 @@ public interface Character {
 	public void walkUp();
 	public void walkDown();
 
+
 	/**
+
 	 * Checks the engine to return the size of the map and then checks if the player is moving out of the map
 	 * @param engine the engine of the game
 	 * @param newX the new X coordinate that will be set after movement
@@ -24,7 +26,9 @@ public interface Character {
 		return currentMap.onWall(newX, newY);
 	}
 
+
 	/**
+
 	 * Checks the engine to return the size of the map and then checks if the player is moving out of the map
 	 * @param engine the engine of the game
 	 * @param newX the new X coordisnate that will be set after movement
@@ -45,5 +49,5 @@ public interface Character {
 	 * @param my
 	 * @param engine
 	 */
-	public void attack(int mx, int my, Engine engine);
+	public void attack(Engine engine);
 }

@@ -192,7 +192,6 @@ public class Monster implements Character, GameObject {
 		g.fillRect(0, 0, hpMax, 5);
 		double hpPerc = ((double) health) / ((double) healthMax);
 		int hpBar = (int) (hpPerc * (double) hpMax);
-
 		if (hpBar <= hpMax && hpBar > 0) {
 			g.setColor(Color.GREEN);
 			g.fillRect(0, 0, hpBar, 5);
@@ -221,7 +220,7 @@ public class Monster implements Character, GameObject {
 	 * Deals damage to the player = to that of the monsters damage set
 	 */
 	@Override
-	public void attack(int mx, int my, Engine engine) {
+	public void attack(Engine engine) {
 		// TODO Auto-generated method stub
 		Player player = engine.getPlayer();
 		engine.getPlayer().damage(heavyAttack());
@@ -246,7 +245,7 @@ public class Monster implements Character, GameObject {
 			// attacks now
 			if (attackRadius.contains(engine.getPlayer().getPlayerBoundBox())) {
 				attackTimer = 0;
-				attack(x, y, engine);
+				attack(engine);
 			}
 		}
 	}

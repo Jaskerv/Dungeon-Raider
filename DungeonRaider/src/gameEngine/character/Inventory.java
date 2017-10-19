@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import gameEngine.item.Consumable;
 import gameEngine.item.Item;
 import library4.Saveable;
 
@@ -36,7 +37,7 @@ public class Inventory implements Saveable {
 	}
 
 	public Item returnFirstItem() {
-		for(Item item : inventory) {
+		for (Item item : inventory) {
 			inventory.remove(item);
 			return item;
 		}
@@ -53,8 +54,14 @@ public class Inventory implements Saveable {
 
 	@Override
 	public String save() {
-
-		return null;
+		String s = "";
+		for (Item item : inventory) {
+			if (item instanceof Consumable) {
+				Consumable i = (Consumable) item;
+				s += i.getHealingStrength() + "\t";
+			}
+		}
+		return s;
 	}
 
 	@Override

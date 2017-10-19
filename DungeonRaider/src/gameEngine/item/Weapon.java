@@ -42,6 +42,16 @@ public class Weapon extends Item implements Upgradable, Saveable {
 
 	}
 
+	public Weapon(int x, int y, Sprite sprite, String name, int damage,
+			double critChance, int range, int numberOfUpgrades) {
+		super(x, y, sprite);
+		this.name = name;
+		this.damage = damage;
+		this.critChance = critChance;
+		this.range = range;
+		this.numberOfUpgrades = numberOfUpgrades;
+	}
+
 	/**
 	 * Upgrade weapon by increasing its damage and crit chance. Number of
 	 * upgrades capped at 5.
@@ -98,40 +108,18 @@ public class Weapon extends Item implements Upgradable, Saveable {
 
 	@Override
 	public String save() {
-		String s = "Weapon	{\n";
-		s += "String	name	" + name + "\n";
-		s += "int	damage	" + damage + "\n";
-		s += "double	critChance	" + critChance + "\n";
-		s += "int	range	" + range + "\n";
-		s += "int	numberOfUpgrades	" + numberOfUpgrades + "\n";
-		s += "}	\n";
+		String s = "Weapon\t{\n";
+		s += "String\tname\t" + name + "\n";
+		s += "int\tdamage\t" + damage + "\n";
+		s += "double\tcritChance\t" + critChance + "\n";
+		s += "int\trange\t" + range + "\n";
+		s += "int\tnumberOfUpgrades\t" + numberOfUpgrades + "\n";
+		s += "}\n";
 		return s;
 	}
 
 	@Override
 	public void load(File file) {
-		Scanner sc = null;
-		try {
-			sc = new Scanner(file);
-
-			while (sc.hasNext()) {
-				String s = sc.nextLine();
-				if (s.contains("{")) {
-					String[] split = s.split("\t");
-					if (split[0].equals("Player")) {
-						List<String> fields = new ArrayList<>();
-						while (sc.hasNext()) {
-							String line = sc.nextLine();
-							if (line.contains("}")) {
-							}
-						}
-					}
-				}
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
 	}
 
