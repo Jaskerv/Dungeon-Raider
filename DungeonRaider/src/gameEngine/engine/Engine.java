@@ -21,14 +21,17 @@ import javax.swing.JFrame;
 import gameEngine.UI.IngameInterface;
 import gameEngine.UI.PauseMenu;
 import gameEngine.UI.YouDied;
+import gameEngine.character.Inventory;
 import gameEngine.character.Player;
 import gameEngine.controller.KeyController;
+import gameEngine.item.Weapon;
 import gameEngine.map.Map;
 import gameEngine.sound.SoundMap;
 import gameEngine.sprite.Sprite;
 import gameEngine.sprite.SpriteSheet;
 import gameEngine.util.PatternInt;
 import gameEngine.util.Position;
+import gameEngine.util.Rectangle;
 import library4.SaveBoi;
 import library4.Saveable;
 
@@ -116,7 +119,7 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 		/** Component listener to see if JFrame is resized */
 		/** Creates 3 buffer renderer */
 		this.startGame.createBufferStrategy(3);
-		this.renderer = new Renderer(getWidth(), getHeight(),this);
+		this.renderer = new Renderer(getWidth(), getHeight(), this);
 		/**
 		 * Initiating the players
 		 */
@@ -465,7 +468,7 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 	public String save() {
 		String s = "Map	{\n";
 		s += "int	currentMapNumber	" + currentMapNumber + "\n";
-		s += "}	\n";
+		s += "}";
 		return s;
 	}
 
@@ -474,20 +477,16 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 		Scanner sc = null;
 		try {
 			sc = new Scanner(file);
-
+			String s = "";
 			while (sc.hasNext()) {
-				String s = sc.nextLine();
-				if (s.contains("{")) {
-					String[] split = s.split("\t");
-					if (split[0].equals("Player")) {
-						List<String> fields = new ArrayList<>();
-						while (sc.hasNext()) {
-							String line = sc.nextLine();
-							if (line.contains("}")) {
-							}
-						}
-					}
-				}
+				s += sc.nextLine() + "\n";
+			}
+			System.out.println(s);
+			System.out.println("+++++++++++++++++++++++++++++++++++");
+			String[] split = s.split("\\+");
+			for (String string : split) {
+				System.out.println(string);
+				System.out.println("------------------------------------");
 			}
 
 		} catch (Exception e) {

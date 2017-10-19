@@ -3,6 +3,7 @@ package gameEngine.UI;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.File;
 
 import gameEngine.engine.Engine;
 import gameEngine.engine.GameObject;
@@ -130,13 +131,21 @@ public class PauseMenu implements GameObject {
 		}
 		/** load */
 		else if (index == 2) {
-
+			load(engine);
 		}
 		/** Exit */
 		else if (index == 3) {
 			System.exit(0);
 		}
 		engine.getSoundLibrary().playClip("cursorReady", -10f);
+	}
+
+	private void load(Engine engine) {
+		try {
+			engine.load(new File("resources/save/save09.txt"));
+		} catch (Exception e) {
+			System.out.println("Error");
+		}
 	}
 
 	private void save(Engine engine) {

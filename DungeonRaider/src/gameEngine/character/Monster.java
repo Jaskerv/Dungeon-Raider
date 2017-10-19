@@ -162,7 +162,6 @@ public class Monster implements Character, GameObject {
 		g.fillRect(0, 0, hpMax, 5);
 		double hpPerc = ((double) health) / ((double) healthMax);
 		int hpBar = (int) (hpPerc * (double) hpMax);
-
 		if (hpBar <= hpMax && hpBar > 0) {
 			g.setColor(Color.GREEN);
 			g.fillRect(0, 0, hpBar, 5);
