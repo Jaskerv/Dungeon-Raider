@@ -24,11 +24,13 @@ import gameEngine.UI.YouDied;
 import gameEngine.character.Inventory;
 import gameEngine.character.Player;
 import gameEngine.controller.KeyController;
+import gameEngine.item.Consumable;
 import gameEngine.item.Weapon;
 import gameEngine.map.Map;
 import gameEngine.sound.SoundMap;
 import gameEngine.sprite.Sprite;
 import gameEngine.sprite.SpriteSheet;
+import gameEngine.util.Box;
 import gameEngine.util.PatternInt;
 import gameEngine.util.Position;
 import gameEngine.util.Rectangle;
@@ -86,7 +88,7 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 	public Engine() {
 		/** Initializing the map */
 		this.mapList = initialiseMaps();
-		this.currentMap = mapList.get(0);
+		this.currentMap = mapList.get(1);
 		this.currentMapNumber = 1;
 		/** Initializing the sound library */
 		this.soundLibrary = new SoundMap(
@@ -126,7 +128,8 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 		this.player = new Player(new Position(150, 200), 100, 5, 100, 100, 600);
 		this.monsters = currentMap.getMonsters();
 		/** GUI */
-		this.GUI = new IngameInterface(player, WIDTH, HEIGHT, findSprite("coin"));
+		this.GUI = new IngameInterface(player, WIDTH, HEIGHT,
+				findSprite("coin"));
 
 		this.pauseMenu = new PauseMenu(
 				Engine.loadImage("resources/images/Pause.png"));
@@ -481,18 +484,120 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 			while (sc.hasNext()) {
 				s += sc.nextLine() + "\n";
 			}
-			System.out.println(s);
-			System.out.println("+++++++++++++++++++++++++++++++++++");
 			String[] split = s.split("\\+");
 			for (String string : split) {
-				System.out.println(string);
-				System.out.println("------------------------------------");
+				String[] split2 = string.split("\t");
+				if (split2[0].equals("Player")) {
+					loadPlayer(string);
+				} else {
+				}
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			sc.close();
 		}
 
+	}
+
+	/**
+	 * Loads player
+	 *
+	 * @param split2
+	 */
+	private void loadPlayer(String player) {
+		Scanner sc = null;
+		try {
+			sc = new Scanner(player);
+			int hp = 0;
+			int hpMax = 0;
+			int gold = 0;
+			int x = 0;
+			int y = 0;
+			Weapon primaryWeapon = null;
+			Inventory inven = null;
+			Rectangle boundBox = null;
+			int zoom = 0;
+			int direction = 0;
+			int radius = 0;
+			while (sc.hasNext()) {
+				if (sc.hasNext("Player")) {
+					sc.next();
+					if (sc.hasNext("\\{"))
+						sc.nextLine();
+				}
+				String line = sc.nextLine();
+				if (line.equals("}")) {
+					continue;
+				}
+				String[] split = line.split("\t");
+				if (split[1].equals("hp")) {
+					hp = Integer.parseInt(split[2]);
+				} else if (split[1].equals("hpMax")) {
+					hpMax = Integer.parseInt(split[2]);
+				} else if (split[1].equals("gold")) {
+					gold = Integer.parseInt(split[2]);
+				} else if (split[1].equals("x")) {
+					x = Integer.parseInt(split[2]);
+				} else if (split[1].equals("y")) {
+					y = Integer.parseInt(split[2]);
+				} else if (split[1].equals("primaryWeapon")) {
+					String name = "";
+					int damage = 0;
+					double critChance = 0;
+					int range = 0;
+					int numberOfUpgrades = 0;
+					while (sc.hasNext()) {
+						if (sc.hasNext("}")) {
+							sc.next();
+							break;
+						} else {
+							String[] split2 = sc.nextLine().split("\t");
+							if (split2[1].equals("name"))
+								name = split2[2];
+							else if (split2[1].equals("damage"))
+								damage = Integer.parseInt(split2[2]);
+							else if (split2[1].equals("critChance")) {
+								System.out.println(split2[2]);
+								critChance = Double.parseDouble(split2[2]);
+							} else if (split2[1].equals("range"))
+								range = Integer.parseInt(split2[2]);
+							else if (split2[1].equals("numberOfUpgrades"))
+								numberOfUpgrades = Integer.parseInt(split2[2]);
+						}
+					}
+					primaryWeapon = new Weapon(x, y,
+							new Sprite(Engine
+									.loadImage("resources/tiles/sword.png")),
+							name, damage, critChance, range, numberOfUpgrades);
+					System.out.println(sc.nextLine());
+					System.out.println(sc.nextLine());
+				} else if (split[1].equals("inventory")) {
+					inven = new Inventory();
+					for (int i = 2; i < split.length; i++)
+						inven.add(new Consumable(null, 0, 0,
+								Integer.parseInt(split[1]), null));
+				} else if (split[1].equals("zoom")) {
+					zoom = Integer.parseInt(split[2]);
+				} else if (split[1].equals("direction")) {
+					direction = Integer.parseInt(split[2]);
+				} else if (split[1].equals("boundBox")) {
+					boundBox = new Rectangle(Integer.parseInt(split[2]),
+							Integer.parseInt(split[3]),
+							Integer.parseInt(split[4]),
+							Integer.parseInt(split[5]));
+				} else if (split[1].equals("radius")) {
+					radius = Integer.parseInt(split[2]);
+				}
+			}
+			this.player = new Player(hp, hpMax, gold, x, y, primaryWeapon,
+					inven, boundBox, zoom, direction, radius);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			sc.close();
+		}
 	}
 
 	/**

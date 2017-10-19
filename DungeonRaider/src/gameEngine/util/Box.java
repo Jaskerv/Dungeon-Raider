@@ -1,12 +1,16 @@
 package gameEngine.util;
 
+import java.io.File;
+
+import library4.Saveable;
+
 /**
  * This is a general box
  *
  * @author Jono Yan
  *
  */
-public class Box {
+public class Box implements Saveable {
 	protected int x;
 	protected int y;
 	protected int width;
@@ -102,6 +106,19 @@ public class Box {
 
 	public Box clone() {
 		return new Box(x, y, width, height);
+	}
+
+	@Override
+	public String save() {
+		String s = "";
+		s += x + "\t" + y + "\t" + width + "\t" + height;
+		return s;
+	}
+
+	@Override
+	public void load(File file) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

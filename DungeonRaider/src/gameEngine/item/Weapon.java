@@ -52,6 +52,8 @@ public class Weapon extends Item implements Upgradable, Saveable {
 		this.numberOfUpgrades = numberOfUpgrades;
 	}
 
+
+
 	/**
 	 * Upgrade weapon by increasing its damage and crit chance. Number of
 	 * upgrades capped at 5.

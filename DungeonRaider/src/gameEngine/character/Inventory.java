@@ -17,7 +17,7 @@ import library4.Saveable;
 public class Inventory implements Saveable {
 	private List<Item> inventory;
 
-	public Inventory(int currentCapacity) {
+	public Inventory() {
 		this.inventory = new ArrayList<>();
 	}
 

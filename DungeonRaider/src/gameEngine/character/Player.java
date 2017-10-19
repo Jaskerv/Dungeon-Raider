@@ -78,10 +78,9 @@ public class Player implements Character, GameObject, Saveable {
 		this.y = center.getY() - (spriteImage.getHeight() / 2 * zoom);
 		this.hp = hp;
 		this.hpMax = hpMax;
-		this.inventory = new Inventory(20);
+		this.inventory = new Inventory();
 		this.primaryWeapon = new Weapon("Start", 0, 0, 1, 300, 10, spriteImage);
-		this.sprite = spriteImage;
-		if (sprite != null && sprite instanceof AnimatedSprite) {
+		if (spriteImage != null && spriteImage instanceof AnimatedSprite) {
 			this.animatedSprite = (AnimatedSprite) spriteImage;
 		}
 		this.playerBoundBox = new Rectangle(x + 11, y + 62,
@@ -112,6 +111,10 @@ public class Player implements Character, GameObject, Saveable {
 			Weapon primaryWeapon, Inventory inventory, Rectangle playerBoundBox,
 			int zoom, int direction, int radius) {
 		super();
+		loadSprites();
+		if (spriteImage != null && spriteImage instanceof AnimatedSprite) {
+			this.animatedSprite = (AnimatedSprite) spriteImage;
+		}
 		this.hp = hp;
 		this.hpMax = hpMax;
 		this.gold = gold;
@@ -120,9 +123,14 @@ public class Player implements Character, GameObject, Saveable {
 		this.primaryWeapon = primaryWeapon;
 		this.inventory = inventory;
 		this.playerBoundBox = playerBoundBox;
+		this.playerBoundBox.generateGraphics(Color.GREEN.getRGB());
 		this.zoom = zoom;
 		this.direction = direction;
 		this.radius = radius;
+		this.damageQueue = new PriorityQueue<>();
+		this.didMove = false;
+		this.newDirection = this.direction;
+		this.couldntRun = false;
 	}
 
 	private void updateDirection() {
@@ -512,7 +520,7 @@ public class Player implements Character, GameObject, Saveable {
 		if ((playerX + swordLength >= monsterX)
 				&& (playerX + swordLength <= monsterXWidth)) {
 			if ((playerY >= monsterY) || (playerYHeight >= monsterY)) {
-				mon.setHealth(mon.getHealth()-heavyAttack());
+				mon.setHealth(mon.getHealth() - heavyAttack());
 				checkForMonsterDeath(mon, monsters, iterator);
 			}
 		}
@@ -533,7 +541,7 @@ public class Player implements Character, GameObject, Saveable {
 		if ((playerX - swordLength >= monsterX)
 				&& (playerX - swordLength <= monsterXWidth)) {
 			if ((playerY >= monsterY) || (playerYHeight >= monsterY)) {
-				mon.setHealth(mon.getHealth()-heavyAttack());
+				mon.setHealth(mon.getHealth() - heavyAttack());
 				checkForMonsterDeath(mon, monsters, iterator);
 			}
 		}
@@ -556,7 +564,7 @@ public class Player implements Character, GameObject, Saveable {
 		if ((playerY - swordLength >= monsterY)
 				&& (playerY - swordLength <= monsterYHeight)) {
 			if ((playerX >= monsterX) || (playerXWidth >= monsterX)) {
-				mon.setHealth(mon.getHealth()-heavyAttack());
+				mon.setHealth(mon.getHealth() - heavyAttack());
 				checkForMonsterDeath(mon, monsters, iterator);
 			}
 		}
@@ -579,7 +587,7 @@ public class Player implements Character, GameObject, Saveable {
 		if ((playerY + swordLength >= monsterY)
 				&& (playerY + swordLength <= monsterYHeight)) {
 			if ((playerX >= monsterX) || (playerXWidth >= monsterX)) {
-				mon.setHealth(mon.getHealth()-heavyAttack());
+				mon.setHealth(mon.getHealth() - heavyAttack());
 				checkForMonsterDeath(mon, monsters, iterator);
 			}
 		}
@@ -732,7 +740,7 @@ public class Player implements Character, GameObject, Saveable {
 
 	@Override
 	public String save() {
-		String s = "Player {\n";
+		String s = "Player\t{\n";
 		s += "int	hp	" + hp + "\n";
 		s += "int	hpMax	" + hpMax + "\n";
 		s += "int	gold	" + gold + "\n";
@@ -743,6 +751,8 @@ public class Player implements Character, GameObject, Saveable {
 		s += "zoom	zoom	" + zoom + "\n";
 		s += "damageQueue	damageQueue	" + damageQueue + "\n";
 		s += "direction	direction	" + direction + "\n";
+		s += "Box	boundBox	" + this.playerBoundBox.save() + "\n";
+		s += "int	radius	" + radius + "\n";
 		s += "}";
 
 		return s;
