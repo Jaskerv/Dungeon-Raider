@@ -21,14 +21,17 @@ import javax.swing.JFrame;
 import gameEngine.UI.IngameInterface;
 import gameEngine.UI.PauseMenu;
 import gameEngine.UI.YouDied;
+import gameEngine.character.Inventory;
 import gameEngine.character.Player;
 import gameEngine.controller.KeyController;
+import gameEngine.item.Weapon;
 import gameEngine.map.Map;
 import gameEngine.sound.SoundMap;
 import gameEngine.sprite.Sprite;
 import gameEngine.sprite.SpriteSheet;
 import gameEngine.util.PatternInt;
 import gameEngine.util.Position;
+import gameEngine.util.Rectangle;
 import library4.SaveBoi;
 import library4.Saveable;
 
@@ -57,6 +60,8 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 			loadImage("resources/tiles/DungeonTileset1.png"));
 	private static SpriteSheet dunegeonSpritesheet2 = new SpriteSheet(
 			Engine.loadImage("resources/tiles/DungeonTileset4.png"));
+	private static SpriteSheet coinSpriteSheet = new SpriteSheet(
+			loadImage("resources/images/sCoins.png"));
 	/**
 	 * Key listener - keeps track of cameras movement
 	 */
@@ -81,7 +86,7 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 	public Engine() {
 		/** Initializing the map */
 		this.mapList = initialiseMaps();
-		this.currentMap = mapList.get(1);
+		this.currentMap = mapList.get(0);
 		this.currentMapNumber = 1;
 		/** Initializing the sound library */
 		this.soundLibrary = new SoundMap(
@@ -114,14 +119,14 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 		/** Component listener to see if JFrame is resized */
 		/** Creates 3 buffer renderer */
 		this.startGame.createBufferStrategy(3);
-		this.renderer = new Renderer(getWidth(), getHeight(),this);
+		this.renderer = new Renderer(getWidth(), getHeight(), this);
 		/**
 		 * Initiating the players
 		 */
 		this.player = new Player(new Position(150, 200), 100, 5, 100, 100, 600);
 		this.monsters = currentMap.getMonsters();
 		/** GUI */
-		this.GUI = new IngameInterface(player, WIDTH, HEIGHT);
+		this.GUI = new IngameInterface(player, WIDTH, HEIGHT, findSprite("coin"));
 
 		this.pauseMenu = new PauseMenu(
 				Engine.loadImage("resources/images/Pause.png"));
@@ -315,9 +320,6 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 		mapList.put(count++, map_01);
 		// the final maze map.
 
-		mapList.entrySet().stream()
-				.forEach(entry -> System.out.println(entry.getValue()));
-
 		return mapList;
 
 	}
@@ -356,6 +358,7 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 	public static Sprite findSprite(String name) {
 		dunegeonSpritesheet.loadSprites(16, 16);
 		dunegeonSpritesheet2.loadSprites(16, 16);
+		coinSpriteSheet.loadSprites(16, 16);
 		if (name.equals("Monster_One")) {
 			return dunegeonSpritesheet.getSprite(3, 6);
 		} else if (name.equals("Monster_Two")) {
@@ -364,11 +367,11 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 			return dunegeonSpritesheet2.getSprite(3, 12);
 		} else if (name.equals("Monster_Four")) {
 			return dunegeonSpritesheet2.getSprite(4, 11);
-
 		} else if (name.equals("Small_Health_Potion")
 				|| name.equals("Big_Health_Potion")) {
-
 			return dunegeonSpritesheet2.getSprite(12, 11);
+		} else if (name.equals("coin")) {
+			return coinSpriteSheet.getSprite(0, 0);
 		}
 		return null;
 	}
@@ -465,7 +468,7 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 	public String save() {
 		String s = "Map	{\n";
 		s += "int	currentMapNumber	" + currentMapNumber + "\n";
-		s += "}	\n";
+		s += "}";
 		return s;
 	}
 
@@ -474,20 +477,16 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 		Scanner sc = null;
 		try {
 			sc = new Scanner(file);
-
+			String s = "";
 			while (sc.hasNext()) {
-				String s = sc.nextLine();
-				if (s.contains("{")) {
-					String[] split = s.split("\t");
-					if (split[0].equals("Player")) {
-						List<String> fields = new ArrayList<>();
-						while (sc.hasNext()) {
-							String line = sc.nextLine();
-							if (line.contains("}")) {
-							}
-						}
-					}
-				}
+				s += sc.nextLine() + "\n";
+			}
+			System.out.println(s);
+			System.out.println("+++++++++++++++++++++++++++++++++++");
+			String[] split = s.split("\\+");
+			for (String string : split) {
+				System.out.println(string);
+				System.out.println("------------------------------------");
 			}
 
 		} catch (Exception e) {

@@ -21,6 +21,8 @@ public class SaveBoi {
 	private Player player;
 	private Weapon weapon;
 
+	public static final String CLASS_SEPARATOR = "+";
+
 	public SaveBoi(Engine engine) {
 		this.engine = engine;
 		this.player = engine.getPlayer();
@@ -35,8 +37,7 @@ public class SaveBoi {
 			// File file = new File("resources/save/save01.txt");
 			out = new BufferedWriter(new FileWriter(saveFile));
 
-			out.write(player.save());
-			out.write(weapon.save());
+			out.write(player.save() + CLASS_SEPARATOR);
 			out.write(engine.save());
 
 		} catch (Exception e) {
