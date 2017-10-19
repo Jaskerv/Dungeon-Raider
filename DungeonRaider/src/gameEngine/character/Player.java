@@ -201,7 +201,6 @@ public class Player implements Character, GameObject, Saveable {
 			move = false;
 	}
 
-
 	private void playWalk() {
 		move = true;
 		walk = true;
@@ -444,6 +443,12 @@ public class Player implements Character, GameObject, Saveable {
 				return;
 			}
 			int current_Map = engine.getCurrentMapNumber();
+			if (current_Map == 2) {
+				if (engine.getPlayer().getPrimaryWeapon()
+						.getNumberOfUpgrades() < 3) {
+					return;
+				}
+			}
 			Map nextMap = engine.getMapList().get(current_Map + 1);
 			engine.setCurrentMap(nextMap);
 			engine.setCurrentMapNumber(engine.getCurrentMapNumber() + 1);
@@ -452,10 +457,10 @@ public class Player implements Character, GameObject, Saveable {
 			this.playerBoundBox.setX(this.x + 10);
 			this.playerBoundBox.setY(this.y + 63);
 			this.playerBoundBox.generateGraphics(Color.green.getRGB());
-		}
-		else if (teleportStatus == -1) {
+		} else if (teleportStatus == -1) {
 			int current_Map = engine.getCurrentMapNumber();
 			Map prevMap = engine.getMapList().get(current_Map - 1);
+			prevMap.spawnMonsters();
 			engine.setCurrentMap(prevMap);
 			engine.setCurrentMapNumber(engine.getCurrentMapNumber() - 1);
 			this.x = engine.getCurrentMapNumber() == 2 ? 1825 : 770;
@@ -464,7 +469,6 @@ public class Player implements Character, GameObject, Saveable {
 			this.playerBoundBox.setY(this.y + 63);
 			this.playerBoundBox.generateGraphics(Color.green.getRGB());
 		}
-
 	}
 
 	// Charnon comment

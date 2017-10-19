@@ -19,8 +19,8 @@ import library1.ItemParser;
 import library2.MapParser;
 
 /**
- * Map instances store everything about each map, including what tiles
- * are inside the map, what type of map it is, and so forth.
+ * Map instances store everything about each map, including what tiles are
+ * inside the map, what type of map it is, and so forth.
  *
  * @author harry
  */
@@ -48,15 +48,18 @@ public class Map {
 	/**
 	 * Initialises the Map
 	 */
-	public Map() {}
+	public Map() {
+	}
 
 	/**
-	 * This method generates the map from reading a file and stores it into
-	 * its Map 2D Array.
-	 * @param mapName  the name of the map
+	 * This method generates the map from reading a file and stores it into its
+	 * Map 2D Array.
+	 *
+	 * @param mapName
+	 *            the name of the map
 	 */
 	public void initialiseMap(String mapName) {
-		String path = "resources/maps/"+mapName+".txt";
+		String path = "resources/maps/" + mapName + ".txt";
 		char[][] map = MapParser.parseFileToMapArray(path);
 		initialiseFields();
 		for (int y = 0; y < LENGTH; y++) {
@@ -65,7 +68,7 @@ public class Map {
 						y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 			}
 		}
-		//reads items
+		// reads items
 		Scanner scan = null;
 		try {
 			scan = new Scanner(new File(path));
@@ -75,10 +78,8 @@ public class Map {
 		} finally {
 			scan.close();
 		}
-		//iterates through the map and creates the items
-		itemMap.entrySet()
-		.stream()
-		.forEach(e -> {
+		// iterates through the map and creates the items
+		itemMap.entrySet().stream().forEach(e -> {
 			String category = e.getKey();
 			List<String> items = e.getValue();
 			createItem(category, items);
@@ -88,42 +89,43 @@ public class Map {
 
 	/**
 	 * Initialises each item and adds to the list of items.
-	 * @param category  the name of the category of the item
-	 * @param items  the items, each parsed in as one) string
+	 *
+	 * @param category
+	 *            the name of the category of the item
+	 * @param items
+	 *            the items, each parsed in as one) string
 	 */
 	public void createItem(String category, List<String> items) {
 		if (category.equals("Weapon")) {
-			return; //not implemented yet
+			return; // not implemented yet
 		}
 		String name = "";
 		int index = 0;
 		int constructor = 0;
 		if (category.equals("Consumable")) {
 			constructor = 3;
-		}
-		else if (category.equals("Monster")) {
+		} else if (category.equals("Monster")) {
 			constructor = 6;
 		}
-		//e.g. x y consumeTime mapNumber for item
+		// e.g. x y consumeTime mapNumber for item
 		int[] parameters = new int[constructor];
-		//each string
+		// each string
 		for (int i = 0; i < items.size(); i++) {
-			//each char
+			// each char
 			for (int j = 0; j < items.get(i).length(); j++) {
 				char c = items.get(i).charAt(j);
 				if (c != ' ') {
 					if (Character.isAlphabetic(c) || c == '_') {
 						name += c;
 					}
-					//reads all of the grouped ints (if there is) in a chain
+					// reads all of the grouped ints (if there is) in a chain
 					else if (Character.isDigit(c)) {
 						String value = "";
 						int z;
-						for (z = j; items.get(i).charAt(z) != ' '; z++)
-						{
-							//System.out.println(z);
+						for (z = j; items.get(i).charAt(z) != ' '; z++) {
+							// System.out.println(z);
 							value += items.get(i).charAt(z);
-							//otherwise it will iterate past the string size
+							// otherwise it will iterate past the string size
 							if (z + 1 == items.get(i).length()) {
 								break;
 							}
@@ -144,7 +146,7 @@ public class Map {
 			} else if (category.equals("Monster")) {
 				GameObject monster = new Monster(name, parameters[0],
 						parameters[1], parameters[2], parameters[3],
-						parameters[4], parameters [5], randomImage(), this.path);
+						parameters[4], parameters[5], randomImage(), this.path);
 				monsters.add(monster);
 			}
 			name = "";
@@ -173,16 +175,16 @@ public class Map {
 			this.path = "resources/images/smallOrc.png";
 			return Engine.loadImage(path);
 		}
-		/** ORC (2x2 large boss monster)
-		 * case 2:
-			this.path = "resources/images/orc.png";
-			return Engine.loadImage(path);
+		/**
+		 * ORC (2x2 large boss monster) case 2: this.path =
+		 * "resources/images/orc.png"; return Engine.loadImage(path);
 		 */
 		return null;
 	}
 
 	/**
 	 * Sets a tile to contain an item depending on where the item is placed
+	 *
 	 * @param item
 	 * @param x
 	 * @param y
@@ -199,8 +201,8 @@ public class Map {
 	}
 
 	/**
-	 * This method initialises the fields by having the library read the
-	 * first three values of the file, and set the fields according to those.
+	 * This method initialises the fields by having the library read the first
+	 * three values of the file, and set the fields according to those.
 	 */
 	private void initialiseFields() {
 		int[] mapStates = MapParser.getMapStates();
@@ -210,8 +212,9 @@ public class Map {
 	}
 
 	/**
-	 * Returns if the player is able to move or not
-	 * (checks if there's a wall in the way).
+	 * Returns if the player is able to move or not (checks if there's a wall in
+	 * the way).
+	 *
 	 * @param box
 	 * @return
 	 */
@@ -220,8 +223,9 @@ public class Map {
 		for (int row = 0; row < LENGTH; row++) {
 			for (int col = 0; col < WIDTH; col++) {
 				currentTile = map[col][row];
-				if(currentTile.contains(box)) {
-					if(currentTile.isBoundary()) return false;
+				if (currentTile.contains(box)) {
+					if (currentTile.isBoundary())
+						return false;
 				}
 			}
 		}
@@ -230,6 +234,7 @@ public class Map {
 
 	/**
 	 * This will check if the player is stepping on a teleporting tile.
+	 *
 	 * @param box
 	 * @return
 	 */
@@ -238,12 +243,11 @@ public class Map {
 		for (int row = 0; row < LENGTH; row++) {
 			for (int col = 0; col < WIDTH; col++) {
 				currentTile = map[col][row];
-				if(currentTile.contains(box)) {
-					if(currentTile.isTeleporter()
-						|| currentTile.isForwardTeleporter()) {
+				if (currentTile.contains(box)) {
+					if (currentTile.isTeleporter()
+							|| currentTile.isForwardTeleporter()) {
 						return 1;
-					}
-					else if(currentTile.isBackwardTeleporter()) {
+					} else if (currentTile.isBackwardTeleporter()) {
 						return -1;
 					}
 				}
@@ -252,22 +256,54 @@ public class Map {
 		return 0;
 	}
 
+	/**
+	 * Respawns the monsters in the map.
+	 */
+	public void spawnMonsters() {
+		List<GameObject> respawnedMonsters = new ArrayList<>();
+		Monster firstMonster = new Monster("Monster_One", 300, 600, 2, 1, 10,
+				10, randomImage(), this.path);
+		Monster secondMonster = new Monster("Monster_One", 400, 700, 3, 1, 10,
+				10, randomImage(), this.path);
+		Monster thirdMonster = new Monster("Monster_One", 500, 700, 4, 1, 10,
+				10, randomImage(), this.path);
+		Monster fourthMonster = new Monster("Monster_One", 600, 700, 1, 1, 10,
+				10, randomImage(), this.path);
+		respawnedMonsters.add(firstMonster);
+		respawnedMonsters.add(secondMonster);
+		respawnedMonsters.add(thirdMonster);
+		respawnedMonsters.add(fourthMonster);
+		this.monsters = respawnedMonsters;
 
-	public Tile[][] getMap() { return map; }
+	}
 
-	public void setMap(Tile[][] map) { this.map = map; }
+	public Tile[][] getMap() {
+		return map;
+	}
 
-	public List<Item> getItems() { return items; }
+	public void setMap(Tile[][] map) {
+		this.map = map;
+	}
 
-	public void setItems(List<Item> items) { this.items = items; }
+	public List<Item> getItems() {
+		return items;
+	}
 
-	public java.util.Map<String, List<String>> getItemMap() { return itemMap; }
+	public void setItems(List<Item> items) {
+		this.items = items;
+	}
+
+	public java.util.Map<String, List<String>> getItemMap() {
+		return itemMap;
+	}
 
 	public void setItemMap(java.util.Map<String, List<String>> itemMap) {
 		this.itemMap = itemMap;
 	}
 
-	public List<GameObject> getMonsters() { return monsters; }
+	public List<GameObject> getMonsters() {
+		return monsters;
+	}
 
 	public void setMonsters(List<GameObject> monsters) {
 		this.monsters = monsters;

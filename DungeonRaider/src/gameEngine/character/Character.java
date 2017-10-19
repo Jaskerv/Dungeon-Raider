@@ -26,6 +26,14 @@ public interface Character {
 		return currentMap.onWall(box);
 	}
 
+	/**
+	 * 1 for forwards teleporting
+	 * -1 for teleporting backwards
+	 * 0 for no teleportation tile found
+	 * @param currentMap
+	 * @param box
+	 * @return
+	 */
 	public default int checkTeleporter(Map currentMap, Box box) {
 		return currentMap.onTeleporter(box);
 	}
