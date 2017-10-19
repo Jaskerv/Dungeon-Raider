@@ -60,12 +60,11 @@ public class Weapon extends Item implements Upgradable, Saveable {
 	 */
 	@Override
 	public void upgrade() {
-
-		if (numberOfUpgrades < 5) {
-			setCritChance(critChance + 5);
-			setDamage(damage + 10);
-			numberOfUpgrades++;
-		}
+		setCritChance(critChance*1.5);
+		setDamage( (int) (damage*2));
+		System.out.println("New crit chance is:" + critChance);
+		System.out.println("New damage done is:" + damage);
+		numberOfUpgrades++;
 	}
 
 	public String getName() {

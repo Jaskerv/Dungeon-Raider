@@ -24,11 +24,11 @@ public class KeyController extends Observable
 	private boolean run;
 	private boolean useItem;
 	private boolean attack;
-
+	private boolean upgrade;
 
 	private Engine engine;
 
-	public KeyController( Engine engine) {
+	public KeyController(Engine engine) {
 		this.up = false;
 		this.down = false;
 		this.left = false;
@@ -40,6 +40,7 @@ public class KeyController extends Observable
 		this.run = false;
 		this.useItem = false;
 		this.attack = false;
+		this.upgrade = false;
 	}
 
 	@Override
@@ -92,6 +93,11 @@ public class KeyController extends Observable
 		case KeyEvent.VK_SPACE:
 			// lets the player attack by setting the attak field to true
 			this.attack = true;
+			break;
+		case KeyEvent.VK_U:
+			// Lets the player upgrade their weapon by setting upgrade field to
+			// true
+			this.upgrade = true;
 			break;
 		}
 	}
@@ -221,7 +227,7 @@ public class KeyController extends Observable
 			if (engine.isPaused()) {
 				engine.getPauseMenu().setEnter(true);
 			}
-			//lets the dead screen know that an option has been entered
+			// lets the dead screen know that an option has been entered
 			if (engine.getPlayer().isDead()) {
 				engine.getYouDied().setEnter(true);
 			}
@@ -257,6 +263,14 @@ public class KeyController extends Observable
 
 	public boolean isAttack() {
 		return attack;
+	}
+
+	public boolean isUpgrade() {
+		return upgrade;
+	}
+
+	public void setUpgrade(boolean upgrade) {
+		this.upgrade = upgrade;
 	}
 
 	public boolean isRun() {
