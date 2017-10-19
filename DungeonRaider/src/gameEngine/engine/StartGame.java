@@ -9,6 +9,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
@@ -32,7 +33,8 @@ import gameEngine.util.FontImporter;
  * @author Jono Yan, Harry Nguon
  *
  */
-public class StartGame extends Canvas implements KeyListener, MouseListener, GameObject {
+public class StartGame extends Canvas
+		implements KeyListener, MouseListener, GameObject {
 
 	private BufferedImage backgroundImage;
 	/** Audio clip */
@@ -66,15 +68,18 @@ public class StartGame extends Canvas implements KeyListener, MouseListener, Gam
 	 */
 	public StartGame(Engine engine) {
 		super();
-		img = new BufferedImage(Engine.WIDTH, Engine.HEIGHT, BufferedImage.TYPE_INT_RGB);
+		img = new BufferedImage(Engine.WIDTH, Engine.HEIGHT,
+				BufferedImage.TYPE_INT_RGB);
 		g = img.getGraphics();
 		this.engine = engine;
-		font8Bit = FontImporter.fontImport("resources/fonts/Perfect DOS VGA 437.ttf");
+		font8Bit = FontImporter
+				.fontImport("resources/fonts/Perfect DOS VGA 437.ttf");
 		menuSelection[0] = 320;
 		menuSelection[1] = 390;
 		menuSelection[2] = 460;
 		try {
-			backgroundImage = ImageIO.read(new FileInputStream("resources/images/TitleScreen.png"));
+			backgroundImage = ImageIO.read(
+					new FileInputStream("resources/images/TitleScreen.png"));
 			// title = ImageIO.read(
 			// new FileInputStream("resources/images/DungeonRaider.png"));
 		} catch (IOException e) {
@@ -86,8 +91,8 @@ public class StartGame extends Canvas implements KeyListener, MouseListener, Gam
 	}
 
 	/**
-	 * This method plays the main menu music and draws to the JPanel that is created
-	 * within the Frame
+	 * This method plays the main menu music and draws to the JPanel that is
+	 * created within the Frame
 	 */
 	public void execute() {
 
@@ -133,9 +138,10 @@ public class StartGame extends Canvas implements KeyListener, MouseListener, Gam
 			if (index == 0) {
 				engine.switchCanvas();
 			}
-			// 'Info' button - unimplemented
+			// Load Game
 			else if (index == 1) {
-				System.out.println("un");
+				engine.switchCanvas();
+				engine.load(new File("resources/save/save09.txt"));
 			}
 			// 'Quit' button
 			else if (index == 2) {
@@ -174,7 +180,8 @@ public class StartGame extends Canvas implements KeyListener, MouseListener, Gam
 
 	@Override
 	public void render(Renderer renderer, int xZoom, int yZoom) {
-		g.drawImage(backgroundImage, 0, 0, backgroundImage.getWidth(), backgroundImage.getHeight(), null);
+		g.drawImage(backgroundImage, 0, 0, backgroundImage.getWidth(),
+				backgroundImage.getHeight(), null);
 		if (active) {
 			g.setColor(Color.white);
 			g.setFont(font8Bit.deriveFont(Font.PLAIN, 24));
