@@ -74,6 +74,7 @@ public class Player implements Character, GameObject, Saveable {
 	private boolean walk;
 	private boolean run;
 	private Engine engine;
+	private Clip walkClip;
 	/**
 	 * Player visual radius
 	 */
@@ -117,6 +118,7 @@ public class Player implements Character, GameObject, Saveable {
 		this.run = false;
 		this.walk = false;
 		this.engine = engine;
+		this.walkClip = engine.getSoundLibrary().getClip("walk");
 	}
 
 	/**
@@ -170,6 +172,7 @@ public class Player implements Character, GameObject, Saveable {
 		this.run = false;
 		this.walk = false;
 		this.engine = engine;
+		this.walkClip = engine.getSoundLibrary().getClip("walk");
 	}
 
 	private void loadImages() {
@@ -191,8 +194,20 @@ public class Player implements Character, GameObject, Saveable {
 		}
 	}
 
+	private void stopWalkSound() {
+		walkClip.stop();
+		walkClip.close();
+		if (!run)
+			move = false;
+	}
+
+
 	private void playWalk() {
-		Clip clip = engine.getSoundLibrary().getClip("walk");
+		move = true;
+		walk = true;
+		walkClip = engine.getSoundLibrary().getClip("walk");
+		engine.getSoundLibrary().playClipLoop(walkClip, Clip.LOOP_CONTINUOUSLY,
+				3f);
 	}
 
 	@Override
@@ -202,9 +217,6 @@ public class Player implements Character, GameObject, Saveable {
 
 	@Override
 	public void walkLeft() {
-		if (!move) {
-			playWalk();
-		}
 		this.x -= Movement.WALK_SPEED;
 		// this.playerBoundBox.setX(this.playerBoundBox.getX() - SPEED);
 		this.playerBoundBox.setX(Movement.walkLeft(this.playerBoundBox.getX(),
@@ -213,6 +225,9 @@ public class Player implements Character, GameObject, Saveable {
 
 	@Override
 	public void walkRight() {
+		if (!move) {
+			playWalk();
+		}
 		this.x += Movement.WALK_SPEED;
 		// this.playerBoundBox.setX(this.playerBoundBox.getX() + SPEED);
 		this.playerBoundBox.setX(Movement.walkRight(this.playerBoundBox.getX(),
@@ -221,6 +236,9 @@ public class Player implements Character, GameObject, Saveable {
 
 	@Override
 	public void walkUp() {
+		if (!move) {
+			playWalk();
+		}
 		this.y -= Movement.WALK_SPEED;
 		// this.playerBoundBox.setY(this.playerBoundBox.getY() - SPEED);
 		this.playerBoundBox.setY(Movement.walkUp(this.playerBoundBox.getY(),
@@ -229,6 +247,9 @@ public class Player implements Character, GameObject, Saveable {
 
 	@Override
 	public void walkDown() {
+		if (!move) {
+			playWalk();
+		}
 		this.y += Movement.WALK_SPEED;
 		// this.playerBoundBox.setY(this.playerBoundBox.getY() + SPEED);
 		this.playerBoundBox.setY(Movement.walkDown(this.playerBoundBox.getY(),
@@ -535,6 +556,7 @@ public class Player implements Character, GameObject, Saveable {
 	}
 
 	public void tryWalk(Engine engine) {
+		boolean walk = false;
 		Box curBox = this.playerBoundBox;
 		KeyController keyBinds = engine.getKeyBinds();
 		Map currentMap = engine.getCurrentMap();
@@ -550,6 +572,7 @@ public class Player implements Character, GameObject, Saveable {
 				newDirection = 2;
 				didMove = true;
 				walkUp();
+				walk = true;
 			}
 		}
 		if (keyBinds.isDown()) {
@@ -561,6 +584,7 @@ public class Player implements Character, GameObject, Saveable {
 				newDirection = 3;
 				didMove = true;
 				walkDown();
+				walk = true;
 			}
 		}
 		if (keyBinds.isLeft()) {
@@ -571,6 +595,7 @@ public class Player implements Character, GameObject, Saveable {
 				newDirection = 1;
 				didMove = true;
 				walkLeft();
+				walk = true;
 			}
 		}
 		if (keyBinds.isRight()) {
@@ -581,9 +606,15 @@ public class Player implements Character, GameObject, Saveable {
 				newDirection = 0;
 				didMove = true;
 				walkRight();
+				walk = true;
 			}
 		}
-
+		if (walk && !move) {
+			playWalk();
+			move = true;
+		} else if (!walk) {
+			stopWalkSound();
+		}
 	}
 
 	public void attackMonster(Engine engine, Box playerAttack) {

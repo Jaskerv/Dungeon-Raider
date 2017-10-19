@@ -37,21 +37,21 @@ public class Movement {
 	public static int sprintUp(int currentY) {
 		if(currentY - WALK_SPEED <= 0)
 			return 0;
-		return currentY - Movement.SPRINT_SPEED;
+		return currentY - SPRINT_SPEED;
 	}
 
 	public static int sprintRight(int currentX) {
-		return currentX + Movement.SPRINT_SPEED;
+		return currentX + SPRINT_SPEED;
 	}
 
 	public static int sprintDown(int currentY) {
-		return currentY + Movement.SPRINT_SPEED;
+		return currentY + SPRINT_SPEED;
 	}
 
 	public static int sprintLeft(int currentX) {
 		if(currentX <= 0 )
 			return 0;
-		return currentX - Movement.SPRINT_SPEED;
+		return currentX - SPRINT_SPEED;
 	}
 
 }
