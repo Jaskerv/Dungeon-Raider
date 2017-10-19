@@ -1,9 +1,9 @@
 { 
 Consumable Small_Health_Potion 810 90 30
-Monster Monster_One 300 600 2 5 10 10
-Monster Monster_Two 400 700 3 6 10 10
-Monster Monster_Three 500 700 4 7 10 10
-Monster Monster_Four 600 700 1 10 10 10
+Monster Monster_One 950 370 1 5 10 10
+Monster Monster_Two 395 970 2 6 10 10
+Monster Monster_Three 1650 680 3 7 10 10
+Monster Monster_Four 1600 1300 5 10 10 10
 }
 
 0 0 0
