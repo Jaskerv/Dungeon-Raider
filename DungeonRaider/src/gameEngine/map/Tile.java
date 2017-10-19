@@ -1,5 +1,7 @@
 package gameEngine.map;
 
+import java.util.Random;
+
 import gameEngine.engine.Engine;
 import gameEngine.item.Item;
 import gameEngine.sprite.Sprite;
@@ -13,11 +15,12 @@ import gameEngine.util.Box;
  *
  */
 public class Tile {
-	
+
 	public enum Type {
 		Floor,
 		Wall,
-		Teleporter
+		Teleporter,
+		RandomTeleporter;
 	}
 
 	/** Type of tile */
@@ -26,6 +29,7 @@ public class Tile {
 	private int x, y;
 	private final int width;
 	private final int height;
+	private int nextRandom = -1;
 	/** Sprite image resources */
 	private Sprite sprite;
 	private static final String SPRITE_SHEET_1_PATH =
@@ -89,23 +93,40 @@ public class Tile {
 			case '4':
 				this.type = Type.Wall;
 				return SPRITE_SHEET_1.getSprite(0, 1);
-//			case 'T':
-//				return SPRITE_SHEET_2.getSprite(14, 11);
 			case 'N':
 				this.type = Type.Teleporter;
+				return SPRITE_SHEET_1.getSprite(4, 7);
+			case 'M':
+				this.type = Type.RandomTeleporter;
+				this.nextRandom = calculateTileRandom();
 				return SPRITE_SHEET_1.getSprite(4, 7);
 		}
 		return null;
 	}
 
+	/**
+	 * Calculates a value between 0-3.
+	 * 0 indicates go back to tutorial map
+	 * 1 indicates go back to the map after the tutorial map
+	 * 2 indicates the player will die
+	 * 3 indicates the player will win
+	 * @return
+	 */
+	private int calculateTileRandom() {
+		Random random = new Random();
+		int min = 0;
+		int max = 3;
+		int result = min + random.nextInt(max - min + 1);
+		return result;
+	}
+
 	public boolean contains(int x, int y) {
 		return this.boundingBox.contains(x, y);
 	}
-	
+
 	public boolean contains(Box box) {
 		return this.boundingBox.contains(box);
 	}
-
 
 	/**
 	 * Checks if the given tile is a wall
@@ -133,7 +154,7 @@ public class Tile {
 	public boolean isBoundary() { return this.type == Type.Wall; }
 
 	public void setBoundary(Type boundary) { this.type = boundary; }
-	
+
 	public boolean isTeleporter() { return this.type == Type.Teleporter; }
 
 	public Item getItem() { return item; }

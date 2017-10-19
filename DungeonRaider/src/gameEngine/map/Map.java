@@ -138,7 +138,7 @@ public class Map {
 			} else if (category.equals("Monster")) {
 				GameObject monster = new Monster(name, parameters[0],
 						parameters[1], parameters[2], parameters[3],
-						parameters [4], parameters [5], Engine.findSprite(name));
+						parameters[4], parameters [5], Engine.findSprite(name));
 				monsters.add(monster);
 			}
 			name = "";
@@ -176,19 +176,12 @@ public class Map {
 		this.timeLimit = mapStates[2];
 	}
 
-	public boolean onWall(int x, int y) {
-		Tile currentTile;
-		for (int row = 0; row < LENGTH; row++) {
-			for (int col = 0; col < WIDTH; col++) {
-				currentTile = map[col][row];
-				if(currentTile.contains(x, y)) {
-					if(currentTile.isBoundary()) return false;
-				}
-			}
-		}
-		return true;
-	}
-
+	/**
+	 * Returns if the player is able to move or not
+	 * (checks if there's a wall in the way).
+	 * @param box
+	 * @return
+	 */
 	public boolean onWall(Box box) {
 		Tile currentTile;
 		for (int row = 0; row < LENGTH; row++) {
@@ -201,7 +194,12 @@ public class Map {
 		}
 		return true;
 	}
-	
+
+	/**
+	 * This will check if the player is stepping on a teleporting tile.
+	 * @param box
+	 * @return
+	 */
 	public boolean onTeleporter(Box box) {
 		Tile currentTile;
 		for (int row = 0; row < LENGTH; row++) {
