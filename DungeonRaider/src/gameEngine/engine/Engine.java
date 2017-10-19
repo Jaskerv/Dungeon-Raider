@@ -9,10 +9,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
@@ -22,6 +26,7 @@ import gameEngine.UI.IngameInterface;
 import gameEngine.UI.PauseMenu;
 import gameEngine.UI.YouDied;
 import gameEngine.character.Inventory;
+import gameEngine.character.Monster;
 import gameEngine.character.Player;
 import gameEngine.controller.KeyController;
 import gameEngine.item.Consumable;
@@ -125,7 +130,7 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 		/**
 		 * Initiating the players
 		 */
-		this.player = new Player(new Position(150, 200), 100, 5, 100, 100, 300,
+		this.player = new Player(new Position(150, 200), 100, 5, 1000000, 1000000, 300,
 				this);
 		this.monsters = currentMap.getMonsters();
 		/** GUI */
@@ -166,10 +171,48 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 					// Renders the map first (bottom layer of the image)
 					renderer.renderMap(currentMap);
 					/** Render Objects */
+					// for (GameObject gameObject : monsters) {
+					// gameObject.render(renderer, 3, 3);
+					// }
+					// this.player.render(renderer, 3, 3);
+					Collection<Object> prio = new PriorityQueue<>(
+							new Comparator<Object>() {
+
+								@Override
+								public int compare(Object o1, Object o2) {
+									if (o1 instanceof Monster) {
+										Monster a = (Monster) o1;
+										if (o2 instanceof Monster) {
+											Monster b = (Monster) o2;
+											Box a1 = a.getBoundingBox();
+											Box b1 = b.getBoundingBox();
+											return (a1.getY() - b1.getY());
+										} else {
+											Player b = (Player) o2;
+											Box a1 = a.getBoundingBox();
+											Box b1 = b.getPlayerBoundBox();
+											return (a1.getY() - (b1.getY() + b1.getHeight()));
+										}
+
+									} else {
+										Player b = (Player) o1;
+										Monster a = (Monster) o2;
+										Box a1 = a.getBoundingBox();
+										Box b1 = b.getPlayerBoundBox();
+										return ((b1.getY() + (b1.getHeight()
+												)) - a1.getY());
+									}
+								}
+							});
 					for (GameObject gameObject : monsters) {
-						gameObject.render(renderer, 3, 3);
+						prio.add(gameObject);
 					}
-					this.player.render(renderer, 3, 3);
+					prio.add(this.player);
+					while (!prio.isEmpty()) {
+						Object c = ((PriorityQueue<Object>) prio).poll();
+						GameObject a = (GameObject) c;
+						a.render(renderer, 3, 3);
+					}
 					/** Render GUI */
 					this.GUI.render(renderer, GUI.XZOOM, GUI.YZOOM);
 					/** Then render the Renderer */
@@ -334,6 +377,7 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 	public void setCurrentMap(Map currentMap) {
 		this.currentMap = currentMap;
 		this.monsters = this.currentMap.getMonsters();
+		this.currentMapNumber++;
 	}
 
 	public void switchCanvas() {
@@ -579,8 +623,8 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 							new Sprite(Engine
 									.loadImage("resources/tiles/sword.png")),
 							name, damage, critChance, range, numberOfUpgrades);
-					System.out.println(sc.nextLine());
-					System.out.println(sc.nextLine());
+					sc.nextLine();
+					sc.nextLine();
 				} else if (split[1].equals("inventory")) {
 					inven = new Inventory();
 					for (int i = 2; i < split.length; i++)
