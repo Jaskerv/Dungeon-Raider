@@ -125,7 +125,7 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 		/**
 		 * Initiating the players
 		 */
-		this.player = new Player(new Position(150, 200), 100, 5, 100, 100, 600);
+		this.player = new Player(new Position(150, 200), 100, 5, 100, 100, 300);
 		this.monsters = currentMap.getMonsters();
 		/** GUI */
 		this.GUI = new IngameInterface(this, WIDTH, HEIGHT, findSprite("coin"));

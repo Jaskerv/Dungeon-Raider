@@ -1,6 +1,7 @@
 package gameEngine.UI;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import gameEngine.engine.Renderer;
 import gameEngine.item.Item;
 import gameEngine.sprite.Sprite;
 import gameEngine.util.Box;
+import gameEngine.util.FontImporter;
 
 /**
  * The ingame UI for the player
@@ -36,13 +38,17 @@ public class IngameInterface implements GameObject {
 	private final int HPX = 112;
 	private final int HPY = 60;
 	private final int HPHEIGHT = 30;
+	private Font font;
 
-	public IngameInterface(Engine engine, int width, int height, Sprite coinSprite) {
+	public IngameInterface(Engine engine, int width, int height,
+			Sprite coinSprite) {
 		this.engine = engine;
 		this.width = width;
 		this.height = height;
 		this.healthBar = new Box(HPX, HPY, HPMAX, HPHEIGHT);
 		this.coinSprite = coinSprite;
+		this.font = FontImporter
+				.fontImport("resources/fonts/Perfect DOS VGA 437.ttf");
 		generateUI();
 	}
 
@@ -63,8 +69,22 @@ public class IngameInterface implements GameObject {
 		g.setColor(Color.GREEN);
 		g.fillRect(HPX, HPY, healthBar.getWidth(), HPHEIGHT);
 		g.setColor(Color.WHITE);
-		g.drawString(getPlayerBalance(), 140, 115);
+		g.setFont(font.deriveFont(24f));
+		g.drawString(getPlayerBalance(), 140, 118);
+		g.setColor(Color.YELLOW);
+		g.drawString("Lvl: "
+				+ engine.getPlayer().getPrimaryWeapon().getNumberOfUpgrades(),
+				115, 150);
+		g.setColor(Color.RED);
+		g.setFont(font.deriveFont(17f));
+		g.drawString(
+				"Dmg: " + engine.getPlayer().getPrimaryWeapon().getDamage(),
+				115, 170);
+		g.drawString("Crit: "
+				+ engine.getPlayer().getPrimaryWeapon().getCritChance() + "%",
+				115, 190);
 		ui = new Sprite(clone);
+
 		/**
 		 * Draw sprites after this
 		 */
@@ -96,15 +116,17 @@ public class IngameInterface implements GameObject {
 	public String getPlayerBalance() {
 		StringBuilder balance = new StringBuilder();
 		int balanceLength = 8;
-		String playerBalance = Integer.toString(engine.getPlayer().getGoldTotal());
-//		for (int i = 0; i < balanceLength; i++) {
-//			if (i < (balanceLength - playerBalance.length())){
-//				balance.append("0");
-//			}
-//			else {
-//				balance.append(playerBalance.charAt(balanceLength - playerBalance.length()));
-//			}
-//		}
+		String playerBalance = Integer
+				.toString(engine.getPlayer().getGoldTotal());
+		// for (int i = 0; i < balanceLength; i++) {
+		// if (i < (balanceLength - playerBalance.length())){
+		// balance.append("0");
+		// }
+		// else {
+		// balance.append(playerBalance.charAt(balanceLength -
+		// playerBalance.length()));
+		// }
+		// }
 		return playerBalance;
 
 	}

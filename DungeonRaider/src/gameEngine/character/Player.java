@@ -810,8 +810,7 @@ public class Player implements Character, GameObject, Saveable {
 	 * @return
 	 */
 	public boolean checkRadius(int x, int y) {
-		int pX = this.playerBoundBox.getX() + this.playerBoundBox.getWidth() / 2
-				+ 15;
+		int pX = this.playerBoundBox.getX() + this.playerBoundBox.getWidth() / 2;
 		int pY = this.playerBoundBox.getY()
 				+ this.playerBoundBox.getHeight() / 2;
 		int dx = Math.abs(x - pX);
