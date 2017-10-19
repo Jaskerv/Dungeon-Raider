@@ -841,7 +841,7 @@ public class Player implements Character, GameObject, Saveable {
 		s += "inventory	inventory	" + inventory.save() + "\n";
 		s += "zoom	zoom	" + zoom + "\n";
 		s += "damageQueue	damageQueue	" + damageQueue + "\n";
-		s += "direction	direction	" + direction + "\n";
+		s += "direction	direction	" + newDirection + "\n";
 		s += "Box	boundBox	" + this.playerBoundBox.save() + "\n";
 		s += "int	radius	" + radius + "\n";
 		s += "}";
