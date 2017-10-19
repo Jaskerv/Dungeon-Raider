@@ -39,6 +39,7 @@ public class IngameInterface implements GameObject {
 	private final int HPY = 60;
 	private final int HPHEIGHT = 30;
 	private Font font;
+	private BufferedImage potion;
 
 	public IngameInterface(Engine engine, int width, int height,
 			Sprite coinSprite) {
@@ -49,6 +50,7 @@ public class IngameInterface implements GameObject {
 		this.coinSprite = coinSprite;
 		this.font = FontImporter
 				.fontImport("resources/fonts/Perfect DOS VGA 437.ttf");
+		this.potion = Engine.loadImage("resources/images/potion.png");
 		generateUI();
 	}
 
@@ -91,10 +93,9 @@ public class IngameInterface implements GameObject {
 		List<Item> itemList = engine.getPlayer().getInventory().getInventory();
 		for (int i = 0; i < itemList.size(); i++) {
 			Sprite itemSprite = itemList.get(i).getSprite();
-			if (itemList.get(i).getPickedUp()) {
-				int itemNumber = 110 + (i * 50);
-				ui.drawOnSprite(itemSprite, itemNumber, 200, 3, 3);
-			}
+			int itemNumber = 110 + (i * 50);
+			ui.drawOnSprite(itemSprite, itemNumber, 200, 3, 3);
+
 		}
 		// coin sprite
 		ui.drawOnSprite(coinSprite, 98, 75, 3, 3);

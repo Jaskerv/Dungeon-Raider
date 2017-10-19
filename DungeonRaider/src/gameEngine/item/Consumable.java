@@ -16,6 +16,10 @@ public class Consumable extends Item {
 	/** Item consume health gained */
 	protected int healingStrength;
 
+	private Consumable(int healing) {
+		this("", 0, 0, healing, Engine.loadImage("resources/images/potion.png"),
+				"");
+	}
 
 	public Consumable(String name, int x, int y, int healingStrength,
 			BufferedImage image, String path) {
@@ -24,12 +28,6 @@ public class Consumable extends Item {
 		this.path = path;
 		this.healingStrength = healingStrength;
 		this.name = name;
-	}
-
-	private Consumable(int healing) {
-		super(0, 0,
-				new Sprite(Engine.loadImage("resources/images/potion.png")));
-		this.healingStrength = healing;
 	}
 
 	public String getName() {

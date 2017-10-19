@@ -290,6 +290,7 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 	 */
 	public void update() {
 		soundLibrary.autoClipClose();
+		System.out.println(currentMapNumber);
 		/**
 		 * If player is dead
 		 */
@@ -548,8 +549,31 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 	}
 
 	private void loadMap(String string) {
-		// TODO Auto-generated method stub
+		Scanner sc = null;
+		try {
+			sc = new Scanner(string);
+			int mapID;
+			while (sc.hasNext()) {
+				if (sc.hasNext("Map")) {
+					sc.next();
+					sc.nextLine();
+					if (sc.hasNext("\\{"))
+						sc.nextLine();
+					String next = sc.nextLine();
+					String[] n = next.split("\t");
+					int mapNum = Integer.parseInt(n[2]);
+					this.currentMap = this.mapList.get(mapNum);
+					this.currentMapNumber = mapNum;
+					break;
+				}
 
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			sc.close();
+		}
 	}
 
 	/**
