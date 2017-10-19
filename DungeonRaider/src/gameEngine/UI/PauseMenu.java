@@ -1,6 +1,7 @@
 package gameEngine.UI;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -9,6 +10,7 @@ import gameEngine.engine.Engine;
 import gameEngine.engine.GameObject;
 import gameEngine.engine.Renderer;
 import gameEngine.sprite.Sprite;
+import gameEngine.util.FontImporter;
 import library4.SaveBoi;
 
 /**
@@ -30,6 +32,11 @@ public class PauseMenu implements GameObject {
 	private boolean down;
 	private boolean enter;
 
+	private int count;
+	private boolean save;
+	private boolean load;
+	private Font font;
+
 	public PauseMenu(BufferedImage backgroundImage) {
 		this.background = new Sprite(backgroundImage);
 		this.img = backgroundImage;
@@ -48,6 +55,12 @@ public class PauseMenu implements GameObject {
 		this.up = false;
 		this.down = false;
 		this.enter = false;
+
+		this.count = 0;
+		this.save = false;
+		this.load = false;
+		this.font = FontImporter
+				.fontImport("resources/fonts/Perfect DOS VGA 437.ttf");
 	}
 
 	@Override
@@ -58,12 +71,32 @@ public class PauseMenu implements GameObject {
 		g.drawImage(img, 0, 0, null);
 		g.setColor(Color.WHITE);
 		g.fillRect(cursorX, this.menu[index], CURSORSIZE, CURSORSIZE);
+		if (save) {
+			g.setFont(font.deriveFont(Font.PLAIN, 30));
+			g.drawString("Game Saved", 30, 50);
+		} else if (load && !save) {
+			g.setFont(font.deriveFont(Font.PLAIN, 30));
+			g.drawString("Game Loaded", 30, 50);
+		}
 		background = new Sprite(clone);
 		renderer.renderGUI(background);
 	}
 
 	@Override
 	public void update(Engine engine) {
+		if (save) {
+			if (count == 100) {
+				count = 0;
+				save = false;
+			}
+			count++;
+		} else if (load && !save) {
+			if (count == 100) {
+				count = 0;
+				load = false;
+			}
+			count++;
+		}
 		if (up == true) {
 			cursorUp(engine);
 			this.up = false;
@@ -128,10 +161,12 @@ public class PauseMenu implements GameObject {
 		/** Save */
 		else if (index == 1) {
 			save(engine);
+			this.save = true;
 		}
 		/** load */
 		else if (index == 2) {
 			load(engine);
+			this.load = true;
 		}
 		/** Exit */
 		else if (index == 3) {

@@ -3,6 +3,7 @@ package gameEngine.UI;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.File;
 
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
@@ -16,7 +17,7 @@ import gameEngine.sprite.Sprite;
 
 /**
  * GUI for death screen
- * 
+ *
  * @author Jono Yan
  *
  */
@@ -33,7 +34,6 @@ public class YouDied implements GameObject {
 	private boolean down;
 	private boolean enter;
 	private Clip clip;
-
 	public YouDied(BufferedImage backgroundImg) {
 		this.img = backgroundImg;
 		this.background = new Sprite(backgroundImg);
@@ -80,7 +80,7 @@ public class YouDied implements GameObject {
 
 	/**
 	 * moves cursor up
-	 * 
+	 *
 	 * @param engine
 	 */
 	public void cursorUp(Engine engine) {
@@ -92,7 +92,7 @@ public class YouDied implements GameObject {
 
 	/**
 	 * moves cursor down
-	 * 
+	 *
 	 * @param engine
 	 */
 	public void cursorDown(Engine engine) {
@@ -104,11 +104,13 @@ public class YouDied implements GameObject {
 
 	/**
 	 * Cursor enter at the right spot
-	 * 
+	 *
 	 * @param engine
 	 */
 	public void cursorEnter(Engine engine) {
 		if (index == 0) {
+			engine.load(new File("resources/save/save09.txt"));
+			stopMusic();
 		} else if (index == 1) {
 			System.exit(0);
 		}
@@ -177,7 +179,7 @@ public class YouDied implements GameObject {
 
 	/**
 	 * Plays death music
-	 * 
+	 *
 	 * @param engine
 	 */
 	public void playMusic(Engine engine) {

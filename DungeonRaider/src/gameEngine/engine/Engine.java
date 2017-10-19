@@ -88,8 +88,8 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 	public Engine() {
 		/** Initializing the map */
 		this.mapList = initialiseMaps();
-		this.currentMap = mapList.get(0);
-		this.currentMapNumber = 0;
+		this.currentMap = mapList.get(1);
+		this.currentMapNumber = 1;
 		/** Initializing the sound library */
 		this.soundLibrary = new SoundMap(
 				"resources/sountracks/soundlibrary.txt");
@@ -309,18 +309,22 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 	private HashMap<Integer, Map> initialiseMaps() {
 		HashMap<Integer, Map> mapList = new HashMap<Integer, Map>();
 		int count = 0;
-		Map map_02 = new Map();
-		map_02.initialiseMap("Map_02");
-		mapList.put(count++, map_02);
-		// Tutorial map
-		Map tutMap = new Map();
-		tutMap.initialiseMap("TutorialMap");
-		mapList.put(count++, tutMap);
-		// the first proper map
+		Map tutorialMap = new Map();
+		tutorialMap.initialiseMap("TutorialMap2");
+		mapList.put(count++, tutorialMap);
+
 		Map map_01 = new Map();
 		map_01.initialiseMap("Map_01");
 		mapList.put(count++, map_01);
-		// the final maze map.
+
+		// the first proper map
+		Map transitionMap = new Map();
+		transitionMap.initialiseMap("TransitionMap");
+		mapList.put(count++, transitionMap);
+
+		Map map_02 = new Map();
+		map_02.initialiseMap("Map_02");
+		mapList.put(count++, map_02);
 
 		return mapList;
 
