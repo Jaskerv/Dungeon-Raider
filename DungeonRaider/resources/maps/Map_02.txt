@@ -1,7 +1,7 @@
 { 
 Weapon Short_Sword 0 2 10
 Consumable Small_Health_Potion 857 90 30
-Monster Monster_One 300 600 2 100 
+Monster Monster_Three 1650 1200 10 1000000 
 }
 
 0 0 0
@@ -9,7 +9,7 @@ Monster Monster_One 300 600 2 100
 1 W W W W W W W W W W W W W W W W W W 1 1 1
 1 W 1 1 1 W 1 W 1 W 1 W 1 1 1 W 1 1 W 1 1 1
 1 W 1 W 1 W 1 W 1 W 1 W 1 1 1 W 1 1 W 1 1 1
-1 W 1 W 1 N 1 N 1 N 1 W W 1 1 W 1 1 W W N 1
+1 W 1 W 1 N 1 N 1 N 1 W W 1 1 W 1 1 W W W 1
 1 W 1 W 1 1 1 1 1 1 1 1 W 1 1 W 1 1 1 1 1 1
 1 W 1 W 1 1 1 1 1 1 1 1 W W W W 1 1 1 1 1 1
 1 W 1 W 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
@@ -17,13 +17,13 @@ Monster Monster_One 300 600 2 100
 1 W 1 W 1 1 1 1 W 1 1 1 1 W 1 W 1 1 1 1 1 1
 1 W 1 W 1 1 1 1 W 1 1 W W W W W 1 1 1 1 1 1
 1 W 1 W 1 1 1 1 W 1 1 W 1 W 1 W 1 1 1 1 1 1
-1 W 1 W 1 1 1 1 W 1 1 W 1 W 1 W 1 1 1 1 1 1
-1 W 1 W 1 1 1 1 W 1 1 W 1 W 1 W 1 1 1 1 1 1
+1 W 1 W 1 1 1 1 W 1 1 W 1 W 1 W 1 W 1 1 1 1
+1 W 1 W W W W W W 1 1 W 1 W 1 W 1 W 1 1 1 1
 1 W 1 W 1 1 1 1 W 1 1 W W W W W 1 W 1 1 1 1
 1 W 1 W 1 1 1 1 W 1 1 1 1 1 1 1 1 W 1 1 1 1
 1 W W W 1 1 1 1 W 1 W W W W W 1 1 W 1 1 1 1
 1 W 1 W 1 1 1 1 W 1 W 1 1 1 W 1 1 W 1 1 1 1
 1 W 1 W 1 1 1 1 W 1 W W W W W W W W W W W 1
 1 W 1 W 1 1 1 1 W 1 W 1 W 1 1 1 1 1 1 1 W 1
-1 W W W 1 1 1 1 W W W 1 W W W W W W W 1 N 1
+1 W W W 1 1 1 1 W W W 1 W W W W W W W 1 W 1
 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
