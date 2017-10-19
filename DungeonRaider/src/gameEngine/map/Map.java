@@ -58,7 +58,7 @@ public class Map {
 		for (int y = 0; y < LENGTH; y++) {
 			for (int x = 0; x < WIDTH; x++) {
 				this.map[x][y] = new Tile(map[x][y], x * TILE_SIZE,
-						y * TILE_SIZE, TILE_SIZE, TILE_SIZE, false);
+						y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 			}
 		}
 		//reads items
