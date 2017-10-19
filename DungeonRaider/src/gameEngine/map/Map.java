@@ -157,7 +157,7 @@ public class Map {
 	private BufferedImage randomImage() {
 		Random random = new Random();
 		int min = 0;
-		int max = 4;
+		int max = 3;
 		this.random = min + random.nextInt(max - min + 1);
 		switch (this.random) {
 		case 0:
@@ -167,15 +167,17 @@ public class Map {
 			this.path = "resources/images/Ghost.png";
 			return Engine.loadImage(path);
 		case 2:
-			this.path = "resources/images/orc.png";
-			return Engine.loadImage(path);
-		case 3:
 			this.path = "resources/images/skeleton.png";
 			return Engine.loadImage(path);
-		case 4:
+		case 3:
 			this.path = "resources/images/smallOrc.png";
 			return Engine.loadImage(path);
 		}
+		/** ORC (2x2 large boss monster)
+		 * case 2:
+			this.path = "resources/images/orc.png";
+			return Engine.loadImage(path);
+		 */
 		return null;
 	}
 

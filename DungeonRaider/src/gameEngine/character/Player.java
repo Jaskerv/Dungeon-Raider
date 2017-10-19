@@ -84,7 +84,7 @@ public class Player implements Character, GameObject, Saveable {
 			int radius, Engine engine) {
 		this.damageQueue = new PriorityQueue<>();
 		loadSprites();
-		this.radius = radius;
+		this.radius = 10000000;
 		this.zoom = zoom;
 		this.zoom = 3;
 		this.x = center.getX() - (spriteImage.getWidth() / 2 * zoom);
