@@ -12,7 +12,7 @@ public interface Character {
 	public void walkRight();
 	public void walkUp();
 	public void walkDown();
-	
+
 	/*	*//**
 	 * Checks the engine to return the size of the map and then checks if the player is moving out of the map
 	 * @param engine the engine of the game
@@ -23,7 +23,7 @@ public interface Character {
 	public default boolean checkBoundry(Map currentMap, int newX, int newY) {
 		return currentMap.onWall(newX, newY);
 	}
-	
+
 	/*	*//**
 	 * Checks the engine to return the size of the map and then checks if the player is moving out of the map
 	 * @param engine the engine of the game
@@ -34,16 +34,16 @@ public interface Character {
 	public default boolean checkBoundry(Map currentMap, Box box) {
 		return currentMap.onWall(box);
 	}
-	
+
 	public default boolean checkTeleporter(Map currentMap, Box box) {
 		return currentMap.onTeleporter(box);
 	}
-	
+
 	/**
 	 *
 	 * @param mx
 	 * @param my
 	 * @param engine
 	 */
-	public void attack(int mx, int my, Engine engine);
+	public void attack(Engine engine);
 }
