@@ -63,6 +63,11 @@ public class Player implements Character, GameObject, Saveable {
 	boolean couldntRun;
 
 	private Rectangle playerAttack;
+	private Boolean attacking;
+	private int attackTimer;
+	public static final int ATTACKTIME = 8;
+
+	private Sprite[] swords = new Sprite[4];
 
 	/**
 	 * Player visual radius
@@ -94,15 +99,22 @@ public class Player implements Character, GameObject, Saveable {
 		this.didMove = false;
 		this.newDirection = this.direction;
 		this.couldntRun = false;
+		this.attackTimer = 0;
 
-		// testing attack
+		//loads the sword images and initiates attacking state
+		loadImages();
+		this.attacking = false;
+
 		playerAttack = new Rectangle(
 				playerBoundBox.getX() + playerBoundBox.getWidth() / 2,
-				y - playerBoundBox.getHeight(), primaryWeapon.getRange(),
+				y + 32, primaryWeapon.getRange(),
 				playerBoundBox.getHeight() * 2);
+		this.playerAttack.generateGraphics(Color.green.getRGB());
+
 	}
 
 	/**
+	 * loading
 	 *
 	 * @param hp
 	 * @param hpMax
@@ -131,6 +143,16 @@ public class Player implements Character, GameObject, Saveable {
 		this.zoom = zoom;
 		this.direction = direction;
 		this.radius = radius;
+
+	}
+
+	private void loadImages() {
+		//Loads all of swords image into sword image array
+		this.swords[0] = new Sprite(Engine.loadImage("resources/images/SwordEast.png"));
+		this.swords[1] = new Sprite(Engine.loadImage("resources/images/SwordWest.png"));
+		this.swords[2] = new Sprite(Engine.loadImage("resources/images/SwordNorth.png"));
+		this.swords[3] = new Sprite(Engine.loadImage("resources/images/SwordSouth.png"));
+		this.primaryWeapon.setRange(swords[0].getWidth()*3);
 	}
 
 	private void updateDirection() {
@@ -214,8 +236,14 @@ public class Player implements Character, GameObject, Saveable {
 	public void render(Renderer renderer, int xZoom, int yZoom) {
 		// introducing the animated sprite here. initially rendering a static
 		// sprite.
-		renderer.renderRectangle(playerBoundBox, 1, 1);
-		renderer.renderRectangle(playerAttack, 1, 1);
+		//renderer.renderRectangle(playerBoundBox, 1, 1);
+
+
+
+
+
+
+	//	renderer.renderRectangle(playerAttack, 1, 1);
 		if (animatedSprite != null)
 			renderer.renderSprite(animatedSprite,
 					x + animatedSprite.getWidth() / 2,
@@ -227,6 +255,29 @@ public class Player implements Character, GameObject, Saveable {
 			renderer.renderArray(spriteImage.getPixels(),
 					spriteImage.getWidth(), spriteImage.getWidth(), x, y, zoom,
 					zoom);
+
+
+
+		renderAttack(renderer);
+	}
+
+	public void renderAttack(Renderer renderer) {
+		if(attacking)
+		if(newDirection == 0) {
+			//right sword
+			renderer.renderSprite(swords[0], (int) (playerBoundBox.getX() + playerBoundBox.getWidth()) - 5, y + 30, 2, 2);
+		} else if (newDirection == 1) {
+			//left sword
+			renderer.renderSprite(swords[1], (int) (playerBoundBox.getX() - (swords[1].getWidth()*2) + 5), y + 30, 2, 2);
+		} else if (newDirection == 2) {
+		//up sword
+		renderer.renderSprite(swords[2], playerBoundBox.getX()-6, y - (swords[1].getHeight()*2) + 35, 2, 2);
+		} else if (newDirection == 3) {
+		//down sword
+		renderer.renderSprite(swords[3], playerBoundBox.getX()-6, y + 80, 2, 2);
+		}
+
+
 	}
 
 	/**
@@ -255,10 +306,57 @@ public class Player implements Character, GameObject, Saveable {
 		// Checks if player teleporting
 		checkTeleportation(engine);
 		// Checks if player is attacking
+		if(checkAttack())
 		attack(engine);
 		// Updates playing animations accordingly
 		updateAnimations(engine);
 
+	}
+
+	@Override
+	public void attack(Engine engine) {
+		KeyController keyBinds = engine.getKeyBinds();
+		if (keyBinds.isAttack() && !attacking) {
+			this.attacking = true;
+			// player is looking horizontally
+			if (this.direction == 0 || this.direction == 1) {
+				// Constructing horizontal bounding box
+				playerAttack = new Rectangle(
+						playerBoundBox.getX() + playerBoundBox.getWidth() / 2,
+						y + 38, primaryWeapon.getRange(),
+						playerBoundBox.getHeight() * 2);
+				if (this.direction == 0) { // Player is looking right
+					attackMonster(engine, playerAttack);
+				} else if (this.direction == 1) { // Player is looking left
+					playerAttack.setX( // adjusts weapon attack to left
+							playerAttack.getX() - playerAttack.getWidth());
+					attackMonster(engine, playerAttack);
+				}
+			} else { // Player is looking vertically
+				// Constructing verticle bounding box
+				playerAttack = new Rectangle(playerBoundBox.getX(),
+						(y + 64) - primaryWeapon.getRange(),
+						playerBoundBox.getWidth(), primaryWeapon.getRange());
+				if (this.direction == 2) { // Player is looking up
+					attackMonster(engine, playerAttack);// Calls attack
+				} else if (this.direction == 3) { // Player is looking down
+					playerAttack.setY(y + 60); // adjusts weapon attack to up
+					attackMonster(engine, playerAttack); // Calls attack
+
+				}
+			}
+		}
+	}
+
+	public boolean checkAttack() {
+		if(attackTimer < ATTACKTIME) {
+			attackTimer++;
+			return false;
+		} else {
+			this.attacking = false;
+			attackTimer = 0;
+			return true;
+		}
 	}
 
 	/**
@@ -315,6 +413,7 @@ public class Player implements Character, GameObject, Saveable {
 		Map currentMap = engine.getCurrentMap();
 		if (keyBinds.isRun()) {
 			if (keyBinds.isUp()) {
+				attacking = false;
 				Box up = new Box(curBox.getX(), curBox.getY(),
 						curBox.getWidth(), curBox.getHeight());
 				// up.setY(up.getY() - SPRINT);
@@ -328,6 +427,7 @@ public class Player implements Character, GameObject, Saveable {
 				}
 			}
 			if (keyBinds.isDown()) {
+				attacking = false;
 				Box down = new Box(curBox.getX(), curBox.getY(),
 						curBox.getWidth(), curBox.getHeight());
 				// down.setY(down.getY() + SPRINT);
@@ -341,6 +441,7 @@ public class Player implements Character, GameObject, Saveable {
 				}
 			}
 			if (keyBinds.isLeft()) {
+				attacking = false;
 				Box left = new Box(curBox.getX(), curBox.getY(),
 						curBox.getWidth(), curBox.getHeight());
 				// left.setX(left.getX() - SPRINT);
@@ -354,6 +455,7 @@ public class Player implements Character, GameObject, Saveable {
 				}
 			}
 			if (keyBinds.isRight()) {
+				attacking = false;
 				Box right = new Box(curBox.getX(), curBox.getY(),
 						curBox.getWidth(), curBox.getHeight());
 				// right.setX(right.getX() + SPRINT);
@@ -378,6 +480,7 @@ public class Player implements Character, GameObject, Saveable {
 		 * connection with walls
 		 */
 		if (keyBinds.isUp()) {
+			attacking = false;
 			Box up = new Box(curBox.getX(), curBox.getY() - Movement.WALK_SPEED,
 					curBox.getWidth(), curBox.getHeight());
 			if (checkBoundry(currentMap, up)) {
@@ -387,6 +490,7 @@ public class Player implements Character, GameObject, Saveable {
 			}
 		}
 		if (keyBinds.isDown()) {
+			attacking = false;
 			Box down = new Box(curBox.getX(),
 					curBox.getY() + Movement.WALK_SPEED, curBox.getWidth(),
 					curBox.getHeight());
@@ -397,6 +501,7 @@ public class Player implements Character, GameObject, Saveable {
 			}
 		}
 		if (keyBinds.isLeft()) {
+			attacking = false;
 			Box left = new Box(curBox.getX() - Movement.WALK_SPEED,
 					curBox.getY(), curBox.getWidth(), curBox.getHeight());
 			if (checkBoundry(currentMap, left)) {
@@ -406,6 +511,7 @@ public class Player implements Character, GameObject, Saveable {
 			}
 		}
 		if (keyBinds.isRight()) {
+			attacking = false;
 			Box right = new Box(curBox.getX() + Movement.WALK_SPEED,
 					curBox.getY(), curBox.getWidth(), curBox.getHeight());
 			if (checkBoundry(currentMap, right)) {
@@ -416,80 +522,18 @@ public class Player implements Character, GameObject, Saveable {
 		}
 
 	}
-	/*
-	 * public void checkAttack(Engine engine) { KeyController keyBinds =
-	 * engine.getKeyBinds(); if (keyBinds.isAttak()) { List<GameObject> monsters
-	 * = engine.getCurrentMap().getMonsters(); Iterator<GameObject> iterator =
-	 * monsters.iterator();
-	 *
-	 * while (iterator.hasNext()) { Monster mon = (Monster) iterator.next(); //
-	 * if player is looking to the right if (this.direction == 0) {
-	 * attackMonsterToTheRight(mon, monsters, iterator);
-	 *
-	 * // if the player is looking left } else if (this.direction == 1) {
-	 * attackMonstertoTheLeft(mon, monsters, iterator); // if the player is
-	 * looking up } else if (this.direction == 2) { attackMonsterAbove(mon,
-	 * monsters, iterator); } else if (this.direction == 3) {
-	 * attackMonsterBelow(mon, monsters, iterator);
-	 *
-	 * checkForMonsterDeath(mon, monsters, iterator); }
-	 *
-	 * } } }
-	 */
-
-	@Override
-	public void attack(Engine engine) {
-		KeyController keyBinds = engine.getKeyBinds();
-		if (keyBinds.isAttack()) {
-			//player is looking horizontally
-			if (this.direction == 0 || this.direction == 1) {
-				//Constructing horizontal bounding box
-				playerAttack = new Rectangle(
-						playerBoundBox.getX()
-						+ playerBoundBox.getWidth() / 2,
-						y + 32, primaryWeapon.getRange(),
-						playerBoundBox.getHeight() * 2);
-				if (this.direction == 0) { //Player is looking right
-					this.playerAttack.generateGraphics(Color.red.getRGB());
-					attackMonster(engine, playerAttack);
-
-				} else if (this.direction == 1) { //Player is looking left
-					playerAttack.setX( //adjusts weapon attack to left
-							playerAttack.getX() - playerAttack.getWidth());
-					this.playerAttack.generateGraphics(Color.red.getRGB());
-					attackMonster(engine, playerAttack);
-				}
-			} else { //Player is looking vertically
-				//Constructing verticle bounding box
-				playerAttack = new Rectangle(playerBoundBox.getX(),
-						(y + 64) - primaryWeapon.getRange(),
-						playerBoundBox.getWidth(),
-						primaryWeapon.getRange());
-				if (this.direction == 2) { //Player is looking up
-					this.playerAttack.generateGraphics(Color.red.getRGB());
-					attackMonster(engine, playerAttack);//Calls attack
-				} else if (this.direction == 3) { //Player is looking down
-					playerAttack.setY(y + 60); //adjusts weapon attack to up
-					this.playerAttack.generateGraphics(Color.red.getRGB());
-					attackMonster(engine, playerAttack);  //Calls attack
-
-				}
-			}
-		}
-	}
-
 
 	public void attackMonster(Engine engine, Box playerAttack) {
-		//Ierates through all monsters
+		// Ierates through all monsters
 		List<GameObject> monsters = engine.getCurrentMap().getMonsters();
 		Iterator<GameObject> iterator = monsters.iterator();
 		while (iterator.hasNext()) {
 			Monster mon = (Monster) iterator.next();
-			//Checks if there is a monster in range of the player Attack
+			// Checks if there is a monster in range of the player Attack
 			if (playerAttack.contains(mon.getBoundingBox())) {
-				//Adjusts monsters health accordingly
+				// Adjusts monsters health accordingly
 				mon.setHealth(mon.getHealth() - heavyAttack());
-				//Checks is the monster is dead
+				// Checks is the monster is dead
 				checkForMonsterDeath(mon, monsters, iterator);
 			}
 		}
