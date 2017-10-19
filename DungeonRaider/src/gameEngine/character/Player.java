@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+import javax.sound.sampled.Clip;
+
 import gameEngine.controller.KeyController;
 import gameEngine.engine.Engine;
 import gameEngine.engine.GameObject;
@@ -68,13 +70,17 @@ public class Player implements Character, GameObject, Saveable {
 
 	private Sprite[] swords = new Sprite[4];
 
+	private boolean move;
+	private boolean walk;
+	private boolean run;
+	private Engine engine;
 	/**
 	 * Player visual radius
 	 */
 	private int radius;
 
 	public Player(Position center, int stamina, int zoom, int hp, int hpMax,
-			int radius) {
+			int radius, Engine engine) {
 		this.damageQueue = new PriorityQueue<>();
 		loadSprites();
 		this.radius = radius;
@@ -107,7 +113,10 @@ public class Player implements Character, GameObject, Saveable {
 				playerBoundBox.getX() + playerBoundBox.getWidth() / 2, y + 32,
 				primaryWeapon.getRange(), playerBoundBox.getHeight() * 2);
 		this.playerAttack.generateGraphics(Color.green.getRGB());
-
+		this.move = false;
+		this.run = false;
+		this.walk = false;
+		this.engine = engine;
 	}
 
 	/**
@@ -127,7 +136,7 @@ public class Player implements Character, GameObject, Saveable {
 	 */
 	public Player(int hp, int hpMax, int gold, int x, int y,
 			Weapon primaryWeapon, Inventory inventory, Rectangle playerBoundBox,
-			int zoom, int direction, int radius) {
+			int zoom, int direction, int radius, Engine engine) {
 		super();
 		loadSprites();
 		if (spriteImage != null && spriteImage instanceof AnimatedSprite) {
@@ -157,7 +166,10 @@ public class Player implements Character, GameObject, Saveable {
 				playerBoundBox.getX() + playerBoundBox.getWidth() / 2, y + 32,
 				primaryWeapon.getRange(), playerBoundBox.getHeight() * 2);
 		this.playerAttack.generateGraphics(Color.green.getRGB());
-
+		this.move = false;
+		this.run = false;
+		this.walk = false;
+		this.engine = engine;
 	}
 
 	private void loadImages() {
@@ -179,6 +191,10 @@ public class Player implements Character, GameObject, Saveable {
 		}
 	}
 
+	private void playWalk() {
+		Clip clip = engine.getSoundLibrary().getClip("walk");
+	}
+
 	@Override
 	public int heavyAttack() {
 		return primaryWeapon.getDamage();
@@ -186,6 +202,9 @@ public class Player implements Character, GameObject, Saveable {
 
 	@Override
 	public void walkLeft() {
+		if (!move) {
+			playWalk();
+		}
 		this.x -= Movement.WALK_SPEED;
 		// this.playerBoundBox.setX(this.playerBoundBox.getX() - SPEED);
 		this.playerBoundBox.setX(Movement.walkLeft(this.playerBoundBox.getX(),
@@ -220,14 +239,14 @@ public class Player implements Character, GameObject, Saveable {
 		this.x -= Movement.SPRINT_SPEED;
 		// this.playerBoundBox.setX(this.playerBoundBox.getX() - SPRINT);
 		this.playerBoundBox
-		.setX(Movement.sprintLeft(this.playerBoundBox.getX()));
+				.setX(Movement.sprintLeft(this.playerBoundBox.getX()));
 	}
 
 	public void runRight() {
 		this.x += Movement.SPRINT_SPEED;
 		// this.playerBoundBox.setX(this.playerBoundBox.getX() + SPRINT);
 		this.playerBoundBox
-		.setX(Movement.sprintRight(this.playerBoundBox.getX()));
+				.setX(Movement.sprintRight(this.playerBoundBox.getX()));
 	}
 
 	public void runUp() {
@@ -240,7 +259,7 @@ public class Player implements Character, GameObject, Saveable {
 		this.y += Movement.SPRINT_SPEED;
 		// this.playerBoundBox.setY(this.playerBoundBox.getY() + SPRINT);
 		this.playerBoundBox
-		.setY(Movement.sprintDown(this.playerBoundBox.getY()));
+				.setY(Movement.sprintDown(this.playerBoundBox.getY()));
 	}
 
 	public void interact() {
@@ -810,7 +829,8 @@ public class Player implements Character, GameObject, Saveable {
 	 * @return
 	 */
 	public boolean checkRadius(int x, int y) {
-		int pX = this.playerBoundBox.getX() + this.playerBoundBox.getWidth() / 2;
+		int pX = this.playerBoundBox.getX()
+				+ this.playerBoundBox.getWidth() / 2;
 		int pY = this.playerBoundBox.getY()
 				+ this.playerBoundBox.getHeight() / 2;
 		int dx = Math.abs(x - pX);
