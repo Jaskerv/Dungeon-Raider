@@ -6,7 +6,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Observable;
 
-import gameEngine.character.Player;
 import gameEngine.engine.Engine;
 
 public class KeyController extends Observable
@@ -26,16 +25,16 @@ public class KeyController extends Observable
 	private boolean useItem;
 	private boolean attack;
 
-	private Player player;
+
 	private Engine engine;
 
-	public KeyController(Player player, Engine engine) {
+	public KeyController( Engine engine) {
 		this.up = false;
 		this.down = false;
 		this.left = false;
 		this.right = false;
 		this.hurtPlayer = false;
-		this.player = player;
+
 		this.pickUp = false;
 		this.engine = engine;
 		this.run = false;
@@ -110,7 +109,7 @@ public class KeyController extends Observable
 				engine.getPauseMenu().setUp(true);
 			}
 			// performs similar function as the pause screen
-			if (player.isDead()) {
+			if (engine.getPlayer().isDead()) {
 				engine.getYouDied().setUp(true);
 			}
 			// stops the up movement by setting up to false. update will check
@@ -124,7 +123,7 @@ public class KeyController extends Observable
 			if (engine.isPaused()) {
 				engine.getPauseMenu().setUp(true);
 			}
-			if (player.isDead()) {
+			if (engine.getPlayer().isDead()) {
 				engine.getYouDied().setUp(true);
 			}
 			// stops the up movement by setting the up boolean to false. update
@@ -147,7 +146,7 @@ public class KeyController extends Observable
 			if (engine.isPaused()) {
 				engine.getPauseMenu().setDown(true);
 			}
-			if (player.isDead()) {
+			if (engine.getPlayer().isDead()) {
 				engine.getYouDied().setDown(true);
 			}
 			// stops the down movement by setting the down boolean to false
@@ -159,7 +158,7 @@ public class KeyController extends Observable
 			if (engine.isPaused()) {
 				engine.getPauseMenu().setDown(true);
 			}
-			if (player.isDead()) {
+			if (engine.getPlayer().isDead()) {
 				engine.getYouDied().setDown(true);
 			}
 			// sets the down boolean to false to stop the down movement
@@ -223,7 +222,7 @@ public class KeyController extends Observable
 				engine.getPauseMenu().setEnter(true);
 			}
 			//lets the dead screen know that an option has been entered
-			if (player.isDead()) {
+			if (engine.getPlayer().isDead()) {
 				engine.getYouDied().setEnter(true);
 			}
 			break;

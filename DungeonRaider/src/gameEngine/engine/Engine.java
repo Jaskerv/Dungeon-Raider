@@ -126,7 +126,7 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 		this.player = new Player(new Position(150, 200), 100, 5, 100, 100, 600);
 		this.monsters = currentMap.getMonsters();
 		/** GUI */
-		this.GUI = new IngameInterface(player, WIDTH, HEIGHT, findSprite("coin"));
+		this.GUI = new IngameInterface(this, WIDTH, HEIGHT, findSprite("coin"));
 
 		this.pauseMenu = new PauseMenu(
 				Engine.loadImage("resources/images/Pause.png"));
@@ -136,7 +136,7 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 		/**
 		 * initiating key listener
 		 */
-		this.keyBinds = new KeyController(player, this);
+		this.keyBinds = new KeyController(this);
 		this.addKeyListener(keyBinds);
 	}
 
