@@ -23,6 +23,7 @@ import javax.swing.JFrame;
 
 import gameEngine.UI.IngameInterface;
 import gameEngine.UI.PauseMenu;
+import gameEngine.UI.Win;
 import gameEngine.UI.YouDied;
 import gameEngine.character.Inventory;
 import gameEngine.character.Monster;
@@ -80,6 +81,7 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 	private PauseMenu pauseMenu;
 	private StartGame startGame;
 	private YouDied youDied;
+	private Win win;
 	private boolean menu;
 	/** This will contain the list of maps from start to finish */
 	private HashMap<Integer, Map> mapList;
@@ -139,6 +141,7 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 				Engine.loadImage("resources/images/Pause.png"));
 		this.youDied = new YouDied(
 				Engine.loadImage("resources/images/YouDied.png"));
+		this.win = new Win();
 
 		/**
 		 * initiating key listener
@@ -162,6 +165,8 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 			this.renderer.clearArray();
 			if (player.isDead()) {
 				youDied.render(renderer, 1, 1);
+			} else if (win.isWin()) {
+				win.render(renderer, 1, 1);
 			} else {
 				/**
 				 * If not paused
@@ -170,10 +175,6 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 					// Renders the map first (bottom layer of the image)
 					renderer.renderMap(currentMap);
 					/** Render Objects */
-					// for (GameObject gameObject : monsters) {
-					// gameObject.render(renderer, 3, 3);
-					// }
-					// this.player.render(renderer, 3, 3);
 					Collection<Object> prio = new PriorityQueue<>(
 							new Comparator<Object>() {
 
@@ -295,6 +296,8 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 		 */
 		if (player.isDead()) {
 			this.youDied.update(this);
+		} else if (win.isWin()) {
+			win.update(this);
 		} else {
 			/** if in start menu */
 			if (menu) {
@@ -685,4 +688,9 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 	public void addMonster(GameObject monster) {
 		this.monsters.add(monster);
 	}
+
+	public Win getWin() {
+		return win;
+	}
+
 }

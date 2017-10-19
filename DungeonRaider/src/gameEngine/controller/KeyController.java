@@ -118,6 +118,9 @@ public class KeyController extends Observable
 			if (engine.getPlayer().isDead()) {
 				engine.getYouDied().setUp(true);
 			}
+			if (engine.getWin().isWin()) {
+				engine.getWin().setUp(true);
+			}
 			// stops the up movement by setting up to false. update will check
 			// for this. engine stops player up movement when it sees this
 			// boolean
@@ -131,6 +134,9 @@ public class KeyController extends Observable
 			}
 			if (engine.getPlayer().isDead()) {
 				engine.getYouDied().setUp(true);
+			}
+			if (engine.getWin().isWin()) {
+				engine.getWin().setUp(true);
 			}
 			// stops the up movement by setting the up boolean to false. update
 			// will check for this and stop the movement
@@ -155,6 +161,9 @@ public class KeyController extends Observable
 			if (engine.getPlayer().isDead()) {
 				engine.getYouDied().setDown(true);
 			}
+			if (engine.getWin().isWin()) {
+				engine.getWin().setDown(true);
+			}
 			// stops the down movement by setting the down boolean to false
 			this.down = false;
 			break;
@@ -166,6 +175,9 @@ public class KeyController extends Observable
 			}
 			if (engine.getPlayer().isDead()) {
 				engine.getYouDied().setDown(true);
+			}
+			if (engine.getWin().isWin()) {
+				engine.getWin().setDown(true);
 			}
 			// sets the down boolean to false to stop the down movement
 			this.down = false;
@@ -231,6 +243,12 @@ public class KeyController extends Observable
 			if (engine.getPlayer().isDead()) {
 				engine.getYouDied().setEnter(true);
 			}
+			if (engine.getWin().isWin()) {
+				engine.getWin().setEnter(true);
+			}
+			break;
+		case KeyEvent.VK_9:
+			engine.getWin().setWin(true);
 			break;
 
 		}
