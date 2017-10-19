@@ -67,8 +67,6 @@ public class Player implements Character, GameObject, Saveable {
 	 */
 	private int radius;
 
-
-
 	public Player(Position center, int stamina, int zoom, int hp, int hpMax,
 			int radius) {
 		this.damageQueue = new PriorityQueue<>();
@@ -81,8 +79,7 @@ public class Player implements Character, GameObject, Saveable {
 		this.hp = hp;
 		this.hpMax = hpMax;
 		this.inventory = new Inventory(20);
-		this.primaryWeapon = new Weapon("Start", 0, 0, 1, 300, 10,
-				spriteImage);
+		this.primaryWeapon = new Weapon("Start", 0, 0, 1, 300, 10, spriteImage);
 		this.sprite = spriteImage;
 		if (sprite != null && sprite instanceof AnimatedSprite) {
 			this.animatedSprite = (AnimatedSprite) spriteImage;
@@ -96,10 +93,9 @@ public class Player implements Character, GameObject, Saveable {
 		this.newDirection = this.direction;
 		this.couldntRun = false;
 	}
-	
-	
+
 	/**
-	 * 
+	 *
 	 * @param hp
 	 * @param hpMax
 	 * @param gold
@@ -129,8 +125,6 @@ public class Player implements Character, GameObject, Saveable {
 		this.radius = radius;
 	}
 
-
-
 	private void updateDirection() {
 		if (animatedSprite != null) {
 			animatedSprite.setAnimationRange(direction * 8, direction * 8 + 7);
@@ -146,46 +140,46 @@ public class Player implements Character, GameObject, Saveable {
 	public void walkLeft() {
 		this.x -= Movement.WALK_SPEED;
 		// this.playerBoundBox.setX(this.playerBoundBox.getX() - SPEED);
-		this.playerBoundBox
-		.setX(Movement.walkLeft(this.playerBoundBox.getX(),Movement.WALK_SPEED));
+		this.playerBoundBox.setX(Movement.walkLeft(this.playerBoundBox.getX(),
+				Movement.WALK_SPEED));
 	}
 
 	@Override
 	public void walkRight() {
 		this.x += Movement.WALK_SPEED;
 		// this.playerBoundBox.setX(this.playerBoundBox.getX() + SPEED);
-		this.playerBoundBox
-		.setX(Movement.walkRight(this.playerBoundBox.getX(),Movement.WALK_SPEED));
+		this.playerBoundBox.setX(Movement.walkRight(this.playerBoundBox.getX(),
+				Movement.WALK_SPEED));
 	}
 
 	@Override
 	public void walkUp() {
 		this.y -= Movement.WALK_SPEED;
 		// this.playerBoundBox.setY(this.playerBoundBox.getY() - SPEED);
-		this.playerBoundBox
-		.setY(Movement.walkUp(this.playerBoundBox.getY(),Movement.WALK_SPEED));
+		this.playerBoundBox.setY(Movement.walkUp(this.playerBoundBox.getY(),
+				Movement.WALK_SPEED));
 	}
 
 	@Override
 	public void walkDown() {
 		this.y += Movement.WALK_SPEED;
 		// this.playerBoundBox.setY(this.playerBoundBox.getY() + SPEED);
-		this.playerBoundBox
-		.setY(Movement.walkDown(this.playerBoundBox.getY(),Movement.WALK_SPEED));
+		this.playerBoundBox.setY(Movement.walkDown(this.playerBoundBox.getY(),
+				Movement.WALK_SPEED));
 	}
 
 	public void runLeft() {
 		this.x -= Movement.SPRINT_SPEED;
 		// this.playerBoundBox.setX(this.playerBoundBox.getX() - SPRINT);
 		this.playerBoundBox
-		.setX(Movement.sprintLeft(this.playerBoundBox.getX()));
+				.setX(Movement.sprintLeft(this.playerBoundBox.getX()));
 	}
 
 	public void runRight() {
 		this.x += Movement.SPRINT_SPEED;
 		// this.playerBoundBox.setX(this.playerBoundBox.getX() + SPRINT);
 		this.playerBoundBox
-		.setX(Movement.sprintRight(this.playerBoundBox.getX()));
+				.setX(Movement.sprintRight(this.playerBoundBox.getX()));
 	}
 
 	public void runUp() {
@@ -198,7 +192,7 @@ public class Player implements Character, GameObject, Saveable {
 		this.y += Movement.SPRINT_SPEED;
 		// this.playerBoundBox.setY(this.playerBoundBox.getY() + SPRINT);
 		this.playerBoundBox
-		.setY(Movement.sprintDown(this.playerBoundBox.getY()));
+				.setY(Movement.sprintDown(this.playerBoundBox.getY()));
 	}
 
 	public void interact() {
@@ -238,28 +232,28 @@ public class Player implements Character, GameObject, Saveable {
 		newDirection = direction;
 		couldntRun = false;
 
-		//Attempts to pick up an item
+		// Attempts to pick up an item
 		pickUp(engine);
-		//Checks if the player has taken damage
+		// Checks if the player has taken damage
 		checkDamage();
-		//Checks if the player is using an item
+		// Checks if the player is using an item
 		useItem(engine);
-		//Checks if player is running
+		// Checks if player is running
 		tryRun(engine);
-		//Checks if player is walking
+		// Checks if player is walking
 		tryWalk(engine);
-		//Checks if player teleporting
+		// Checks if player teleporting
 		checkTeleportation(engine);
-		//Checks if player is attacking
+		// Checks if player is attacking
 		checkAttack(engine);
-		//Updates playing animations accordingly
+		// Updates playing animations accordingly
 		updateAnimations(engine);
 
 	}
 
-
 	/**
 	 * Checks if the player is stepping on a teleporter
+	 *
 	 * @param engine
 	 */
 	public void checkTeleportation(Engine engine) {
@@ -276,11 +270,11 @@ public class Player implements Character, GameObject, Saveable {
 			this.y = 200;
 			this.playerBoundBox.setX(this.x + 10);
 			this.playerBoundBox.setY(this.y + 63);
-			//this.playerBoundBox.generateGraphics(Color.blue.getRGB());
+			// this.playerBoundBox.generateGraphics(Color.blue.getRGB());
 		}
 	}
 
-	//Charnon comment
+	// Charnon comment
 	public void updateAnimations(Engine engine) {
 		/**
 		 * Updates camera
@@ -304,7 +298,6 @@ public class Player implements Character, GameObject, Saveable {
 
 		this.updateCamera(engine.getRenderer().getCamera());
 	}
-
 
 	public void tryRun(Engine engine) {
 		Box curBox = this.playerBoundBox;
@@ -448,17 +441,17 @@ public class Player implements Character, GameObject, Saveable {
 	 */
 	public void useItem(Engine engine) {
 		KeyController keyBinds = engine.getKeyBinds();
-		//If player is trying to use an item
+		// If player is trying to use an item
 		if (keyBinds.isUseItem()) {
-			//Checks if the players inventory is not empty
+			// Checks if the players inventory is not empty
 			if (!this.inventory.getInventory().isEmpty()) {
-				//Returns the item as a health potion
+				// Returns the item as a health potion
 				Consumable healthPot = (Consumable) this.inventory
 						.returnFirstItem();
-				//Heals the player = to that of the potions strength
+				// Heals the player = to that of the potions strength
 				this.heal(healthPot.getHealingStrength());
 			}
-			//Prevents two potions from being used with one press
+			// Prevents two potions from being used with one press
 			keyBinds.setUseItem(false);
 		}
 	}
@@ -478,31 +471,31 @@ public class Player implements Character, GameObject, Saveable {
 
 	/**
 	 * Attemps to pick up item from the ground if within character range
-	 * @param engine contains all of the values required for picking up
+	 *
+	 * @param engine
+	 *            contains all of the values required for picking up
 	 */
 	public void pickUp(Engine engine) {
 		KeyController keyBinds = engine.getKeyBinds();
-		//Checks if player is attempting to pick up item
+		// Checks if player is attempting to pick up item
 		if (keyBinds.isPickUp()) {
-			//Returns all of the items on the map
+			// Returns all of the items on the map
 			List<Item> itemsOnMap = engine.getCurrentMap().getItems();
 			for (Item item : itemsOnMap) {
 				Box itemPos = item.getBoundingBox();
-				//Checks if the player is standing within pickup range
+				// Checks if the player is standing within pickup range
 				if (this.playerBoundBox.contains(itemPos)) {
-					//Adds item to players inventory
+					// Adds item to players inventory
 					this.inventory.add(item);
-					//Sets the item pickup value to true
+					// Sets the item pickup value to true
 					item.setPickedUp(true);
-					//Removes the item from the map
+					// Removes the item from the map
 					itemsOnMap.remove(item);
 					break;
 				}
 			}
 		}
 	}
-
-
 
 	public void attackMonsterToTheRight(Monster mon, List<GameObject> monsters,
 			Iterator<GameObject> iterator) {
@@ -743,7 +736,7 @@ public class Player implements Character, GameObject, Saveable {
 
 	@Override
 	public String save() {
-		String s = "Player	{\n";
+		String s = "Player {\n";
 		s += "int	hp	" + hp + "\n";
 		s += "int	hpMax	" + hpMax + "\n";
 		s += "int	gold	" + gold + "\n";
@@ -754,7 +747,7 @@ public class Player implements Character, GameObject, Saveable {
 		s += "zoom	zoom	" + zoom + "\n";
 		s += "damageQueue	damageQueue	" + damageQueue + "\n";
 		s += "direction	direction	" + direction + "\n";
-		s += "}	\n";
+		s += "}";
 
 		return s;
 	}
