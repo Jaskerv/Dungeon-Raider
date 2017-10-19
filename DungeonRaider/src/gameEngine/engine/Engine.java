@@ -128,8 +128,7 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 		this.player = new Player(new Position(150, 200), 100, 5, 100, 100, 600);
 		this.monsters = currentMap.getMonsters();
 		/** GUI */
-		this.GUI = new IngameInterface(player, WIDTH, HEIGHT,
-				findSprite("coin"));
+		this.GUI = new IngameInterface(this, WIDTH, HEIGHT, findSprite("coin"));
 
 		this.pauseMenu = new PauseMenu(
 				Engine.loadImage("resources/images/Pause.png"));
@@ -139,7 +138,7 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 		/**
 		 * initiating key listener
 		 */
-		this.keyBinds = new KeyController(player, this);
+		this.keyBinds = new KeyController(this);
 		this.addKeyListener(keyBinds);
 	}
 
@@ -489,7 +488,8 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 				String[] split2 = string.split("\t");
 				if (split2[0].equals("Player")) {
 					loadPlayer(string);
-				} else {
+				} else if (split2[0].equals("Map")) {
+					loadMap(string);
 				}
 			}
 
@@ -498,6 +498,11 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 		} finally {
 			sc.close();
 		}
+
+	}
+
+	private void loadMap(String string) {
+		// TODO Auto-generated method stub
 
 	}
 
@@ -528,6 +533,7 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 						sc.nextLine();
 				}
 				String line = sc.nextLine();
+				System.out.println(line);
 				if (line.equals("}")) {
 					continue;
 				}
@@ -559,7 +565,6 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 							else if (split2[1].equals("damage"))
 								damage = Integer.parseInt(split2[2]);
 							else if (split2[1].equals("critChance")) {
-								System.out.println(split2[2]);
 								critChance = Double.parseDouble(split2[2]);
 							} else if (split2[1].equals("range"))
 								range = Integer.parseInt(split2[2]);

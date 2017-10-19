@@ -1,22 +1,22 @@
 Player	{
-int	hp	92
+int	hp	69
 int	hpMax	100
 int	gold	0
-int	x	793
-int	y	247
+int	x	646
+int	y	1057
 primaryWeapon	primaryWeapon	Weapon	{
 String	name	Start
 int	damage	1
 double	critChance	10.0
-int	range	300
+int	range	105
 int	numberOfUpgrades	0
 }
 
 inventory	inventory	
 zoom	zoom	3
 damageQueue	damageQueue	[]
-direction	direction	0
-Box	boundBox	804	309	58	26
+direction	direction	3
+Box	boundBox	657	1119	58	26
 int	radius	600
 }+Map	{
 int	currentMapNumber	1

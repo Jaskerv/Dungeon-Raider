@@ -24,7 +24,7 @@ public class IngameInterface implements GameObject {
 	private BufferedImage img;
 	private Sprite ui;
 	private Sprite coinSprite;
-	private Player player;
+	private Engine engine;
 	private int width;
 	private int height;
 	private int[] pixels;
@@ -37,8 +37,8 @@ public class IngameInterface implements GameObject {
 	private final int HPY = 60;
 	private final int HPHEIGHT = 30;
 
-	public IngameInterface(Player player, int width, int height, Sprite coinSprite) {
-		this.player = player;
+	public IngameInterface(Engine engine, int width, int height, Sprite coinSprite) {
+		this.engine = engine;
 		this.width = width;
 		this.height = height;
 		this.healthBar = new Box(HPX, HPY, HPMAX, HPHEIGHT);
@@ -68,7 +68,7 @@ public class IngameInterface implements GameObject {
 		/**
 		 * Draw sprites after this
 		 */
-		List<Item> itemList = player.getInventory().getInventory();
+		List<Item> itemList = engine.getPlayer().getInventory().getInventory();
 		for (int i = 0; i < itemList.size(); i++) {
 			Sprite itemSprite = itemList.get(i).getSprite();
 			if (itemList.get(i).getPickedUp()) {
@@ -84,8 +84,8 @@ public class IngameInterface implements GameObject {
 
 	@Override
 	public void update(Engine engine) {
-		double hpPerc = ((double) player.getHp())
-				/ ((double) player.getHpMax());
+		double hpPerc = ((double) engine.getPlayer().getHp())
+				/ ((double) engine.getPlayer().getHpMax());
 		int hpBar = (int) (hpPerc * (double) HPMAX);
 		Player player = engine.getPlayer();
 		if (hpBar <= HPMAX && hpBar >= 0) {
@@ -96,7 +96,7 @@ public class IngameInterface implements GameObject {
 	public String getPlayerBalance() {
 		StringBuilder balance = new StringBuilder();
 		int balanceLength = 8;
-		String playerBalance = Integer.toString(player.getGoldTotal());
+		String playerBalance = Integer.toString(engine.getPlayer().getGoldTotal());
 //		for (int i = 0; i < balanceLength; i++) {
 //			if (i < (balanceLength - playerBalance.length())){
 //				balance.append("0");
