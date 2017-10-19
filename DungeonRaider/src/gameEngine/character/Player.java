@@ -84,7 +84,7 @@ public class Player implements Character, GameObject, Saveable {
 			int radius, Engine engine) {
 		this.damageQueue = new PriorityQueue<>();
 		loadSprites();
-		this.radius = 10000000;
+		this.radius = radius;
 		this.zoom = zoom;
 		this.zoom = 3;
 		this.x = center.getX() - (spriteImage.getWidth() / 2 * zoom);
@@ -200,7 +200,6 @@ public class Player implements Character, GameObject, Saveable {
 		if (!run)
 			move = false;
 	}
-
 
 	private void playWalk() {
 		move = true;
@@ -452,14 +451,13 @@ public class Player implements Character, GameObject, Saveable {
 			this.playerBoundBox.setX(this.x + 10);
 			this.playerBoundBox.setY(this.y + 63);
 			this.playerBoundBox.generateGraphics(Color.green.getRGB());
-		}
-		else if (teleportStatus == -1) {
+		} else if (teleportStatus == -1) {
 			int current_Map = engine.getCurrentMapNumber();
 			Map prevMap = engine.getMapList().get(current_Map - 1);
 			engine.setCurrentMap(prevMap);
 			engine.setCurrentMapNumber(engine.getCurrentMapNumber() - 1);
 			this.x = engine.getCurrentMapNumber() == 2 ? 1825 : 770;
-			this.y = engine.getCurrentMapNumber() == 2 ? 150  : 1700;
+			this.y = engine.getCurrentMapNumber() == 2 ? 150 : 1700;
 			this.playerBoundBox.setX(this.x + 10);
 			this.playerBoundBox.setY(this.y + 63);
 			this.playerBoundBox.generateGraphics(Color.green.getRGB());

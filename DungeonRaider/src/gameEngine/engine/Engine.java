@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
@@ -130,7 +129,7 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 		/**
 		 * Initiating the players
 		 */
-		this.player = new Player(new Position(150, 200), 100, 5, 1000000, 1000000, 300,
+		this.player = new Player(new Position(150, 200), 100, 5, 100, 100, 300,
 				this);
 		this.monsters = currentMap.getMonsters();
 		/** GUI */
@@ -191,7 +190,8 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 											Player b = (Player) o2;
 											Box a1 = a.getBoundingBox();
 											Box b1 = b.getPlayerBoundBox();
-											return (a1.getY() - (b1.getY() + b1.getHeight()));
+											return (a1.getY() - (b1.getY()
+													+ b1.getHeight()));
 										}
 
 									} else {
@@ -199,8 +199,8 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 										Monster a = (Monster) o2;
 										Box a1 = a.getBoundingBox();
 										Box b1 = b.getPlayerBoundBox();
-										return ((b1.getY() + (b1.getHeight()
-												)) - a1.getY());
+										return ((b1.getY() + (b1.getHeight()))
+												- a1.getY());
 									}
 								}
 							});
@@ -243,7 +243,6 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 				 */
 			}
 		}
-
 	}
 
 	/**
@@ -377,7 +376,6 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 	public void setCurrentMap(Map currentMap) {
 		this.currentMap = currentMap;
 		this.monsters = this.currentMap.getMonsters();
-		this.currentMapNumber++;
 	}
 
 	public void switchCanvas() {
