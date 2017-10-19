@@ -103,6 +103,8 @@ public class Tile {
 		}
 		return null;
 	}
+	
+	
 
 	/**
 	 * Calculates a value between 0-3.

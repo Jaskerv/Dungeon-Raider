@@ -1,5 +1,7 @@
 package gameEngine.item;
 
+import java.awt.image.BufferedImage;
+
 import gameEngine.engine.Engine;
 import gameEngine.sprite.Sprite;
 
@@ -9,12 +11,17 @@ import gameEngine.sprite.Sprite;
 public class Consumable extends Item {
 
 	private String name;
+	private BufferedImage image;
+	private String path;
 	/** Item consume health gained */
 	protected int healingStrength;
 
+
 	public Consumable(String name, int x, int y, int healingStrength,
-			Sprite sprite) {
-		super(x, y, sprite);
+			BufferedImage image, String path) {
+		super(x, y, new Sprite(image));
+		this.image = image;
+		this.path = path;
 		this.healingStrength = healingStrength;
 		this.name = name;
 	}
