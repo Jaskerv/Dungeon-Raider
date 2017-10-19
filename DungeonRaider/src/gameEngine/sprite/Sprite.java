@@ -72,7 +72,7 @@ public class Sprite {
 
 	/**
 	 * Draws the input sprite onto this sprite
-	 * 
+	 *
 	 * @param sprite
 	 */
 	public void drawOnSprite(Sprite sprite, int xPos, int yPos, int xZoom, int yZoom) {
@@ -89,7 +89,7 @@ public class Sprite {
 
 	/**
 	 * Sets pixel in this pixels array
-	 * 
+	 *
 	 * @param pixel
 	 * @param x
 	 * @param y

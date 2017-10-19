@@ -15,6 +15,7 @@ public class KeyController extends Observable
 	/**
 	 * Control Booleans for player and other key events
 	 */
+
 	private boolean up;
 	private boolean down;
 	private boolean left;
@@ -43,174 +44,171 @@ public class KeyController extends Observable
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-
-	}
-
-	@Override
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 		switch (key) {
 		case KeyEvent.VK_UP:
-			// move up
+			// lets the player move up by setting the up field to true
 			this.up = true;
-			// System.out.println("w pressed");
 		case KeyEvent.VK_W:
-			// move up
+			/// lets the player move up by setting the up field to true
 			this.up = true;
-			// System.out.println("w pressed");
 			break;
 		case KeyEvent.VK_LEFT:
-			// move left
+			// lets the player move left by setting the left field to true
 			this.left = true;
-			// System.out.println("a pressed");
 			break;
 		case KeyEvent.VK_A:
-			// move left
+			// lets the player move left by setting the left field to true
 			this.left = true;
-			// System.out.println("a pressed");
 			break;
 		case KeyEvent.VK_S:
-			// move down
+			// lets the player move by down setting the down field to true
 			this.down = true;
-			// System.out.println("s pressed");
 			break;
 		case KeyEvent.VK_DOWN:
-			// move down
+			// lets the player move by down setting the down field to true
 			this.down = true;
-			// System.out.println("s pressed");
 			break;
 		case KeyEvent.VK_D:
-			// move right
+			// lets the player move by right setting the right field to true
 			this.right = true;
-			// System.out.println("d pressed");
 			break;
 		case KeyEvent.VK_RIGHT:
-			// move right
+			// lets the player move by right setting the right field to true
 			this.right = true;
-			// System.out.println("d pressed");
-			break;
-		case KeyEvent.VK_I:
-			// myModel.displayInventory()...
 			break;
 		case KeyEvent.VK_F:
+			// lets the player pick up item by setting the pickUp field to true
 			this.pickUp = true;
 			break;
 		case KeyEvent.VK_SHIFT:
+			// lets the player run by setting the run field to true
 			this.run = true;
 			break;
 		case KeyEvent.VK_G:
+			// lets the player use item by setting the useItem field to true
 			this.useItem = true;
 			break;
-		// Deals 10 damage to player when pushing "p" for testing purposes
-		case KeyEvent.VK_P:
-			this.player.damage(10);
-			break;
 		case KeyEvent.VK_SPACE:
+			// lets the player attack by setting the attak field to true
 			this.attak = true;
 			break;
-		// case KeyEvent.VK_P:
-		// hurtPlayer = true;
-		// break;
 		}
-
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		int key = e.getKeyCode();
+
 		switch (key) {
 		case KeyEvent.VK_W:
-			// move up
-			this.up = false;
-			// System.out.println("w releasedd");
+			// checks for the pause screen. the w key will work differently
+			// depending on what screen it is in. w will move the cursor up
 			if (engine.isPaused()) {
 				engine.getPauseMenu().setUp(true);
 			}
+			// performs similar function as the pause screen
 			if (player.isDead()) {
 				engine.getYouDied().setUp(true);
 			}
+			// stops the up movement by setting up to false. update will check
+			// for this. engine stops player up movement when it sees this
+			// boolean
+			this.up = false;
 			break;
-		case KeyEvent.VK_UP:
-			// move up
-			this.up = false;
-			// System.out.println("w releasedd");
 
+		case KeyEvent.VK_UP:
+			// similar to above. Checks for the pause screen first
 			if (engine.isPaused()) {
 				engine.getPauseMenu().setUp(true);
 			}
 			if (player.isDead()) {
 				engine.getYouDied().setUp(true);
 			}
+			// stops the up movement by setting the up boolean to false. update
+			// will check for this and stop the movement
+			this.up = false;
+
 			break;
 		case KeyEvent.VK_A:
-			// move left
+			// stops the left movement by setting the left boolean to false.
+			// update will stop the movement when it checks the boolean
 			this.left = false;
-			// System.out.println("a released");
 			break;
 		case KeyEvent.VK_LEFT:
-			// move left
+			// stops the left movement by setting the left boolean to false.
 			this.left = false;
-			// System.out.println("a released");
 			break;
 		case KeyEvent.VK_S:
-			// move down
-			this.down = false;
-			// System.out.println("s released");
-
+			// the s key has slightly different functionality in the pause
+			// screen
 			if (engine.isPaused()) {
 				engine.getPauseMenu().setDown(true);
 			}
 			if (player.isDead()) {
 				engine.getYouDied().setDown(true);
 			}
+			// stops the down movement by setting the down boolean to false
+			this.down = false;
 			break;
+
 		case KeyEvent.VK_DOWN:
-			// move down
-			this.down = false;
-			// System.out.println("s released");
-
+			// similar to above
 			if (engine.isPaused()) {
 				engine.getPauseMenu().setDown(true);
 			}
 			if (player.isDead()) {
 				engine.getYouDied().setDown(true);
 			}
+			// sets the down boolean to false to stop the down movement
+			this.down = false;
 			break;
+
 		case KeyEvent.VK_D:
-			// move right
+			// stops the right movement by setting right to false.
 			this.right = false;
-			// System.out.println("d released");
 			break;
+
 		case KeyEvent.VK_RIGHT:
-			// move right
+			// stops the right movement by setting right to false.
 			this.right = false;
-			// System.out.println("d released");
 			break;
-		case KeyEvent.VK_I:
-			// myModel.displayInventory()...
-			break;
+
 		case KeyEvent.VK_F:
+			// stops the pick up function by setting the pick up to false.
 			this.pickUp = false;
 			break;
-		case KeyEvent.VK_SPACE: // attack
+
+		case KeyEvent.VK_SPACE:
+			// stops the attack by setting attak to false
 			this.attak = false;
 			break;
+
 		case KeyEvent.VK_SHIFT:
+			// player no longer runs when they release the shift key
 			this.run = false;
 			break;
+
 		case KeyEvent.VK_G:
+			// the player cant use items/potions once the player release the g
+			// key. player needs to press g again to use item
 			this.useItem = false;
 			break;
+
 		case KeyEvent.VK_ESCAPE:
+			// if the player is not dead, esc will show different things
+			// depending on what screen the player is in
 			if (!engine.getPlayer().isDead()) {
+				// if the player is in the pause menu screen, esc will close it
 				if (this.engine.isPaused()) {
 					this.engine.getPauseMenu().setPaused(false);
 					engine.getSoundLibrary().playClip("cursorReady", -10f);
 					break;
-				} else {
-
+				}
+				// opens the menu if its not in it originally
+				else {
 					this.engine.getPauseMenu().setPaused(true);
 					engine.getSoundLibrary().playClip("cursorReady", -10f);
 					this.engine.getPauseMenu().setIndex(0);
@@ -220,15 +218,22 @@ public class KeyController extends Observable
 			break;
 
 		case KeyEvent.VK_ENTER:
+			// lets the pause menu know that an option has been entered.
 			if (engine.isPaused()) {
 				engine.getPauseMenu().setEnter(true);
 			}
+			//lets the dead screen know that an option has been entered
 			if (player.isDead()) {
 				engine.getYouDied().setEnter(true);
 			}
 			break;
 
 		}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+
 	}
 
 	public boolean isUp() {
