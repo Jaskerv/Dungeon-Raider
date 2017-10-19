@@ -416,7 +416,8 @@ public class Player implements Character, GameObject, Saveable {
 	public void checkTeleportation(Engine engine) {
 		Map currentMap = engine.getCurrentMap();
 		Box box = this.playerBoundBox;
-		if (checkTeleporter(currentMap, box)) {
+		int teleportStatus = checkTeleporter(currentMap, box);
+		if (teleportStatus == 1) {
 			if (engine.getCurrentMapNumber() == 3) {
 				// so it doesn't go to a non-existing map
 				return;
@@ -424,8 +425,20 @@ public class Player implements Character, GameObject, Saveable {
 			int current_Map = engine.getCurrentMapNumber();
 			Map nextMap = engine.getMapList().get(current_Map + 1);
 			engine.setCurrentMap(nextMap);
-			this.x = 200;
-			this.y = 200;
+			engine.setCurrentMapNumber(engine.getCurrentMapNumber() + 1);
+			this.x = engine.getCurrentMapNumber() == 3 ? 300 : 200;
+			this.y = engine.getCurrentMapNumber() == 3 ? 400 : 200;
+			this.playerBoundBox.setX(this.x + 10);
+			this.playerBoundBox.setY(this.y + 63);
+			this.playerBoundBox.generateGraphics(Color.green.getRGB());
+		}
+		else if (teleportStatus == -1) {
+			int current_Map = engine.getCurrentMapNumber();
+			Map prevMap = engine.getMapList().get(current_Map - 1);
+			engine.setCurrentMap(prevMap);
+			engine.setCurrentMapNumber(engine.getCurrentMapNumber() - 1);
+			this.x = engine.getCurrentMapNumber() == 2 ? 1825 : 770;
+			this.y = engine.getCurrentMapNumber() == 2 ? 150  : 1700;
 			this.playerBoundBox.setX(this.x + 10);
 			this.playerBoundBox.setY(this.y + 63);
 			this.playerBoundBox.generateGraphics(Color.green.getRGB());

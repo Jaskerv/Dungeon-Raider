@@ -26,7 +26,7 @@ public interface Character {
 		return currentMap.onWall(box);
 	}
 
-	public default boolean checkTeleporter(Map currentMap, Box box) {
+	public default int checkTeleporter(Map currentMap, Box box) {
 		return currentMap.onTeleporter(box);
 	}
 

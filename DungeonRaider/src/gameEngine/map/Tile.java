@@ -20,7 +20,9 @@ public class Tile {
 		Floor,
 		Wall,
 		Teleporter,
-		RandomTeleporter;
+		RandomTeleporter,
+		BackwardTeleporter,
+		ForwardTeleporter;
 	}
 
 	/** Type of tile */
@@ -100,11 +102,17 @@ public class Tile {
 				this.type = Type.RandomTeleporter;
 				this.nextRandom = calculateTileRandom();
 				return SPRITE_SHEET_1.getSprite(4, 7);
+			case 'B':
+				this.type = Type.BackwardTeleporter;
+				return SPRITE_SHEET_1.getSprite(4, 7);
+			case 'F':
+				this.type = Type.ForwardTeleporter;
+				return SPRITE_SHEET_1.getSprite(4, 7);
 		}
 		return null;
 	}
-	
-	
+
+
 
 	/**
 	 * Calculates a value between 0-3.
@@ -158,6 +166,14 @@ public class Tile {
 	public void setBoundary(Type boundary) { this.type = boundary; }
 
 	public boolean isTeleporter() { return this.type == Type.Teleporter; }
+
+	public boolean isForwardTeleporter() {
+		return this.type == Type.ForwardTeleporter;
+		}
+
+	public boolean isBackwardTeleporter() {
+		return this.type == Type.BackwardTeleporter;
+		}
 
 	public Item getItem() { return item; }
 

@@ -4,7 +4,7 @@ package library3;
 public class Movement {
 
 	public static final int WALK_SPEED = 2;
-	public static final int SPRINT_SPEED = 50;
+	public static final int SPRINT_SPEED = 30;
 
 	/*
 	 * Methods for walking

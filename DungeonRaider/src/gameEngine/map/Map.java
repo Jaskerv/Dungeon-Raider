@@ -231,20 +231,25 @@ public class Map {
 	 * @param box
 	 * @return
 	 */
-	public boolean onTeleporter(Box box) {
+	public int onTeleporter(Box box) {
 		Tile currentTile;
 		for (int row = 0; row < LENGTH; row++) {
 			for (int col = 0; col < WIDTH; col++) {
 				currentTile = map[col][row];
 				if(currentTile.contains(box)) {
-					if(currentTile.isTeleporter()) {
-						return true;
+					if(currentTile.isTeleporter()
+						|| currentTile.isForwardTeleporter()) {
+						return 1;
+					}
+					else if(currentTile.isBackwardTeleporter()) {
+						return -1;
 					}
 				}
 			}
 		}
-		return false;
+		return 0;
 	}
+
 
 	public Tile[][] getMap() { return map; }
 

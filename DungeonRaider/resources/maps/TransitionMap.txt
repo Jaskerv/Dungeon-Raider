@@ -1,11 +1,11 @@
 { 
 Consumable Small_Health_Potion 857 90 30
-} 
+}
 
 0 0 0
 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-1 M W W W W W W W W W W W W W W W W W W M 1
-1 M W W W W W W W W W W W W W W W W W W M 1
+1 B W W W W W W W W W W W W W W W W W W F 1
+1 B W W W W W W W W W W W W W W W W W W F 1
 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1

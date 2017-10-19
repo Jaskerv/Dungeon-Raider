@@ -334,7 +334,6 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 	public void setCurrentMap(Map currentMap) {
 		this.currentMap = currentMap;
 		this.monsters = this.currentMap.getMonsters();
-		this.currentMapNumber++;
 	}
 
 	public void switchCanvas() {
