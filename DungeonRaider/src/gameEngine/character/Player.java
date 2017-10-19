@@ -388,14 +388,16 @@ public class Player implements Character, GameObject, Saveable {
 				// so it doesn't go to a non-existing map
 				return;
 			}
-			engine.setCurrentMap(
-					engine.getMapList().get(engine.getCurrentMapNumber()));
+			int current_Map = engine.getCurrentMapNumber();
+			Map nextMap = engine.getMapList().get(current_Map + 1);
+			engine.setCurrentMap(nextMap);
 			this.x = 200;
 			this.y = 200;
 			this.playerBoundBox.setX(this.x + 10);
 			this.playerBoundBox.setY(this.y + 63);
-			// this.playerBoundBox.generateGraphics(Color.blue.getRGB());
+			this.playerBoundBox.generateGraphics(Color.green.getRGB());
 		}
+
 	}
 
 	// Charnon comment
