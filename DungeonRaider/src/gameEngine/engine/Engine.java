@@ -88,8 +88,8 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 	public Engine() {
 		/** Initializing the map */
 		this.mapList = initialiseMaps();
-		this.currentMap = mapList.get(0);
-		this.currentMapNumber = 0;
+		this.currentMap = mapList.get(1);
+		this.currentMapNumber = 1;
 		/** Initializing the sound library */
 		this.soundLibrary = new SoundMap(
 				"resources/sountracks/soundlibrary.txt");
