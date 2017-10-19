@@ -28,52 +28,21 @@ public class Sprite {
 		image.getRGB(0, 0, width, height, pixels, 0, width);
 	}
 
-	// a default constructor
+	/**
+	 * A default constructor
+	 */
 	public Sprite() {
 
 	}
 
 	/**
-	 * @return the width
-	 */
-	public int getWidth() {
-		return width;
-	}
-
-	/**
-	 * @return the height
-	 */
-	public int getHeight() {
-		return height;
-	}
-
-	/**
-	 * @return the pixels
-	 */
-	public int[] getPixels() {
-		return pixels;
-	}
-
-	/**
-	 * @param pixels
-	 *            the pixels to set
-	 */
-	public void setPixels(int[] pixels) {
-		this.pixels = pixels;
-	}
-
-	public String toString() {
-		StringBuilder s = new StringBuilder();
-		for (int i = 0; i < pixels.length; i++) {
-			s.append(pixels[i]);
-		}
-		return s.toString();
-	}
-
-	/**
-	 * Draws the input sprite onto this sprite
+	 * Gets a sprite and renders it to the array of pixel values for drawing.
 	 *
-	 * @param sprite
+	 * @param sprite The sprite to be rendered into array of pixel values
+	 * @param xPos The x position of the sprite
+	 * @param yPos The y position of the sprite
+	 * @param xZoom Scales the sprite in its width
+	 * @param yZoom Scales the sprite in its height
 	 */
 	public void drawOnSprite(Sprite sprite, int xPos, int yPos, int xZoom, int yZoom) {
 		int[] array = sprite.getPixels();
@@ -99,5 +68,41 @@ public class Sprite {
 		if (pixels.length > pixelIndex && !Engine.alpha.match(pixel)) {
 			pixels[pixelIndex] = pixel;
 		}
+	}
+
+	/**
+	 * @return The width of the sprite
+	 */
+	public int getWidth() {
+		return width;
+	}
+
+	/**
+	 * @return The height of the sprite
+	 */
+	public int getHeight() {
+		return height;
+	}
+
+	/**
+	 * @return The array of pixel values for the sprite
+	 */
+	public int[] getPixels() {
+		return pixels;
+	}
+
+	/**
+	 * @param The array of pixel values for the sprite
+	 */
+	public void setPixels(int[] pixels) {
+		this.pixels = pixels;
+	}
+
+	public String toString() {
+		StringBuilder s = new StringBuilder();
+		for (int i = 0; i < pixels.length; i++) {
+			s.append(pixels[i]);
+		}
+		return s.toString();
 	}
 }
