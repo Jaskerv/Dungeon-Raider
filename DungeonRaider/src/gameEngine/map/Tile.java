@@ -13,12 +13,19 @@ import gameEngine.util.Box;
  *
  */
 public class Tile {
+	
+	public enum Type {
+		Floor,
+		Wall,
+		Teleporter
+	}
 
+	/** Type of tile */
+	private Type type;
 	/** Location, size */
 	private int x, y;
 	private final int width;
 	private final int height;
-	private boolean boundary;
 	/** Sprite image resources */
 	private Sprite sprite;
 	private static final String SPRITE_SHEET_1_PATH =
@@ -43,15 +50,13 @@ public class Tile {
 	 * @param height
 	 * @param boundary
 	 */
-	public Tile(char symbol, int x, int y, int width, int height,
-			boolean boundary) {
+	public Tile(char symbol, int x, int y, int width, int height) {
 		SPRITE_SHEET_1.loadSprites(16, 16);
 		SPRITE_SHEET_2.loadSprites(16, 16);
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
-		this.boundary = boundary;
 		this.sprite = getImage(symbol);
 		this.boundingBox = new Box(this.x, this.y, this.width, this.height);
 	}
@@ -66,26 +71,28 @@ public class Tile {
 		switch (symbol) {
 			//standard centre grass tile
 			case 'W':
+				this.type = Type.Floor;
 				return SPRITE_SHEET_1.getSprite(4, 8);
 			//north wall
 			case '1':
-				this.boundary = true;
+				this.type = Type.Wall;
 				return SPRITE_SHEET_1.getSprite(0, 1);
 			//west wall
 			case '2':
-				this.boundary = true;
+				this.type = Type.Wall;
 				return SPRITE_SHEET_1.getSprite(0, 1);
 			//south wall
 			case '3':
-				this.boundary = true;
+				this.type = Type.Wall;
 				return SPRITE_SHEET_1.getSprite(0, 1);
 			//east wall
 			case '4':
-				this.boundary = true;
+				this.type = Type.Wall;
 				return SPRITE_SHEET_1.getSprite(0, 1);
-			case 'T':
-				return SPRITE_SHEET_2.getSprite(14, 11);
+//			case 'T':
+//				return SPRITE_SHEET_2.getSprite(14, 11);
 			case 'N':
+				this.type = Type.Teleporter;
 				return SPRITE_SHEET_1.getSprite(4, 7);
 		}
 		return null;
@@ -123,9 +130,11 @@ public class Tile {
 
 	public void setY(int y) { this.y = y; }
 
-	public boolean isBoundary() { return boundary; }
+	public boolean isBoundary() { return this.type == Type.Wall; }
 
-	public void setBoundary(boolean boundary) { this.boundary = boundary; }
+	public void setBoundary(Type boundary) { this.type = boundary; }
+	
+	public boolean isTeleporter() { return this.type == Type.Teleporter; }
 
 	public Item getItem() { return item; }
 
