@@ -44,6 +44,7 @@ public class Map {
 	/** Monsters will have random sprite images */
 	private int random;
 	private String path;
+	private int tileCount = 2;
 
 	/**
 	 * Initialises the Map
@@ -249,6 +250,9 @@ public class Map {
 						return 1;
 					} else if (currentTile.isBackwardTeleporter()) {
 						return -1;
+					} else if (currentTile.isRandomTeleporter()
+							&& currentTile.getOutcome() == 2) {
+						return 2;
 					}
 				}
 			}
@@ -261,13 +265,13 @@ public class Map {
 	 */
 	public void spawnMonsters() {
 		List<GameObject> respawnedMonsters = new ArrayList<>();
-		Monster firstMonster = new Monster("Monster_One", 300, 600, 2, 1, 10,
+		Monster firstMonster = new Monster("Monster_One", 950, 370, 1, 5, 10,
 				10, randomImage(), this.path);
-		Monster secondMonster = new Monster("Monster_One", 400, 700, 3, 1, 10,
+		Monster secondMonster = new Monster("Monster_One", 395, 970, 2, 6, 10,
 				10, randomImage(), this.path);
-		Monster thirdMonster = new Monster("Monster_One", 500, 700, 4, 1, 10,
+		Monster thirdMonster = new Monster("Monster_One", 1650, 680, 3, 7, 10,
 				10, randomImage(), this.path);
-		Monster fourthMonster = new Monster("Monster_One", 600, 700, 1, 1, 10,
+		Monster fourthMonster = new Monster("Monster_One", 1600, 1300, 5, 10, 10,
 				10, randomImage(), this.path);
 		respawnedMonsters.add(firstMonster);
 		respawnedMonsters.add(secondMonster);

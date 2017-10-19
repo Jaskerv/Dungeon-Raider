@@ -1,5 +1,7 @@
 package gameEngine.map;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import gameEngine.engine.Engine;
@@ -45,6 +47,8 @@ public class Tile {
 	private Box boundingBox;
 	/** If item is on top of this tile */
 	private Item item = null;
+	private int outcome;
+	private static int tileCount = 2;
 
 	/**
 	 * This initialises the tile instance. Each tile instance is contained
@@ -100,7 +104,7 @@ public class Tile {
 				return SPRITE_SHEET_1.getSprite(4, 7);
 			case 'M':
 				this.type = Type.RandomTeleporter;
-				this.nextRandom = calculateTileRandom();
+				this.outcome = tileCount--;
 				return SPRITE_SHEET_1.getSprite(4, 7);
 			case 'B':
 				this.type = Type.BackwardTeleporter;
@@ -110,24 +114,6 @@ public class Tile {
 				return SPRITE_SHEET_1.getSprite(4, 7);
 		}
 		return null;
-	}
-
-
-
-	/**
-	 * Calculates a value between 0-3.
-	 * 0 indicates go back to tutorial map
-	 * 1 indicates go back to the map after the tutorial map
-	 * 2 indicates the player will die
-	 * 3 indicates the player will win
-	 * @return
-	 */
-	private int calculateTileRandom() {
-		Random random = new Random();
-		int min = 0;
-		int max = 3;
-		int result = min + random.nextInt(max - min + 1);
-		return result;
 	}
 
 	public boolean contains(int x, int y) {
@@ -169,11 +155,23 @@ public class Tile {
 
 	public boolean isForwardTeleporter() {
 		return this.type == Type.ForwardTeleporter;
-		}
+	}
 
 	public boolean isBackwardTeleporter() {
 		return this.type == Type.BackwardTeleporter;
-		}
+	}
+
+	public boolean isRandomTeleporter() {
+		return this.type == Type.RandomTeleporter;
+	}
+
+	public int getOutcome() {
+		return outcome;
+	}
+
+	public void setOutcome(int outcome) {
+		this.outcome = outcome;
+	}
 
 	public Item getItem() { return item; }
 
