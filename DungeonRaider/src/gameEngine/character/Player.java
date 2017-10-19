@@ -96,10 +96,10 @@ public class Player implements Character, GameObject, Saveable {
 		this.newDirection = this.direction;
 		this.couldntRun = false;
 	}
-	
-	
+
+
 	/**
-	 * 
+	 *
 	 * @param hp
 	 * @param hpMax
 	 * @param gold
@@ -519,8 +519,7 @@ public class Player implements Character, GameObject, Saveable {
 		if ((playerX + swordLength >= monsterX)
 				&& (playerX + swordLength <= monsterXWidth)) {
 			if ((playerY >= monsterY) || (playerYHeight >= monsterY)) {
-				System.out.println("Fucking REEEEEEE");
-				mon.setHealth(0);
+				mon.setHealth(mon.getHealth()-heavyAttack());
 				checkForMonsterDeath(mon, monsters, iterator);
 			}
 		}
@@ -541,8 +540,7 @@ public class Player implements Character, GameObject, Saveable {
 		if ((playerX - swordLength >= monsterX)
 				&& (playerX - swordLength <= monsterXWidth)) {
 			if ((playerY >= monsterY) || (playerYHeight >= monsterY)) {
-				System.out.println("Fucking REEEEEEE");
-				mon.setHealth(0);
+				mon.setHealth(mon.getHealth()-heavyAttack());
 				checkForMonsterDeath(mon, monsters, iterator);
 			}
 		}
@@ -565,8 +563,7 @@ public class Player implements Character, GameObject, Saveable {
 		if ((playerY - swordLength >= monsterY)
 				&& (playerY - swordLength <= monsterYHeight)) {
 			if ((playerX >= monsterX) || (playerXWidth >= monsterX)) {
-				System.out.println("Fucking REEEEEEE");
-				mon.setHealth(0);
+				mon.setHealth(mon.getHealth()-heavyAttack());
 				checkForMonsterDeath(mon, monsters, iterator);
 			}
 		}
@@ -589,8 +586,7 @@ public class Player implements Character, GameObject, Saveable {
 		if ((playerY + swordLength >= monsterY)
 				&& (playerY + swordLength <= monsterYHeight)) {
 			if ((playerX >= monsterX) || (playerXWidth >= monsterX)) {
-				System.out.println("Fucking REEEEEEE");
-				mon.setHealth(0);
+				mon.setHealth(mon.getHealth()-heavyAttack());
 				checkForMonsterDeath(mon, monsters, iterator);
 			}
 		}
