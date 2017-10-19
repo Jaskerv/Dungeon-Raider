@@ -57,10 +57,17 @@ public class Player implements Character, GameObject, Saveable {
 	// 0 == right, 1 == left, 2 == up, 3 == down. This is based off the
 	// Player.png
 	private int direction = 0;
+	// for the player animated sprites
+	boolean didMove;
+	int newDirection;
+	boolean couldntRun;
+
 	/**
 	 * Player visual radius
 	 */
 	private int radius;
+
+
 
 	public Player(Position center, int stamina, int zoom, int hp, int hpMax,
 			int radius) {
@@ -84,6 +91,10 @@ public class Player implements Character, GameObject, Saveable {
 				(int) (animatedSprite.getWidth() * zoom * 0.6 - 2),
 				(int) (animatedSprite.getHeight() * zoom * 0.2));
 		this.playerBoundBox.generateGraphics(Color.green.getRGB());
+
+		this.didMove = false;
+		this.newDirection = this.direction;
+		this.couldntRun = false;
 	}
 
 	private void updateDirection() {
@@ -102,7 +113,7 @@ public class Player implements Character, GameObject, Saveable {
 		this.x -= Movement.WALK_SPEED;
 		// this.playerBoundBox.setX(this.playerBoundBox.getX() - SPEED);
 		this.playerBoundBox
-				.setX(Movement.walkLeft(this.playerBoundBox.getX(),Movement.WALK_SPEED));
+		.setX(Movement.walkLeft(this.playerBoundBox.getX(),Movement.WALK_SPEED));
 	}
 
 	@Override
@@ -110,7 +121,7 @@ public class Player implements Character, GameObject, Saveable {
 		this.x += Movement.WALK_SPEED;
 		// this.playerBoundBox.setX(this.playerBoundBox.getX() + SPEED);
 		this.playerBoundBox
-				.setX(Movement.walkRight(this.playerBoundBox.getX(),Movement.WALK_SPEED));
+		.setX(Movement.walkRight(this.playerBoundBox.getX(),Movement.WALK_SPEED));
 	}
 
 	@Override
@@ -118,7 +129,7 @@ public class Player implements Character, GameObject, Saveable {
 		this.y -= Movement.WALK_SPEED;
 		// this.playerBoundBox.setY(this.playerBoundBox.getY() - SPEED);
 		this.playerBoundBox
-				.setY(Movement.walkUp(this.playerBoundBox.getY(),Movement.WALK_SPEED));
+		.setY(Movement.walkUp(this.playerBoundBox.getY(),Movement.WALK_SPEED));
 	}
 
 	@Override
@@ -126,21 +137,21 @@ public class Player implements Character, GameObject, Saveable {
 		this.y += Movement.WALK_SPEED;
 		// this.playerBoundBox.setY(this.playerBoundBox.getY() + SPEED);
 		this.playerBoundBox
-				.setY(Movement.walkDown(this.playerBoundBox.getY(),Movement.WALK_SPEED));
+		.setY(Movement.walkDown(this.playerBoundBox.getY(),Movement.WALK_SPEED));
 	}
 
 	public void runLeft() {
 		this.x -= Movement.SPRINT_SPEED;
 		// this.playerBoundBox.setX(this.playerBoundBox.getX() - SPRINT);
 		this.playerBoundBox
-				.setX(Movement.sprintLeft(this.playerBoundBox.getX()));
+		.setX(Movement.sprintLeft(this.playerBoundBox.getX()));
 	}
 
 	public void runRight() {
 		this.x += Movement.SPRINT_SPEED;
 		// this.playerBoundBox.setX(this.playerBoundBox.getX() + SPRINT);
 		this.playerBoundBox
-				.setX(Movement.sprintRight(this.playerBoundBox.getX()));
+		.setX(Movement.sprintRight(this.playerBoundBox.getX()));
 	}
 
 	public void runUp() {
@@ -153,7 +164,7 @@ public class Player implements Character, GameObject, Saveable {
 		this.y += Movement.SPRINT_SPEED;
 		// this.playerBoundBox.setY(this.playerBoundBox.getY() + SPRINT);
 		this.playerBoundBox
-				.setY(Movement.sprintDown(this.playerBoundBox.getY()));
+		.setY(Movement.sprintDown(this.playerBoundBox.getY()));
 	}
 
 	public void interact() {
@@ -188,23 +199,70 @@ public class Player implements Character, GameObject, Saveable {
 	 */
 	@Override
 	public void update(Engine engine) {
-		KeyController keyBinds = engine.getKeyBinds();
-		Map currentMap = engine.getCurrentMap();
-
 		// for the player animated sprites
-		boolean didMove = false;
-		int newDirection = direction;
-		boolean couldntRun = false;
-
-		Box curBox = this.playerBoundBox;
+		didMove = false;
+		newDirection = direction;
+		couldntRun = false;
 
 		pickUp(engine);
+		checkDamage();
+		useItem(engine);
+		tryRun(engine);
+		tryWalk(engine);
+		updateAnimations(engine);
+	}
 
 
+	//Harry Comment
+	public void checkTeleportation(Engine engine) {
+		if (this.x >= 1940 && this.y <= 100) {
+			if (engine.getCurrentMapNumber() == 3) {
+
+				// so it doesn't go to a non-existing map
+
+				return;
+			}
+			engine.setCurrentMap(
+					engine.getMapList().get(engine.getCurrentMapNumber()));
+			this.x = 200;
+			this.y = 200;
+			this.playerBoundBox = new Rectangle(x + 10, y + 63,
+					animatedSprite.getWidth(),
+					(int) (animatedSprite.getHeight() * 0.4));
+			this.playerBoundBox.generateGraphics(Color.blue.getRGB());
+		}
+	}
+
+	//Charnon comment
+	public void updateAnimations(Engine engine) {
 		/**
-		 * Player running connection with key controller: Also checks for player
-		 * connection with walls
+		 * Updates camera
 		 */
+		// only update the direction if the player moves in a different
+		// direction
+		if (newDirection != direction) {
+			direction = newDirection;
+			updateDirection();
+		}
+
+		if (!didMove) {
+			// makes sure that the sprite doesnt stop mid movement
+			animatedSprite.reset();
+		}
+
+		// update the counter
+		if (didMove) {
+			animatedSprite.update(engine);
+		}
+
+		this.updateCamera(engine.getRenderer().getCamera());
+	}
+
+
+	public void tryRun(Engine engine) {
+		Box curBox = this.playerBoundBox;
+		KeyController keyBinds = engine.getKeyBinds();
+		Map currentMap = engine.getCurrentMap();
 		if (keyBinds.isRun()) {
 			if (keyBinds.isUp()) {
 				Box up = new Box(curBox.getX(), curBox.getY(),
@@ -216,7 +274,7 @@ public class Player implements Character, GameObject, Saveable {
 					didMove = true;
 					runUp();
 				} else {
-					couldntRun = true;
+					tryWalk(engine);
 				}
 			}
 			if (keyBinds.isDown()) {
@@ -229,7 +287,7 @@ public class Player implements Character, GameObject, Saveable {
 					didMove = true;
 					runDown();
 				} else {
-					couldntRun = true;
+					tryWalk(engine);
 				}
 			}
 			if (keyBinds.isLeft()) {
@@ -242,7 +300,7 @@ public class Player implements Character, GameObject, Saveable {
 					didMove = true;
 					runLeft();
 				} else {
-					couldntRun = true;
+					tryWalk(engine);
 				}
 			}
 			if (keyBinds.isRight()) {
@@ -255,16 +313,21 @@ public class Player implements Character, GameObject, Saveable {
 					didMove = true;
 					runRight();
 				} else {
-					couldntRun = true;
+					tryWalk(engine);
 				}
 			}
 		}
+	}
 
+	public void tryWalk(Engine engine) {
+		Box curBox = this.playerBoundBox;
+		KeyController keyBinds = engine.getKeyBinds();
+		Map currentMap = engine.getCurrentMap();
 		/**
 		 * Player walking connection with key controller: Also checks for player
 		 * connection with walls
 		 */
-		if (!keyBinds.isRun() || couldntRun) {
+		if (!keyBinds.isRun()) {
 			if (keyBinds.isUp()) {
 				Box up = new Box(curBox.getX(),
 						curBox.getY() - Movement.WALK_SPEED, curBox.getWidth(),
@@ -303,11 +366,11 @@ public class Player implements Character, GameObject, Saveable {
 					walkRight();
 				}
 			}
-			couldntRun = false;
 		}
+	}
 
-
-
+	public void checkAttack(Engine engine) {
+		KeyController keyBinds = engine.getKeyBinds();
 		if (keyBinds.isAttak()) {
 			List<GameObject> monsters = engine.getCurrentMap().getMonsters();
 			if (monsters.size() == 0) {
@@ -331,7 +394,32 @@ public class Player implements Character, GameObject, Saveable {
 				}
 			}
 		}
+	}
 
+	/**
+	 * Attempts to use a players item to heal the player
+	 */
+	public void useItem(Engine engine) {
+		KeyController keyBinds = engine.getKeyBinds();
+		//If player is trying to use an item
+		if (keyBinds.isUseItem()) {
+			//Checks if the players inventory is not empty
+			if (!this.inventory.getInventory().isEmpty()) {
+				//Returns the item as a health potion
+				Consumable healthPot = (Consumable) this.inventory
+						.returnFirstItem();
+				//Heals the player = to that of the potions strength
+				this.heal(healthPot.getHealingStrength());
+			}
+			//Prevents two potions from being used with one press
+			keyBinds.setUseItem(false);
+		}
+	}
+
+	/**
+	 * Checks if the player has taken damage
+	 */
+	public void checkDamage() {
 		/**
 		 * Updates the players hpbar if they have taken damage
 		 */
@@ -339,59 +427,12 @@ public class Player implements Character, GameObject, Saveable {
 			int damage = damageQueue.poll();
 			this.hp += damage;
 		}
-
-		/**
-		 * Attempts to use a players item to heal the player
-		 */
-		if (keyBinds.isUseItem()) {
-			if (!this.inventory.getInventory().isEmpty()) {
-				Consumable healthPot = (Consumable) this.inventory
-						.returnFirstItem();
-				this.heal(healthPot.getHealingStrength());
-			}
-			keyBinds.setUseItem(false);
-		}
-
-		/**
-		 * Updates camera
-		 */
-		// only update the direction if the player moves in a different
-		// direction
-		if (newDirection != direction) {
-			direction = newDirection;
-			updateDirection();
-		}
-
-		if (!didMove) {
-			// makes sure that the sprite doesnt stop mid movement
-			animatedSprite.reset();
-		}
-
-		this.updateCamera(engine.getRenderer().getCamera());
-
-		// update the counter
-		if (didMove) {
-			animatedSprite.update(engine);
-		}
-
-		if (this.x >= 1940 && this.y <= 100) {
-			if (engine.getCurrentMapNumber() == 3) {
-
-				// so it doesn't go to a non-existing map
-
-				return;
-			}
-			engine.setCurrentMap(
-					engine.getMapList().get(engine.getCurrentMapNumber()));
-			this.x = 200;
-			this.y = 200;
-			this.playerBoundBox = new Rectangle(x + 10, y + 63,
-					animatedSprite.getWidth(),
-					(int) (animatedSprite.getHeight() * 0.4));
-			this.playerBoundBox.generateGraphics(Color.blue.getRGB());
-		}
 	}
 
+	/**
+	 * Attemps to pick up item from the ground if within character range
+	 * @param engine contains all of the values required for picking up
+	 */
 	public void pickUp(Engine engine) {
 		KeyController keyBinds = engine.getKeyBinds();
 		//Checks if player is attempting to pick up item
