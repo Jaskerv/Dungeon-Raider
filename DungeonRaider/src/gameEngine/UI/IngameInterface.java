@@ -72,8 +72,8 @@ public class IngameInterface implements GameObject {
 		for (int i = 0; i < itemList.size(); i++) {
 			Sprite itemSprite = itemList.get(i).getSprite();
 			if (itemList.get(i).getPickedUp()) {
-				int itemNumber = 100 + (i * 50);
-				ui.drawOnSprite(itemSprite, itemNumber, 120, 3, 3);
+				int itemNumber = 110 + (i * 50);
+				ui.drawOnSprite(itemSprite, itemNumber, 130, 3, 3);
 			}
 		}
 		// coin sprite

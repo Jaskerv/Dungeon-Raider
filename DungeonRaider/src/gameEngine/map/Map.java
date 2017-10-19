@@ -1,10 +1,12 @@
 package gameEngine.map;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 import gameEngine.character.Monster;
@@ -12,7 +14,6 @@ import gameEngine.engine.Engine;
 import gameEngine.engine.GameObject;
 import gameEngine.item.Consumable;
 import gameEngine.item.Item;
-import gameEngine.sprite.Sprite;
 import gameEngine.util.Box;
 import library1.ItemParser;
 import library2.MapParser;
@@ -40,6 +41,9 @@ public class Map {
 	private java.util.Map<String, List<String>> itemMap = new HashMap<>();
 	private List<Item> items = new ArrayList<>();
 	private List<GameObject> monsters = new ArrayList<>();
+	/** Monsters will have random sprite images */
+	private int random;
+	private String path;
 
 	/**
 	 * Initialises the Map
@@ -132,13 +136,15 @@ public class Map {
 			}
 			if (category.equals("Consumable")) {
 				Item item = new Consumable(name, parameters[0], parameters[1],
-						parameters[2], Engine.findSprite(name));
+						parameters[2],
+						Engine.loadImage("resources/images/potion.png"),
+						"resources/images/potion.png");
 				associateItemToTile(item, parameters[0], parameters[1]);
 				this.items.add(item);
 			} else if (category.equals("Monster")) {
 				GameObject monster = new Monster(name, parameters[0],
 						parameters[1], parameters[2], parameters[3],
-						parameters[4], parameters [5], Engine.findSprite(name));
+						parameters[4], parameters [5], randomImage(), this.path);
 				monsters.add(monster);
 			}
 			name = "";
@@ -146,6 +152,31 @@ public class Map {
 			parameters = new int[constructor];
 		}
 
+	}
+
+	private BufferedImage randomImage() {
+		Random random = new Random();
+		int min = 0;
+		int max = 4;
+		this.random = min + random.nextInt(max - min + 1);
+		switch (this.random) {
+		case 0:
+			this.path = "resources/images/blob.png";
+			return Engine.loadImage(path);
+		case 1:
+			this.path = "resources/images/Ghost.png";
+			return Engine.loadImage(path);
+		case 2:
+			this.path = "resources/images/orc.png";
+			return Engine.loadImage(path);
+		case 3:
+			this.path = "resources/images/skeleton.png";
+			return Engine.loadImage(path);
+		case 4:
+			this.path = "resources/images/smallOrc.png";
+			return Engine.loadImage(path);
+		}
+		return null;
 	}
 
 	/**

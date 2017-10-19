@@ -88,8 +88,8 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 	public Engine() {
 		/** Initializing the map */
 		this.mapList = initialiseMaps();
-		this.currentMap = mapList.get(1);
-		this.currentMapNumber = 1;
+		this.currentMap = mapList.get(0);
+		this.currentMapNumber = 0;
 		/** Initializing the sound library */
 		this.soundLibrary = new SoundMap(
 				"resources/sountracks/soundlibrary.txt");
@@ -537,7 +537,6 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 						sc.nextLine();
 				}
 				String line = sc.nextLine();
-				System.out.println(line);
 				if (line.equals("}")) {
 					continue;
 				}
@@ -585,8 +584,12 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 				} else if (split[1].equals("inventory")) {
 					inven = new Inventory();
 					for (int i = 2; i < split.length; i++)
-						inven.add(new Consumable(null, 0, 0,
-								Integer.parseInt(split[1]), null));
+						try {
+							inven.add(Consumable.createConsumable(
+									Integer.parseInt(split[i])));
+						} catch (Exception e) {
+							System.out.println("unluggy uce");
+						}
 				} else if (split[1].equals("zoom")) {
 					zoom = Integer.parseInt(split[2]);
 				} else if (split[1].equals("direction")) {

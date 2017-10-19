@@ -37,6 +37,8 @@ public class Monster implements Character, GameObject {
 	private int healthMax;
 	// Monsters sprite image
 	private Sprite spriteImage;
+	private BufferedImage image;
+	private String path;
 
 	// Monsters speed
 	private int speed;
@@ -88,7 +90,7 @@ public class Monster implements Character, GameObject {
 	 *            The sprite to represent the monster
 	 */
 	public Monster(String name, int x, int y, int speed, int health, int damage,
-			int attackSpeed, Sprite sprite) {
+			int attackSpeed, BufferedImage image, String path) {
 		this.name = name;
 		this.x = x;
 		this.y = y;
@@ -96,7 +98,9 @@ public class Monster implements Character, GameObject {
 		this.health = health;
 		this.healthMax = health;
 		this.damage = damage;
-		this.spriteImage = sprite;
+		this.image = image;
+		this.path = path;
+		this.spriteImage = new Sprite(image);
 		this.attackSpeed = attackSpeed;
 
 		// Generates height and width values that account for zoom
