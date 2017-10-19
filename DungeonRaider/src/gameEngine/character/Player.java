@@ -512,8 +512,7 @@ public class Player implements Character, GameObject, Saveable {
 		if ((playerX + swordLength >= monsterX)
 				&& (playerX + swordLength <= monsterXWidth)) {
 			if ((playerY >= monsterY) || (playerYHeight >= monsterY)) {
-				System.out.println("Fucking REEEEEEE");
-				mon.setHealth(0);
+				mon.setHealth(mon.getHealth()-heavyAttack());
 				checkForMonsterDeath(mon, monsters, iterator);
 			}
 		}
@@ -534,8 +533,7 @@ public class Player implements Character, GameObject, Saveable {
 		if ((playerX - swordLength >= monsterX)
 				&& (playerX - swordLength <= monsterXWidth)) {
 			if ((playerY >= monsterY) || (playerYHeight >= monsterY)) {
-				System.out.println("Fucking REEEEEEE");
-				mon.setHealth(0);
+				mon.setHealth(mon.getHealth()-heavyAttack());
 				checkForMonsterDeath(mon, monsters, iterator);
 			}
 		}
@@ -558,8 +556,7 @@ public class Player implements Character, GameObject, Saveable {
 		if ((playerY - swordLength >= monsterY)
 				&& (playerY - swordLength <= monsterYHeight)) {
 			if ((playerX >= monsterX) || (playerXWidth >= monsterX)) {
-				System.out.println("Fucking REEEEEEE");
-				mon.setHealth(0);
+				mon.setHealth(mon.getHealth()-heavyAttack());
 				checkForMonsterDeath(mon, monsters, iterator);
 			}
 		}
@@ -582,8 +579,7 @@ public class Player implements Character, GameObject, Saveable {
 		if ((playerY + swordLength >= monsterY)
 				&& (playerY + swordLength <= monsterYHeight)) {
 			if ((playerX >= monsterX) || (playerXWidth >= monsterX)) {
-				System.out.println("Fucking REEEEEEE");
-				mon.setHealth(0);
+				mon.setHealth(mon.getHealth()-heavyAttack());
 				checkForMonsterDeath(mon, monsters, iterator);
 			}
 		}
@@ -603,7 +599,7 @@ public class Player implements Character, GameObject, Saveable {
 	public void checkForMonsterDeath(Monster monster, List<GameObject> monsters,
 			Iterator<GameObject> iter) {
 		if (monster.getHealth() <= 0) {
-			this.gold = this.gold + 1;
+			this.gold = this.gold + 100;
 			System.out.println("monster died");
 			iter.remove();
 		}

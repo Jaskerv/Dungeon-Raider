@@ -23,6 +23,7 @@ import gameEngine.util.Box;
 public class IngameInterface implements GameObject {
 	private BufferedImage img;
 	private Sprite ui;
+	private Sprite coinSprite;
 	private Player player;
 	private int width;
 	private int height;
@@ -36,18 +37,18 @@ public class IngameInterface implements GameObject {
 	private final int HPY = 60;
 	private final int HPHEIGHT = 30;
 
-	public IngameInterface(Player player, int width, int height) {
+	public IngameInterface(Player player, int width, int height, Sprite coinSprite) {
 		this.player = player;
 		this.width = width;
 		this.height = height;
 		this.healthBar = new Box(HPX, HPY, HPMAX, HPHEIGHT);
+		this.coinSprite = coinSprite;
 		generateUI();
 	}
 
 	private void generateUI() {
 		img = Engine.loadImage(
 				"resources/Interface/UI - Rectangle 112x60 - 300x30.png");
-
 	}
 
 	@Override
@@ -61,6 +62,8 @@ public class IngameInterface implements GameObject {
 		g.drawImage(img, 0, 0, null);
 		g.setColor(Color.GREEN);
 		g.fillRect(HPX, HPY, healthBar.getWidth(), HPHEIGHT);
+		g.setColor(Color.WHITE);
+		g.drawString(getPlayerBalance(), 140, 115);
 		ui = new Sprite(clone);
 		/**
 		 * Draw sprites after this
@@ -70,9 +73,11 @@ public class IngameInterface implements GameObject {
 			Sprite itemSprite = itemList.get(i).getSprite();
 			if (itemList.get(i).getPickedUp()) {
 				int itemNumber = 100 + (i * 50);
-				ui.drawOnSprite(itemSprite, itemNumber, 100, 3, 3);
+				ui.drawOnSprite(itemSprite, itemNumber, 120, 3, 3);
 			}
 		}
+		// coin sprite
+		ui.drawOnSprite(coinSprite, 100, 75, 3, 3);
 
 		renderer.renderGUI(ui);
 	}
@@ -86,6 +91,22 @@ public class IngameInterface implements GameObject {
 		if (hpBar <= HPMAX && hpBar >= 0) {
 			this.healthBar = new Box(HPX, HPY, hpBar, HPHEIGHT);
 		}
+	}
+	
+	public String getPlayerBalance() {
+		StringBuilder balance = new StringBuilder();
+		int balanceLength = 8;
+		String playerBalance = Integer.toString(player.getGoldTotal());
+//		for (int i = 0; i < balanceLength; i++) {
+//			if (i < (balanceLength - playerBalance.length())){
+//				balance.append("0");
+//			}
+//			else {
+//				balance.append(playerBalance.charAt(balanceLength - playerBalance.length()));
+//			}
+//		}
+		return playerBalance;
+		
 	}
 
 }
