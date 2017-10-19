@@ -62,6 +62,8 @@ public class Player implements Character, GameObject, Saveable {
 	int newDirection;
 	boolean couldntRun;
 
+	private Rectangle playerAttack;
+
 	/**
 	 * Player visual radius
 	 */
@@ -91,6 +93,12 @@ public class Player implements Character, GameObject, Saveable {
 		this.didMove = false;
 		this.newDirection = this.direction;
 		this.couldntRun = false;
+
+		// testing attack
+		playerAttack = new Rectangle(
+				playerBoundBox.getX() + playerBoundBox.getWidth() / 2,
+				y - playerBoundBox.getHeight(), primaryWeapon.getRange(),
+				playerBoundBox.getHeight() * 2);
 	}
 
 	/**
@@ -180,14 +188,14 @@ public class Player implements Character, GameObject, Saveable {
 		this.x -= Movement.SPRINT_SPEED;
 		// this.playerBoundBox.setX(this.playerBoundBox.getX() - SPRINT);
 		this.playerBoundBox
-				.setX(Movement.sprintLeft(this.playerBoundBox.getX()));
+		.setX(Movement.sprintLeft(this.playerBoundBox.getX()));
 	}
 
 	public void runRight() {
 		this.x += Movement.SPRINT_SPEED;
 		// this.playerBoundBox.setX(this.playerBoundBox.getX() + SPRINT);
 		this.playerBoundBox
-				.setX(Movement.sprintRight(this.playerBoundBox.getX()));
+		.setX(Movement.sprintRight(this.playerBoundBox.getX()));
 	}
 
 	public void runUp() {
@@ -200,7 +208,7 @@ public class Player implements Character, GameObject, Saveable {
 		this.y += Movement.SPRINT_SPEED;
 		// this.playerBoundBox.setY(this.playerBoundBox.getY() + SPRINT);
 		this.playerBoundBox
-				.setY(Movement.sprintDown(this.playerBoundBox.getY()));
+		.setY(Movement.sprintDown(this.playerBoundBox.getY()));
 	}
 
 	public void interact() {
@@ -215,6 +223,7 @@ public class Player implements Character, GameObject, Saveable {
 		// introducing the animated sprite here. initially rendering a static
 		// sprite.
 		renderer.renderRectangle(playerBoundBox, 1, 1);
+		renderer.renderRectangle(playerAttack, 1, 1);
 		if (animatedSprite != null)
 			renderer.renderSprite(animatedSprite,
 					x + animatedSprite.getWidth() / 2,
@@ -249,11 +258,12 @@ public class Player implements Character, GameObject, Saveable {
 		// Checks if player is running
 		tryRun(engine);
 		// Checks if player is walking
-		tryWalk(engine);
+		if (!engine.getKeyBinds().isRun())
+			tryWalk(engine);
 		// Checks if player teleporting
 		checkTeleportation(engine);
 		// Checks if player is attacking
-		checkAttack(engine);
+		attack(engine);
 		// Updates playing animations accordingly
 		updateAnimations(engine);
 
@@ -375,71 +385,120 @@ public class Player implements Character, GameObject, Saveable {
 		 * Player walking connection with key controller: Also checks for player
 		 * connection with walls
 		 */
-		if (!keyBinds.isRun()) {
-			if (keyBinds.isUp()) {
-				Box up = new Box(curBox.getX(),
-						curBox.getY() - Movement.WALK_SPEED, curBox.getWidth(),
-						curBox.getHeight());
-				if (checkBoundry(currentMap, up)) {
-					newDirection = 2;
-					didMove = true;
-					walkUp();
-				}
+		if (keyBinds.isUp()) {
+			Box up = new Box(curBox.getX(), curBox.getY() - Movement.WALK_SPEED,
+					curBox.getWidth(), curBox.getHeight());
+			if (checkBoundry(currentMap, up)) {
+				newDirection = 2;
+				didMove = true;
+				walkUp();
 			}
-			if (keyBinds.isDown()) {
-				Box down = new Box(curBox.getX(),
-						curBox.getY() + Movement.WALK_SPEED, curBox.getWidth(),
-						curBox.getHeight());
-				if (checkBoundry(currentMap, down)) {
-					newDirection = 3;
-					didMove = true;
-					walkDown();
-				}
+		}
+		if (keyBinds.isDown()) {
+			Box down = new Box(curBox.getX(),
+					curBox.getY() + Movement.WALK_SPEED, curBox.getWidth(),
+					curBox.getHeight());
+			if (checkBoundry(currentMap, down)) {
+				newDirection = 3;
+				didMove = true;
+				walkDown();
 			}
-			if (keyBinds.isLeft()) {
-				Box left = new Box(curBox.getX() - Movement.WALK_SPEED,
-						curBox.getY(), curBox.getWidth(), curBox.getHeight());
-				if (checkBoundry(currentMap, left)) {
-					newDirection = 1;
-					didMove = true;
-					walkLeft();
-				}
+		}
+		if (keyBinds.isLeft()) {
+			Box left = new Box(curBox.getX() - Movement.WALK_SPEED,
+					curBox.getY(), curBox.getWidth(), curBox.getHeight());
+			if (checkBoundry(currentMap, left)) {
+				newDirection = 1;
+				didMove = true;
+				walkLeft();
 			}
-			if (keyBinds.isRight()) {
-				Box right = new Box(curBox.getX() + Movement.WALK_SPEED,
-						curBox.getY(), curBox.getWidth(), curBox.getHeight());
-				if (checkBoundry(currentMap, right)) {
-					newDirection = 0;
-					didMove = true;
-					walkRight();
+		}
+		if (keyBinds.isRight()) {
+			Box right = new Box(curBox.getX() + Movement.WALK_SPEED,
+					curBox.getY(), curBox.getWidth(), curBox.getHeight());
+			if (checkBoundry(currentMap, right)) {
+				newDirection = 0;
+				didMove = true;
+				walkRight();
+			}
+		}
+
+	}
+	/*
+	 * public void checkAttack(Engine engine) { KeyController keyBinds =
+	 * engine.getKeyBinds(); if (keyBinds.isAttak()) { List<GameObject> monsters
+	 * = engine.getCurrentMap().getMonsters(); Iterator<GameObject> iterator =
+	 * monsters.iterator();
+	 *
+	 * while (iterator.hasNext()) { Monster mon = (Monster) iterator.next(); //
+	 * if player is looking to the right if (this.direction == 0) {
+	 * attackMonsterToTheRight(mon, monsters, iterator);
+	 *
+	 * // if the player is looking left } else if (this.direction == 1) {
+	 * attackMonstertoTheLeft(mon, monsters, iterator); // if the player is
+	 * looking up } else if (this.direction == 2) { attackMonsterAbove(mon,
+	 * monsters, iterator); } else if (this.direction == 3) {
+	 * attackMonsterBelow(mon, monsters, iterator);
+	 *
+	 * checkForMonsterDeath(mon, monsters, iterator); }
+	 *
+	 * } } }
+	 */
+
+	@Override
+	public void attack(Engine engine) {
+		KeyController keyBinds = engine.getKeyBinds();
+		if (keyBinds.isAttack()) {
+			//player is looking horizontally
+			if (this.direction == 0 || this.direction == 1) {
+				//Constructing horizontal bounding box
+				playerAttack = new Rectangle(
+						playerBoundBox.getX()
+						+ playerBoundBox.getWidth() / 2,
+						y + 32, primaryWeapon.getRange(),
+						playerBoundBox.getHeight() * 2);
+				if (this.direction == 0) { //Player is looking right
+					this.playerAttack.generateGraphics(Color.red.getRGB());
+					attackMonster(engine, playerAttack);
+
+				} else if (this.direction == 1) { //Player is looking left
+					playerAttack.setX( //adjusts weapon attack to left
+							playerAttack.getX() - playerAttack.getWidth());
+					this.playerAttack.generateGraphics(Color.red.getRGB());
+					attackMonster(engine, playerAttack);
+				}
+			} else { //Player is looking vertically
+				//Constructing verticle bounding box
+				playerAttack = new Rectangle(playerBoundBox.getX(),
+						(y + 64) - primaryWeapon.getRange(),
+						playerBoundBox.getWidth(),
+						primaryWeapon.getRange());
+				if (this.direction == 2) { //Player is looking up
+					this.playerAttack.generateGraphics(Color.red.getRGB());
+					attackMonster(engine, playerAttack);//Calls attack
+				} else if (this.direction == 3) { //Player is looking down
+					playerAttack.setY(y + 60); //adjusts weapon attack to up
+					this.playerAttack.generateGraphics(Color.red.getRGB());
+					attackMonster(engine, playerAttack);  //Calls attack
+
 				}
 			}
 		}
 	}
 
-	public void checkAttack(Engine engine) {
-		KeyController keyBinds = engine.getKeyBinds();
-		if (keyBinds.isAttak()) {
-			List<GameObject> monsters = engine.getCurrentMap().getMonsters();
-			if (monsters.size() == 0) {
-				// break;
-			}
-			Iterator<GameObject> iterator = monsters.iterator();
-			while (iterator.hasNext()) {
-				Monster mon = (Monster) iterator.next();
-				// if player is looking to the right
-				if (this.direction == 0) {
 
-					attackMonsterToTheRight(mon, monsters, iterator);
-					// if the player is looking left
-				} else if (this.direction == 1) {
-					attackMonstertoTheLeft(mon, monsters, iterator);
-					// if the player is looking up
-				} else if (this.direction == 2) {
-					attackMonsterAbove(mon, monsters, iterator);
-				} else if (this.direction == 3) {
-					attackMonsterBelow(mon, monsters, iterator);
-				}
+	public void attackMonster(Engine engine, Box playerAttack) {
+		//Ierates through all monsters
+		List<GameObject> monsters = engine.getCurrentMap().getMonsters();
+		Iterator<GameObject> iterator = monsters.iterator();
+		while (iterator.hasNext()) {
+			Monster mon = (Monster) iterator.next();
+			//Checks if there is a monster in range of the player Attack
+			if (playerAttack.contains(mon.getBoundingBox())) {
+				//Adjusts monsters health accordingly
+				mon.setHealth(mon.getHealth() - heavyAttack());
+				//Checks is the monster is dead
+				checkForMonsterDeath(mon, monsters, iterator);
 			}
 		}
 	}
@@ -505,6 +564,7 @@ public class Player implements Character, GameObject, Saveable {
 		}
 	}
 
+<<<<<<< HEAD
 	public void attackMonsterToTheRight(Monster mon, List<GameObject> monsters,
 			Iterator<GameObject> iterator) {
 
@@ -604,10 +664,12 @@ public class Player implements Character, GameObject, Saveable {
 
 	}
 
+=======
+>>>>>>> 55e9538a97e1b03715b406d9ccc87f8bb7f50796
 	public void checkForMonsterDeath(Monster monster, List<GameObject> monsters,
 			Iterator<GameObject> iter) {
 		if (monster.getHealth() <= 0) {
-			this.gold = this.gold + 100;
+			this.gold = this.gold + 1;
 			System.out.println("monster died");
 			iter.remove();
 		}
@@ -740,7 +802,11 @@ public class Player implements Character, GameObject, Saveable {
 
 	@Override
 	public String save() {
+<<<<<<< HEAD
 		String s = "Player\t{\n";
+=======
+		String s = "Player	{\n";
+>>>>>>> 55e9538a97e1b03715b406d9ccc87f8bb7f50796
 		s += "int	hp	" + hp + "\n";
 		s += "int	hpMax	" + hpMax + "\n";
 		s += "int	gold	" + gold + "\n";
@@ -751,9 +817,13 @@ public class Player implements Character, GameObject, Saveable {
 		s += "zoom	zoom	" + zoom + "\n";
 		s += "damageQueue	damageQueue	" + damageQueue + "\n";
 		s += "direction	direction	" + direction + "\n";
+<<<<<<< HEAD
 		s += "Box	boundBox	" + this.playerBoundBox.save() + "\n";
 		s += "int	radius	" + radius + "\n";
 		s += "}";
+=======
+		s += "}	\n";
+>>>>>>> 55e9538a97e1b03715b406d9ccc87f8bb7f50796
 
 		return s;
 	}

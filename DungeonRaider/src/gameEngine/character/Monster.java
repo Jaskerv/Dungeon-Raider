@@ -68,11 +68,27 @@ public class Monster implements Character, GameObject {
 	private int hpMax;
 
 	/**
-	 * Monster
+	 * Monster constructor
+	 *
+	 * @param name
+	 *            The name of the monster
+	 * @param x
+	 *            The x coordinate of the monster
+	 * @param y
+	 *            The y coordinate of the monster
+	 * @param speed
+	 *            The speed of the monster
+	 * @param health
+	 *            The health of the monster. Starts at 100.
+	 * @param damage
+	 *            The damage of the monster
+	 * @param attackSpeed
+	 *            The attackSpeed of the monster
+	 * @param sprite
+	 *            The sprite to represent the monster
 	 */
 	public Monster(String name, int x, int y, int speed, int health, int damage,
 			int attackSpeed, Sprite sprite) {
-		// Sets all values passed through constructor
 		this.name = name;
 		this.x = x;
 		this.y = y;
@@ -82,7 +98,6 @@ public class Monster implements Character, GameObject {
 		this.damage = damage;
 		this.spriteImage = sprite;
 		this.attackSpeed = attackSpeed;
-		// Genereate hp bar
 
 		// Generates height and width values that account for zoom
 		this.realHeight = spriteImage.getHeight() * ZOOM;
@@ -115,7 +130,6 @@ public class Monster implements Character, GameObject {
 	@Override
 	public void walkLeft() {
 		this.x -= speed;
-		// this.playerBoundBox.setX(this.playerBoundBox.getX() - SPEED);
 		this.boundingBox
 				.setX(Movement.walkLeft(this.boundingBox.getX(), this.speed));
 	}
@@ -123,7 +137,6 @@ public class Monster implements Character, GameObject {
 	@Override
 	public void walkRight() {
 		this.x += speed;
-		// this.playerBoundBox.setX(this.playerBoundBox.getX() + SPEED);
 		this.boundingBox
 				.setX(Movement.walkRight(this.boundingBox.getX(), this.speed));
 	}
@@ -131,7 +144,6 @@ public class Monster implements Character, GameObject {
 	@Override
 	public void walkUp() {
 		this.y -= speed;
-		// this.playerBoundBox.setY(this.playerBoundBox.getY() - SPEED);
 		this.boundingBox
 				.setY(Movement.walkUp(this.boundingBox.getY(), this.speed));
 	}
@@ -139,12 +151,20 @@ public class Monster implements Character, GameObject {
 	@Override
 	public void walkDown() {
 		this.y += speed;
-		// this.playerBoundBox.setY(this.playerBoundBox.getY() + SPEED);
 		this.boundingBox
 				.setY(Movement.walkDown(this.boundingBox.getY(), this.speed));
 	}
 
-	// Render method for the chosen rectangle bounding box to display visually
+	/**
+	 * Render method for the chosen rectangle bounding box to display visually
+	 *
+	 * @param The
+	 *            renderer that will render the monster
+	 * @param The
+	 *            scale multiplier for monster width
+	 * @param The
+	 *            scale multiplier for monster height
+	 */
 	@Override
 	public void render(Renderer renderer, int xZoom, int yZoom) {
 		BufferedImage img = new BufferedImage(
@@ -152,13 +172,23 @@ public class Monster implements Character, GameObject {
 				(int) (realHeight + (realHeight * .5)),
 				BufferedImage.TYPE_INT_RGB);
 		Graphics g = img.getGraphics();
-		/**
-		 * Draw anything with graphics after this
-		 */
+		// Draw anything with graphics after this
 		renderer.renderRectangle(this.attackRadius, 1, 1);
 		renderer.renderArray(spriteImage.getPixels(), spriteImage.getWidth(),
 				spriteImage.getHeight(), x, y, ZOOM, ZOOM);
+		drawMonsterHealthBar(g);
+		Sprite s = new Sprite(img);
+		renderer.renderSprite(s, x, (int) (y - (realHeight * .2)), 1, 1);
+	}
+
+	/**
+	 *
+	 *
+	 * @param g
+	 */
+	public void drawMonsterHealthBar(Graphics g) {
 		g.setColor(Color.RED);
+		g.fillRect(0, 0, hpMax, 5);
 		g.fillRect(0, 0, hpMax, 5);
 		double hpPerc = ((double) health) / ((double) healthMax);
 		int hpBar = (int) (hpPerc * (double) hpMax);
@@ -166,8 +196,6 @@ public class Monster implements Character, GameObject {
 			g.setColor(Color.GREEN);
 			g.fillRect(0, 0, hpBar, 5);
 		}
-		Sprite s = new Sprite(img);
-		renderer.renderSprite(s, x, (int) (y - (realHeight * .2)), 1, 1);
 	}
 
 	/**
@@ -192,7 +220,7 @@ public class Monster implements Character, GameObject {
 	 * Deals damage to the player = to that of the monsters damage set
 	 */
 	@Override
-	public void attack(int mx, int my, Engine engine) {
+	public void attack(Engine engine) {
 		// TODO Auto-generated method stub
 		Player player = engine.getPlayer();
 		engine.getPlayer().damage(heavyAttack());
@@ -217,7 +245,7 @@ public class Monster implements Character, GameObject {
 			// attacks now
 			if (attackRadius.contains(engine.getPlayer().getPlayerBoundBox())) {
 				attackTimer = 0;
-				attack(x, y, engine);
+				attack(engine);
 			}
 		}
 	}

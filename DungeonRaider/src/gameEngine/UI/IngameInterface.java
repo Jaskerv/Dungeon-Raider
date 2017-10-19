@@ -77,7 +77,7 @@ public class IngameInterface implements GameObject {
 			}
 		}
 		// coin sprite
-		ui.drawOnSprite(coinSprite, 100, 75, 3, 3);
+		ui.drawOnSprite(coinSprite, 98, 75, 3, 3);
 
 		renderer.renderGUI(ui);
 	}
@@ -92,7 +92,7 @@ public class IngameInterface implements GameObject {
 			this.healthBar = new Box(HPX, HPY, hpBar, HPHEIGHT);
 		}
 	}
-	
+
 	public String getPlayerBalance() {
 		StringBuilder balance = new StringBuilder();
 		int balanceLength = 8;
@@ -106,7 +106,7 @@ public class IngameInterface implements GameObject {
 //			}
 //		}
 		return playerBalance;
-		
+
 	}
 
 }
