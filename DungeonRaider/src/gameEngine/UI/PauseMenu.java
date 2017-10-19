@@ -51,7 +51,8 @@ public class PauseMenu implements GameObject {
 
 	@Override
 	public void render(Renderer renderer, int xZoom, int yZoom) {
-		BufferedImage clone = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_RGB);
+		BufferedImage clone = new BufferedImage(img.getWidth(), img.getHeight(),
+				BufferedImage.TYPE_INT_RGB);
 		Graphics g = clone.getGraphics();
 		g.drawImage(img, 0, 0, null);
 		g.setColor(Color.WHITE);
