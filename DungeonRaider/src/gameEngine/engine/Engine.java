@@ -290,7 +290,6 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 	 */
 	public void update() {
 		soundLibrary.autoClipClose();
-		System.out.println(currentMapNumber);
 		/**
 		 * If player is dead
 		 */
