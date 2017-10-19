@@ -37,7 +37,10 @@ public class StatModifier {
 		boolean crited = calcCrit(critChanceStat);
 
 		damage = calcArmorReduc(damageDone, armourStat);
-		if(crited) damage = damage * critMultiplier;
+		if(crited) {
+			damage = damage * critMultiplier;
+			System.out.println("Crited!");
+		}
 		currentHP = currentHP - damage;
 		if(minHP > currentHP) return minHP;
 		else return currentHP;
@@ -145,7 +148,7 @@ public class StatModifier {
 	}
 
 
-	
+
 	/**
 	 * Tests healing a dead player
 	 */

@@ -173,7 +173,6 @@ public class Monster implements Character, GameObject {
 				BufferedImage.TYPE_INT_RGB);
 		Graphics g = img.getGraphics();
 		// Draw anything with graphics after this
-		renderer.renderRectangle(this.attackRadius, 1, 1);
 		renderer.renderArray(spriteImage.getPixels(), spriteImage.getWidth(),
 				spriteImage.getHeight(), x, y, ZOOM, ZOOM);
 		drawMonsterHealthBar(g);
@@ -207,13 +206,10 @@ public class Monster implements Character, GameObject {
 		// sets the new attack radius co-ordinates
 		this.attackRadius.setX((int) (this.x - (this.realWidth * 0.2)));
 		this.attackRadius.setY((int) (this.y - (this.realHeight * 0.2)));
-		// Checks to see if player should attack
+		// Checks to see if monster should attack
 		checkAttack(engine);
-		// Checks to see if player should move
+		// Checks to see if monster should move
 		checkMovement(engine);
-		// Checks to see if player has taken damage
-		checkDamage();
-
 	}
 
 	/**
@@ -222,7 +218,6 @@ public class Monster implements Character, GameObject {
 	@Override
 	public void attack(Engine engine) {
 		// TODO Auto-generated method stub
-		Player player = engine.getPlayer();
 		engine.getPlayer().damage(heavyAttack());
 	}
 
@@ -247,15 +242,6 @@ public class Monster implements Character, GameObject {
 				attackTimer = 0;
 				attack(engine);
 			}
-		}
-	}
-
-	/**
-	 * Checks to see if the monster has taken any damage
-	 */
-	public void checkDamage() {
-		if (!damageQueue.isEmpty()) {
-			this.health += damageQueue.poll();
 		}
 	}
 

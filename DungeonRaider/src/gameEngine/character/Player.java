@@ -220,14 +220,14 @@ public class Player implements Character, GameObject, Saveable {
 		this.x -= Movement.SPRINT_SPEED;
 		// this.playerBoundBox.setX(this.playerBoundBox.getX() - SPRINT);
 		this.playerBoundBox
-				.setX(Movement.sprintLeft(this.playerBoundBox.getX()));
+		.setX(Movement.sprintLeft(this.playerBoundBox.getX()));
 	}
 
 	public void runRight() {
 		this.x += Movement.SPRINT_SPEED;
 		// this.playerBoundBox.setX(this.playerBoundBox.getX() + SPRINT);
 		this.playerBoundBox
-				.setX(Movement.sprintRight(this.playerBoundBox.getX()));
+		.setX(Movement.sprintRight(this.playerBoundBox.getX()));
 	}
 
 	public void runUp() {
@@ -240,7 +240,7 @@ public class Player implements Character, GameObject, Saveable {
 		this.y += Movement.SPRINT_SPEED;
 		// this.playerBoundBox.setY(this.playerBoundBox.getY() + SPRINT);
 		this.playerBoundBox
-				.setY(Movement.sprintDown(this.playerBoundBox.getY()));
+		.setY(Movement.sprintDown(this.playerBoundBox.getY()));
 	}
 
 	public void interact() {
@@ -381,8 +381,11 @@ public class Player implements Character, GameObject, Saveable {
 	public void checkUpgrade(Engine engine) {
 		KeyController keyBinds = engine.getKeyBinds();
 		if (keyBinds.isUpgrade()) {
-			if (gold > 100)
+			if (this.gold > 99) {
 				this.primaryWeapon.upgrade();
+				this.gold = this.gold - 100;
+			}
+			keyBinds.setUpgrade(false);
 		}
 	}
 
@@ -633,7 +636,7 @@ public class Player implements Character, GameObject, Saveable {
 	public void checkForMonsterDeath(Monster monster, List<GameObject> monsters,
 			Iterator<GameObject> iter) {
 		if (monster.getHealth() <= 0) {
-			this.gold = this.gold + 100;
+			this.gold = this.gold + 25;
 			System.out.println("monster died");
 			iter.remove();
 		}
