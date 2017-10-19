@@ -57,6 +57,8 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 			loadImage("resources/tiles/DungeonTileset1.png"));
 	private static SpriteSheet dunegeonSpritesheet2 = new SpriteSheet(
 			Engine.loadImage("resources/tiles/DungeonTileset4.png"));
+	private static SpriteSheet coinSpriteSheet = new SpriteSheet(
+			loadImage("resources/images/sCoins.png"));
 	/**
 	 * Key listener - keeps track of cameras movement
 	 */
@@ -81,7 +83,7 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 	public Engine() {
 		/** Initializing the map */
 		this.mapList = initialiseMaps();
-		this.currentMap = mapList.get(1);
+		this.currentMap = mapList.get(0);
 		this.currentMapNumber = 1;
 		/** Initializing the sound library */
 		this.soundLibrary = new SoundMap(
@@ -121,7 +123,7 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 		this.player = new Player(new Position(150, 200), 100, 5, 100, 100, 600);
 		this.monsters = currentMap.getMonsters();
 		/** GUI */
-		this.GUI = new IngameInterface(player, WIDTH, HEIGHT);
+		this.GUI = new IngameInterface(player, WIDTH, HEIGHT, findSprite("coin"));
 
 		this.pauseMenu = new PauseMenu(
 				Engine.loadImage("resources/images/Pause.png"));
@@ -315,9 +317,6 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 		mapList.put(count++, map_01);
 		// the final maze map.
 
-		mapList.entrySet().stream()
-				.forEach(entry -> System.out.println(entry.getValue()));
-
 		return mapList;
 
 	}
@@ -356,6 +355,7 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 	public static Sprite findSprite(String name) {
 		dunegeonSpritesheet.loadSprites(16, 16);
 		dunegeonSpritesheet2.loadSprites(16, 16);
+		coinSpriteSheet.loadSprites(16, 16);
 		if (name.equals("Monster_One")) {
 			return dunegeonSpritesheet.getSprite(3, 6);
 		} else if (name.equals("Monster_Two")) {
@@ -364,11 +364,11 @@ public class Engine extends JFrame implements Runnable, Observer, Saveable {
 			return dunegeonSpritesheet2.getSprite(3, 12);
 		} else if (name.equals("Monster_Four")) {
 			return dunegeonSpritesheet2.getSprite(4, 11);
-
 		} else if (name.equals("Small_Health_Potion")
 				|| name.equals("Big_Health_Potion")) {
-
 			return dunegeonSpritesheet2.getSprite(12, 11);
+		} else if (name.equals("coin")) {
+			return coinSpriteSheet.getSprite(0, 0);
 		}
 		return null;
 	}
