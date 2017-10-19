@@ -111,14 +111,12 @@ public class Monster implements Character, GameObject {
 		this.boundingBox = new Rectangle(this.x,
 				this.y + (int) (this.realHeight * 0.7), this.realWidth,
 				(int) (this.realHeight * 0.3));
-		this.boundingBox.generateGraphics(Color.BLUE.getRGB());
 
 		// Initiates the attack radius of the monster
 		this.attackRadius = new Rectangle(this.x - (this.realWidth),
 				this.y - (this.realHeight),
 				(int) (this.realWidth + (this.realWidth * 0.4)),
 				(int) (this.realHeight + (this.realHeight * 0.4)));
-		this.attackRadius.generateGraphics(Color.BLUE.getRGB());
 
 		// Initiates attack timer and damage queue
 		this.attackTimer = 0;

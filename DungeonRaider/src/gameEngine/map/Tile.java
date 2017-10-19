@@ -47,7 +47,7 @@ public class Tile {
 	private Box boundingBox;
 	/** If item is on top of this tile */
 	private Item item = null;
-	private int outcome;
+	private int outcome = 111;
 	private static int tileCount = 2;
 
 	/**

@@ -468,9 +468,7 @@ public class Player implements Character, GameObject, Saveable {
 			this.playerBoundBox.setX(this.x + 10);
 			this.playerBoundBox.setY(this.y + 63);
 			this.playerBoundBox.generateGraphics(Color.green.getRGB());
-		}
-
-		else if (teleportStatus == 2) {
+		} else if (teleportStatus == 2) {
 			int current_Map = engine.getCurrentMapNumber();
 			Map prevMap = engine.getMapList().get(current_Map - 2);
 			prevMap.spawnMonsters();
@@ -481,6 +479,19 @@ public class Player implements Character, GameObject, Saveable {
 			this.playerBoundBox.setX(this.x + 10);
 			this.playerBoundBox.setY(this.y + 63);
 			this.playerBoundBox.generateGraphics(Color.green.getRGB());
+		} else if (teleportStatus == 3) {
+			int current_Map = engine.getCurrentMapNumber();
+			Map prevMap = engine.getMapList().get(current_Map - 3);
+			prevMap.spawnMonsters();
+			engine.setCurrentMap(prevMap);
+			engine.setCurrentMapNumber(engine.getCurrentMapNumber() - 1);
+			this.x = engine.getCurrentMapNumber() == 2 ? 1825 : 770;
+			this.y = engine.getCurrentMapNumber() == 2 ? 150 : 1700;
+			this.playerBoundBox.setX(this.x + 10);
+			this.playerBoundBox.setY(this.y + 63);
+			this.playerBoundBox.generateGraphics(Color.green.getRGB());
+		} else if (teleportStatus == 4) {
+			engine.getWin().setWin(true);
 		}
 	}
 

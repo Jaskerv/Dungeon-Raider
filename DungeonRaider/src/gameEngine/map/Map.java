@@ -253,6 +253,10 @@ public class Map {
 					} else if (currentTile.isRandomTeleporter()
 							&& currentTile.getOutcome() == 2) {
 						return 2;
+					} else if (currentTile.getOutcome() == 0) {
+						return 4;
+					} else if (currentTile.getOutcome() == 1) {
+						return 3;
 					}
 				}
 			}

@@ -62,4 +62,5 @@ public class SaveGameTests {
 		String loadSaveState = SaveGame.loadGame();
 		assertEquals(currentSaveState, loadSaveState);
 	}
+
 }
