@@ -34,6 +34,11 @@ public interface Character {
 	public default boolean checkBoundry(Map currentMap, Box box) {
 		return currentMap.onWall(box);
 	}
+	
+	public default boolean checkTeleporter(Map currentMap, Box box) {
+		return currentMap.onTeleporter(box);
+	}
+	
 	/**
 	 *
 	 * @param mx

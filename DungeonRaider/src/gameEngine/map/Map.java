@@ -201,6 +201,21 @@ public class Map {
 		}
 		return true;
 	}
+	
+	public boolean onTeleporter(Box box) {
+		Tile currentTile;
+		for (int row = 0; row < LENGTH; row++) {
+			for (int col = 0; col < WIDTH; col++) {
+				currentTile = map[col][row];
+				if(currentTile.contains(box)) {
+					if(currentTile.isTeleporter()) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
 
 	public Tile[][] getMap() { return map; }
 

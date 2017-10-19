@@ -81,7 +81,7 @@ public class Player implements Character, GameObject, Saveable {
 		this.hp = hp;
 		this.hpMax = hpMax;
 		this.inventory = new Inventory(20);
-		this.primaryWeapon = new Weapon("Start", 0, 0, 10, 300, 10,
+		this.primaryWeapon = new Weapon("Start", 0, 0, 1, 300, 10,
 				spriteImage);
 		this.sprite = spriteImage;
 		if (sprite != null && sprite instanceof AnimatedSprite) {
@@ -96,6 +96,40 @@ public class Player implements Character, GameObject, Saveable {
 		this.newDirection = this.direction;
 		this.couldntRun = false;
 	}
+	
+	
+	/**
+	 * 
+	 * @param hp
+	 * @param hpMax
+	 * @param gold
+	 * @param x
+	 * @param y
+	 * @param primaryWeapon
+	 * @param inventory
+	 * @param playerBoundBox
+	 * @param zoom
+	 * @param direction
+	 * @param radius
+	 */
+	public Player(int hp, int hpMax, int gold, int x, int y,
+			Weapon primaryWeapon, Inventory inventory, Rectangle playerBoundBox,
+			int zoom, int direction, int radius) {
+		super();
+		this.hp = hp;
+		this.hpMax = hpMax;
+		this.gold = gold;
+		this.x = x;
+		this.y = y;
+		this.primaryWeapon = primaryWeapon;
+		this.inventory = inventory;
+		this.playerBoundBox = playerBoundBox;
+		this.zoom = zoom;
+		this.direction = direction;
+		this.radius = radius;
+	}
+
+
 
 	private void updateDirection() {
 		if (animatedSprite != null) {
@@ -224,23 +258,25 @@ public class Player implements Character, GameObject, Saveable {
 	}
 
 
-	//Harry Comment
+	/**
+	 * Checks if the player is stepping on a teleporter
+	 * @param engine
+	 */
 	public void checkTeleportation(Engine engine) {
-		if (this.x >= 1940 && this.y <= 100) {
+		Map currentMap = engine.getCurrentMap();
+		Box box = this.playerBoundBox;
+		if (checkTeleporter(currentMap, box)) {
 			if (engine.getCurrentMapNumber() == 3) {
-
 				// so it doesn't go to a non-existing map
-
 				return;
 			}
 			engine.setCurrentMap(
 					engine.getMapList().get(engine.getCurrentMapNumber()));
 			this.x = 200;
 			this.y = 200;
-			this.playerBoundBox = new Rectangle(x + 10, y + 63,
-					animatedSprite.getWidth(),
-					(int) (animatedSprite.getHeight() * 0.4));
-			this.playerBoundBox.generateGraphics(Color.blue.getRGB());
+			this.playerBoundBox.setX(this.x + 10);
+			this.playerBoundBox.setY(this.y + 63);
+			//this.playerBoundBox.generateGraphics(Color.blue.getRGB());
 		}
 	}
 
